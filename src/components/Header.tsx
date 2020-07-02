@@ -19,7 +19,7 @@ export function Header() {
     <Container>
       <Row {...headerStyle} xs={8}>
         <Col>
-          <Link to={'/home'} style={linkStyle}>
+          <Link to={'/'} style={linkStyle}>
             <h1>
               <FaBeer size={45} /> <b>&nbsp; A Bag of Words </b>
             </h1>

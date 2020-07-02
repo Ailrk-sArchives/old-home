@@ -12,7 +12,7 @@ function App() {
       <Header />
       <Switch>
         <Route exact path="/article/:id" component={ArticlePage} />
-        <Route exact path="/home">
+        <Route exact path="/">
           <div>
             <List markdowns={Array.from(MyMarkdown.db.values())} />
           </div>
