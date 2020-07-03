@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Row, Col, Container} from 'react-bootstrap';
 import {css} from 'glamor';
 import {FaBeer, FaBars} from 'react-icons/fa';
 import {Link} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
+import {Sidebar} from './Sidebar';
 
 const headerStyle = css({
   height: "100px",
@@ -19,17 +20,31 @@ export function Header() {
     <Container>
       <Row {...headerStyle} xs={8}>
         <Col>
-          <Link to={'/'} style={linkStyle}>
+          <Link to={'/home'} style={linkStyle}>
             <h1>
-              <FaBeer size={45} /> <b>&nbsp; A Bag of Words </b>
+              <FaBeer size={45} /><b>&nbsp; A Bag of Words </b>
             </h1>
           </Link>
         </Col>
         <Row>
-          <FaBars size={35} />
+          <Toggle />
         </Row>
       </Row>
-    <hr />
+      <hr {...css({paddingBottom: "30px"})} />
     </Container>
   )
+}
+
+function Toggle() {
+  const toggleStyle = css({
+    cursor: "pointer",
+  });
+  const [sidebarOn, setSidebarOn] = useState<boolean>(false);
+  return (
+    <>
+      {
+        sidebarOn ? <Sidebar setSidebarOn={setSidebarOn} /> :
+          <FaBars size={35} {...toggleStyle} onClick={() => {setSidebarOn(s => !s)}} />
+      }
+    </>);
 }

@@ -1,7 +1,7 @@
 -- tag rust smark-pointer memory-management
 -- source rustbook
 -- title A potential article about rust smart pointer
--- date 2020-06-29
+-- date 2020-07-03
 ;;
 ## A potential article about rust smart pointer.
 

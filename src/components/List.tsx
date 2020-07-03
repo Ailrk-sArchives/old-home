@@ -1,14 +1,13 @@
-import {Markdown} from '../state/markdowns';
+import {Markdown, chronoList, indexTag} from '../state/markdowns';
 import {Container, Col, Badge} from 'react-bootstrap';
 import React from 'react';
 import {css} from 'glamor';
 import {textTheme, linkStyle} from '../styles/styleElements';
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 
 const listRowStyle = css(textTheme, {
   paddingBottom: "80px",
 });
-
 
 function ListRow(props: {
   markdown: Markdown
@@ -19,23 +18,26 @@ function ListRow(props: {
 
   return (
     <Container {...listRowStyle}>
-      <Col style={{paddingBottom: "12px"}}>
+      <Col>
         <Link to={`/article/${id}`} style={linkStyle}>
           <h2><b>{title}</b></h2>
         </Link>
       </Col>
       <Col {...css({fontSize: 20, paddingLeft: "20px"})}>
-        {time.toJSON().replace(/-/gi, ' . ').split('T')[0]}
+        {time.toJSON().replace(/-/gi, ' .').split('T')[0]}
       </Col>
       <Col>
         <h4>
           {
             tag?.map(t => (
-              <>
-
-                <Badge variant="danger">{t}</Badge>
+              <span key={t}>
+                <Badge variant="danger">
+                  <Link to={`/tag/${t}`} style={{...linkStyle, color: "white"}}>
+                    {t}
+                  </Link>
+                </Badge>
                     &nbsp;
-                </>
+              </span>
             ))
           }
         </h4>
@@ -48,7 +50,7 @@ export function List(props: {
   markdowns: Array<Markdown>,
 }) {
   const {markdowns} = props;
-  const lists = markdowns.map(m => <ListRow markdown={m} />);
+  const lists = markdowns.map(m => <ListRow markdown={m} key={m.header.id} />);
   return (
     <Container>
       {
@@ -58,3 +60,11 @@ export function List(props: {
   );
 }
 
+export function ChronoList() {
+  return <List markdowns={chronoList()} />
+}
+
+export function TagList() {
+  const {tag} = useParams();
+  return <List markdowns={indexTag.get(tag as string) ?? []} />
+}
