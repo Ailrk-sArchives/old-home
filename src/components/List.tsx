@@ -6,7 +6,7 @@ import {textTheme, linkStyle} from '../styles/styleElements';
 import {Link, useParams} from 'react-router-dom';
 
 const listRowStyle = css(textTheme, {
-  paddingBottom: "80px",
+  paddingBottom: "50px",
 });
 
 function ListRow(props: {
@@ -19,20 +19,20 @@ function ListRow(props: {
   return (
     <Container {...listRowStyle}>
       <Col>
-        <Link to={`/article/${id}`} style={linkStyle}>
+        <Link to={`/article/${id}`} style={{...linkStyle, color: "LightCoral"}}>
           <h2><b>{title}</b></h2>
         </Link>
       </Col>
-      <Col {...css({fontSize: 20, paddingLeft: "20px"})}>
-        {time.toJSON().replace(/-/gi, ' .').split('T')[0]}
+      <Col {...css({fontSize: 20, paddingLeft: "50px", color: "SlateGray"})}>
+        {time.toJSON().replace(/-/gi, '.').split('T')[0]}
       </Col>
-      <Col>
+      <Col {...css({paddingLeft: "45px"})}>
         <h4>
           {
             tag?.map(t => (
               <span key={t}>
-                <Badge variant="danger">
-                  <Link to={`/tag/${t}`} style={{...linkStyle, color: "white"}}>
+                <Badge variant="light">
+                  <Link to={`/tag/${t}`} style={{...linkStyle, color: "SlateGray"}}>
                     {t}
                   </Link>
                 </Badge>
