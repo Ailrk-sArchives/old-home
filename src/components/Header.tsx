@@ -23,7 +23,7 @@ export function Header() {
         <Col>
           <Link to={'/home'} style={{...linkStyle, color: "LightCoral"}}>
             <h1 style={{fontWeight: "bolder", textShadow: "0px 1px, 1px 0px, 1px 1px"}}>
-              <FaBeer size={45} /><b>&nbsp; A Bag of Words </b>
+              <FaBeer size={45} /><b>&nbsp; &gt;&gt;= A Bag of Words </b>
             </h1>
           </Link>
         </Col>
@@ -57,16 +57,9 @@ function Avatar() {
           }} />
       </Col>
       <Col {...css({paddingTop: "30px"})}>
-        <Row>
-          Jimmy Yao's blog
-            </Row>
-        <Row>
-          github: https://github.com/jummy233
-            </Row>
-        <Row>
-          email: jimmy123good@hotmail.com
-            </Row>
-
+        <Row> Jimmy Yao's blog </Row>
+        <Row> github: https://github.com/jummy233 </Row>
+        <Row> email: jimmy123good@hotmail.com </Row>
       </Col>
     </Row>
   );

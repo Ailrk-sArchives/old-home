@@ -8,7 +8,7 @@ This app serves as both personal blog and note manager. Public articles are put 
 * [x] Clickable tag
 * [ ] tag search
 * [x] tag list
-* [ ] sidebar
+* [x] sidebar
 * [ ] math equation support
-* [ ] styling
+* [x] styling
 * [ ] picture query

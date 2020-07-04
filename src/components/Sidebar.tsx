@@ -3,6 +3,7 @@ import {Container, Row} from 'react-bootstrap';
 import {css} from 'glamor';
 import {Link} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
+import {FaTimes} from 'react-icons/fa';
 
 
 const sidebarStyle = css({
@@ -18,8 +19,16 @@ const sidebarStyle = css({
 export function Sidebar(props: {
   setSidebarOn: React.Dispatch<React.SetStateAction<boolean>>
 }) {
+  const {setSidebarOn} = props;
   return (
     <Container {...sidebarStyle}>
+      <FaTimes style={{
+        marginLeft: "10px",
+        color: "Salmon",
+        cursor: "pointer",
+        marginBottom: "30px",
+      }}
+        onClick={() => setSidebarOn(on => !on)} />
       <Tab name={"tags"} link={"tags"} />
       <Tab name={"tags"} link={"tags"} />
     </Container>

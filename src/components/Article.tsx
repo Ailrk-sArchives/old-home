@@ -12,8 +12,6 @@ export function ArticlePage() {
 }
 
 const defaultArticleStyle = css(textTheme, {
-  marginLeft: "250px",
-  marginRight: "200px",
   paddingLeft: "101px",
   paddingTop: "30px",
   overflow: "hidden",
@@ -28,6 +26,7 @@ export function Article(props: {
 }) {
   const {markdown, style} = props;
   const article = markdown?.content ?? "Oppsy Doopsy!";
+  console.log(article);
 
   return (
     <Container {...style ?? defaultArticleStyle}>

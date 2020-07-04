@@ -16,9 +16,13 @@ fn good() -> uint8 {
     2;
 }
 ```
-  In Rust, which uses the concept of ownership and borrwowing, and additional d  ifference between references and smart pointers is that references are pointe  rs that only borrow data; In contrast, in many cases, smart pointers own the   data they point to.
-
+  In Rust, which uses the concept of ownership and borrwowing, and additional d  ifference between references and smart pointers is that references are pointe  rs that only borrow data; In contrast, in many cases, smart pointers own the   data they point to
+```haskell
+encode2 :: Eq a => [a] -> [(Int, a)]
+encode2 xs = fmap (length &&& head) $ pack xs
 ```
+
+```c
 namespace cvalgo {
 template <typename T, typename U>
 auto conv(Mat<T> &mat, Mat<U> &kern) -> Mat<T> { // convolution is assositive
@@ -38,8 +42,9 @@ return result;
 ```
   We've already encountered a few smart pointers in this book, such as String a  nd Vec<T> in Chapter 8. alghough we didn't call them smart pinters at the tim  e. Both these types count as smart pointers because they own some memory and   allow you to manipulate it. THey also have metadata (such as their capacity)   and extra capabilitiesor guarantees (uch as with String ensuring its data wil  l always be valid UTF-8).
   data they point to.
-  \(a^2 + b^2 = c^2\)
-  \[ e = sum_(n=0)^oo 1/n! \]
+ $$a^2 + b^2 = c^2$$
+  $$ e = sum_(n=0)^oo 1/n!$$
+  $$$\sin(2\pi)$$$
  $$\forall x \in X, \quad \exists y \leq \epsilon$$
 i
   We've already encountered a few smart pointers in this book, such as String a  nd Vec<T> in Chapter 8. alghough we didn't call them smart pinters at the tim  e. Both these types count as smart pointers because they own some memory and   allow you to manipulate it. THey also have metadata (such as their capacity)   and extra capabilitiesor guarantees (uch as with String ensuring its data wil  l always be valid UTF-8).
