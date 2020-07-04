@@ -29,8 +29,8 @@ export function Sidebar(props: {
         marginBottom: "30px",
       }}
         onClick={() => setSidebarOn(on => !on)} />
-      <Tab name={"tags"} link={"tags"} />
-      <Tab name={"tags"} link={"tags"} />
+      <Tab name={"home"} link={"/home"} />
+      <Tab name={"tags"} link={"/tags"} />
     </Container>
   );
 }
@@ -42,14 +42,15 @@ const tabStyle = css({
   fontSize: 20,
 });
 
-function Tab(props: {name: string, link: string}) {
+function Tab(props: {
+  name: string, link: string
+}) {
   const {name, link} = props;
   return (
     <Row {...tabStyle}>
-      <Link to={link} style={{...linkStyle, fontFamily: "monospace", color: "SlateGray"}}>
-        {
-          name
-        }
+      <Link to={link}
+        style={{...linkStyle, fontFamily: "monospace", color: "SlateGray"}} >
+        {name}
       </Link>
     </Row>
   );
