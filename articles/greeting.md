@@ -1,8 +1,8 @@
 -- tag whatever
 -- source me
 -- title Greeting
--- time 2020-07-08
+-- time 2020-07-03
 ;;
 #Greeting
 
-The first post on the blog!
+Hellow world!
