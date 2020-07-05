@@ -12,3 +12,13 @@ The first principle of an operating system is to provide a easy to use interface
 
 This series will have multiple articles. Here is a table of them (updating):
 * [RISCV overview](http://www.url.com)
+* [Operating system overview](http://www.url.com)
+* [Process](http://www.url.com)
+* [Memory management](http://www.url.com)
+* [Interrupts and Traps](http://www.url.com)
+* [Scheduling](http://www.url.com)
+* [Buffer](http://www.url.com)
+* [File system](http://www.url.com)
+* [Conclusion](http://www.url.com)
+
+This is my first time writing an operating system, so there will be a lot of naive opinions and mistakes. If you find anything that can be improved, please email me!
