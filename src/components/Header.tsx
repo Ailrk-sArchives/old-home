@@ -21,7 +21,7 @@ export function Header() {
     <Container>
       <Row {...headerStyle} xs={8}>
         <Col>
-          <Link to={'/home'} style={{...linkStyle, color: "LightCoral"}}>
+          <Link to={'/'} style={{...linkStyle, color: "LightCoral"}}>
             <h1 style={{fontWeight: "bolder", textShadow: "0px 1px, 1px 0px, 1px 1px"}}>
               <FaBeer size={45} /><b>&nbsp; &gt;&gt;= A Bag of Words </b>
             </h1>

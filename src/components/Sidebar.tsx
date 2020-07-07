@@ -29,7 +29,7 @@ export function Sidebar(props: {
         marginBottom: "30px",
       }}
         onClick={() => setSidebarOn(on => !on)} />
-      <Tab name={"home"} link={"/home"} />
+      <Tab name={"home"} link={"/"} />
       <Tab name={"tags"} link={"/tags"} />
     </Container>
   );

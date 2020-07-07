@@ -9,11 +9,11 @@ import 'highlightjs/styles/github.css';
 function App() {
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Header />
       <Switch>
         <Route exact path="/article/:id" component={ArticlePage} />
-        <Route exact path="/home" component={ChronoList} />
+        <Route exact path="/" component={ChronoList} />
         <Route exact path="/tag/:tag" component={TagList} />
         <Route exact path="/tags" component={Tags} />
       </Switch>

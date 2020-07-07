@@ -32,7 +32,7 @@ function ListRow(props: {
             tag?.map(t => (
               <span key={t}>
                 <Badge variant="light">
-                  <Link to={`/tag/${t}`} style={{...linkStyle, color: "SlateGray"}}>
+                  <Link to={`/home/tag/${t}`} style={{...linkStyle, color: "SlateGray"}}>
                     {t}
                   </Link>
                 </Badge>
