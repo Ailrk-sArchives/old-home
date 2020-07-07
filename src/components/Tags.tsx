@@ -13,7 +13,7 @@ export function Tags() {
         {
           tags.map(t =>
             <Badge variant="light">
-              <Link to={`/tag/${t}`} style={{...linkStyle, color: "LightCoral"}}>
+          <Link to={`/tag/${t}`} style={{...linkStyle, color: "LightCoral"}}>
                 {t}
               </Link>
             </Badge>)
