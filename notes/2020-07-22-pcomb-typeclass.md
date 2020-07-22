@@ -79,4 +79,11 @@
     chianl: for parsing left recursive grammar
     These are some basic combinators.
 
-8. Parsing in a real project?
+8. Rough process of Parsec?
+    Define Tokens with Tok.LanguageDef () // a record of all token definitions.
+    Define lexers `Tok.TokenParser ()`
+    Define your AST
+    Parse from token into AST
+    Eval or codeGen depends on what you want to do
+
+
