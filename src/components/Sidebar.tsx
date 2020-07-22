@@ -31,6 +31,7 @@ export function Sidebar(props: {
         onClick={() => setSidebarOn(on => !on)} />
       <Tab name={"home"} link={"/"} />
       <Tab name={"tags"} link={"/tags"} />
+      <Tab name={"notes"} link={"/notes"} />
     </Container>
   );
 }

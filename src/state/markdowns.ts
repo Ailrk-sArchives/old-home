@@ -12,5 +12,4 @@ export function chronoList(): Array<Markdown> {
       .filter(ml => ml !== undefined) as Array<Array<Markdown>>).reverse()
 }
 
-
 export type {Markdown, MarkdownDB, MarkdownText, MarkdownHeader} from 'markdowndb.macro';

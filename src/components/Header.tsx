@@ -5,7 +5,10 @@ import {FaBeer, FaBars} from 'react-icons/fa';
 import {Link} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
 import {Sidebar} from './Sidebar';
-import PoppeenImg from '../assets/popeen.jpg';
+import WoopperFire from '../assets/wooperf.jpg';
+// import SadWopper from '../assets/sadwooper.png';
+// import Wubo from '../assets/wubo.jpg';
+// import PoppeenImg from '../assets/popeen.jpg';
 
 const headerStyle = css({
   height: "100px",
@@ -48,7 +51,7 @@ function Avatar() {
   return (
     <Row {...avatarStyle}>
       <Col xs={3}>
-        <img src={PoppeenImg}
+        <img src={WoopperFire}
           width={150}
           height={150}
           style={{
