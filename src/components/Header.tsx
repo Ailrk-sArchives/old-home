@@ -5,7 +5,7 @@ import {FaBeer, FaBars} from 'react-icons/fa';
 import {Link} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
 import {Sidebar} from './Sidebar';
-import WoopperFire from '../assets/wooperf.jpg';
+import Chiruno from '../assets/asd2.jpeg';
 // import SadWopper from '../assets/sadwooper.png';
 // import Wubo from '../assets/wubo.jpg';
 // import PoppeenImg from '../assets/popeen.jpg';
@@ -51,7 +51,7 @@ function Avatar() {
   return (
     <Row {...avatarStyle}>
       <Col xs={3}>
-        <img src={WoopperFire}
+        <img src={Chiruno}
           width={150}
           height={150}
           style={{

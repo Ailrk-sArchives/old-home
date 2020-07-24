@@ -4,7 +4,7 @@
 -- source https://stackoverflow.com/questions/29861388/when-is-it-useful-to-define-multiple-lifetimes-in-a-struct
           https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html
 ;;
-# Parser combinator in Haskell
+# Parser combinator in Haskell (in repo Notes/haskell..pinciple../parser )
 1. How to define parser in haskell?
     ``` haskell
     newtype Parser a = Parser {parse :: String -> [(a, String)]}
@@ -27,7 +27,7 @@
     So essentially State encapsulate all the computation involves with the state s
     in to a monad where the state is passed as parameter by default.
 
-4. Some intuitions about typeclasses for Parser? like what does they do?
+4. Some intuitions about typeclasses for Parser? Like what does they do?
     Functor:
         simply apply a funciton to parsed result.
         You can use it to make a slightly different parser based on an existed one.
@@ -85,5 +85,3 @@
     Define your AST
     Parse from token into AST
     Eval or codeGen depends on what you want to do
-
-
