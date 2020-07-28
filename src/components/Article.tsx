@@ -4,6 +4,7 @@ import {StyleAttribute, css} from 'glamor';
 import {Markdown, db} from '../state/markdowns';
 import {textTheme} from '../styles/styleElements';
 import {useParams} from 'react-router-dom';
+import '../styles/Article.css';
 
 export function ArticlePage() {
   const {id} = useParams();
@@ -31,7 +32,7 @@ export function Article(props: {
   return (
     <Container {...style ?? defaultArticleStyle}>
       <div {...css({width: "90%", wordBreak: "break-word"})}>
-        <div dangerouslySetInnerHTML={{__html: article}} />
+        <div className="Article" dangerouslySetInnerHTML={{__html: article}} />
       </div>
     </Container>
   );

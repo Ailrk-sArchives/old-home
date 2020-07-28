@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Container, Row} from 'react-bootstrap';
 import {css} from 'glamor';
 import {Link} from 'react-router-dom';
@@ -47,10 +47,13 @@ function Tab(props: {
   name: string, link: string
 }) {
   const {name, link} = props;
+  const [color, setColor] = useState<string>("SlateGray");
   return (
     <Row {...tabStyle}>
       <Link to={link}
-        style={{...linkStyle, fontFamily: "monospace", color: "SlateGray"}} >
+        style={{...linkStyle, fontFamily: "monospace", color}}
+        onMouseEnter={() => setColor("lightCoral")}
+        onMouseLeave={() => setColor("SlateGray")}>
         {name}
       </Link>
     </Row>

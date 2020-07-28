@@ -1,14 +1,12 @@
 import React, {useState} from 'react';
 import {Row, Col, Container} from 'react-bootstrap';
-import {css, link} from 'glamor';
+import {css} from 'glamor';
 import {FaBeer, FaBars} from 'react-icons/fa';
 import {Link} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
-import {Sidebar} from './Sidebar';
+import {Sidebar} from './Sidebar'
+import {HoverLink} from './Misc';
 import Chiruno from '../assets/ghead.png';
-// import SadWopper from '../assets/sadwooper.png';
-// import Wubo from '../assets/wubo.jpg';
-// import PoppeenImg from '../assets/popeen.jpg';
 
 const headerStyle = css({
   height: "100px",
@@ -26,7 +24,7 @@ export function Header() {
         <Col>
           <Link to={'/'} style={{...linkStyle, color: "LightCoral"}}>
             <h1 style={{fontWeight: "bolder", textShadow: "0px 1px, 1px 0px, 1px 1px"}}>
-              <FaBeer size={45} /><b> ⟨ A Bag of Words | ⚀ | ⚁ | ⚂ | ⚃ | ⚄ |  ⚅ ⟩ </b>
+              <FaBeer size={45} /><b> ⟨ A Bag of Words ⟩ </b>
             </h1>
           </Link>
         </Col>
@@ -55,22 +53,26 @@ function Avatar() {
           width={150}
           height={150}
           style={{
-            border: "1px solid SlateGray",
+            border: "1px solid DimGray",
             borderRadius: 90
           }} />
       </Col>
       <Col {...css({paddingTop: "30px"})}>
         <Row>
-          <a href="https://ailrk.github.io/home" style={linkStyle}>
-            Jimmy Yao's blog
-          </a>
+          <HoverLink text={"Jimmy Yao's blog"}
+            link={"https://ailrk.github.io/home"}
+            ogColor={"DimGray"}
+            onHoverColor={"LightCoral"} />
         </Row>
         <Row>
-          <a href="https://github.com/ailrk" style={linkStyle}>
-            github: https://github.com/ailrk
-          </a>
+          <HoverLink text={"Github: https://github.com/ailrk"}
+            link={"https://github.com/ailrk"}
+            ogColor={"DimGray"}
+            onHoverColor={"LightCoral"} />
         </Row>
-        <Row> email: jimmy123good@hotmail.com </Row>
+        <Row {...css({color: "DimGray"})}>
+          <b> Email: jimmy123good@hotmail.com </b>
+        </Row>
       </Col>
     </Row>
   );

@@ -1,0 +1,19 @@
+.Article>h1 {
+  color: DimGray;
+  font-weight: bolder;
+  text-shadow: 0px 1px, 1px 0px, 1px 1px;
+}
+
+.Article>h2 {
+  color: DimGray;
+  font-weight: bold;
+}
+
+.Article>p {
+  color: DimGray;
+}
+
+.Article a {
+  color: LightCoral;
+}
+
