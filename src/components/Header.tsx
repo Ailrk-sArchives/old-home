@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {Row, Col, Container} from 'react-bootstrap';
-import {css} from 'glamor';
+import {css, link} from 'glamor';
 import {FaBeer, FaBars} from 'react-icons/fa';
 import {Link} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
 import {Sidebar} from './Sidebar';
-import Chiruno from '../assets/asd2.jpeg';
+import Chiruno from '../assets/ghead.png';
 // import SadWopper from '../assets/sadwooper.png';
 // import Wubo from '../assets/wubo.jpg';
 // import PoppeenImg from '../assets/popeen.jpg';
@@ -26,7 +26,7 @@ export function Header() {
         <Col>
           <Link to={'/'} style={{...linkStyle, color: "LightCoral"}}>
             <h1 style={{fontWeight: "bolder", textShadow: "0px 1px, 1px 0px, 1px 1px"}}>
-              <FaBeer size={45} /><b>&nbsp; &gt;&gt;= A Bag of Words </b>
+              <FaBeer size={45} /><b> ⟨ A Bag of Words | ⚀ | ⚁ | ⚂ | ⚃ | ⚄ |  ⚅ ⟩ </b>
             </h1>
           </Link>
         </Col>
@@ -60,8 +60,16 @@ function Avatar() {
           }} />
       </Col>
       <Col {...css({paddingTop: "30px"})}>
-        <Row> Jimmy Yao's blog </Row>
-        <Row> github: https://github.com/jummy233 </Row>
+        <Row>
+          <a href="https://ailrk.github.io/home" style={linkStyle}>
+            Jimmy Yao's blog
+          </a>
+        </Row>
+        <Row>
+          <a href="https://github.com/ailrk" style={linkStyle}>
+            github: https://github.com/ailrk
+          </a>
+        </Row>
         <Row> email: jimmy123good@hotmail.com </Row>
       </Col>
     </Row>
