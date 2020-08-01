@@ -1,9 +1,9 @@
--- tag abstract-algebra haskell
+-- tag abstract-algebra
 -- title abstract algebra. Order of an element, cyclic group.
 -- date 2020-08-01
 -- source https://www.youtube.com/watch?v=xX-vBP3Yfuc&list=PL0vayjHV8kQCAll2Pb7JM4IOtLd6jPJMC&index=2&t=8s
 ;;
-# Abstract algebra and some haskell
+# Some Abstract algebra 2
 
 ## Some more proof
 
@@ -51,7 +51,8 @@ xy = (xy)⁻¹ = y⁻¹x⁻¹ = yx
 ## The order of an element.
 #### define:
 ```
-If G is a group, and g ∈ G, then we say g has finite order if ∃ n ∈ ℤ s.t gⁿ = e. If such an n exists, the smallest such n is called order of g, denoted o(g).
+If G is a group, and g ∈ G, then we say g has finite order if ∃ n ∈ ℤ s.t gⁿ = e.
+If such an n exists, the smallest such n is called order of g, denoted o(g).
 If g does not have finite order, we say that g has infinite order, denoted o(g) = ∞.
 ```
 

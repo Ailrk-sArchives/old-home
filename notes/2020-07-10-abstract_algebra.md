@@ -3,7 +3,7 @@
 -- date 2020-07-10
 -- source https://www.youtube.com/watch?v=xX-vBP3Yfuc&list=PL0vayjHV8kQCAll2Pb7JM4IOtLd6jPJMC&index=2&t=8s
 ;;
-# Some Abstract algebra
+# Some Abstract algebra 1
 
 ## Binary operation
 let * =  `f : (S, S) → S`
