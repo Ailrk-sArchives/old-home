@@ -17,7 +17,7 @@ A set G with * a binary operation defined on G s.t
 ∀ all g in G, ∃ h s.t `g * h = h * g = e` (has inverse)
 
 ## Some examples
-#### ⟩ Special Linear Group (Non abelian group // non commutative group)
+#### Special Linear Group (Non abelian group // non commutative group)
 
 ###### define:
 ```
@@ -39,7 +39,7 @@ this shows * is a binary operation on G.
     A = |c d| in G, it's inverse is: (1 / det(A)) * |-c  a| ==  |-c  a|
 This shows (G, * ) is a group
 
-#### ⟩ General Linear Group
+#### General Linear Group
 
 define:
 ```
@@ -57,8 +57,13 @@ every infinite cyclic group is isomorphic to the additive group of Z (integerse)
 every cyclic group of prime order is a simple group which cannot be broken down into smaller groups.
 ```
 
-#### ⟩ Additive group of integer modulo n
+## Abelian group:
+##### define:
+```
+An abelian group, also called a commutative group, is a group in which the result of applying the group operation to two group elements does not depend on the order in which they are written. That is, group operation is commutative.
+```
 
+#### Additive group of integer modulo n
 ###### define:
 ```
 Zₙ = {0, 1, 2, .... n - 1} // possible remander of diving by n
@@ -72,8 +77,7 @@ so 9 = 1
 3 * 3 = 3 mod 4 + 3 mod 4 = 1 + 1 = 2
 // think elements in Z₄ as equivalence classes.
 
-#### ⟩ Klein 4 group
-
+#### Klein 4 group
 ###### define:
 ```
     V = {e, a, b, c}
@@ -144,22 +148,21 @@ it will essentially contain the entire group.
 
 ## Some proofs
 
-#### ⟩ Proof s set is a group.
+#### Proof s set is a group.
 Show all three properties of a group in definition.
 
-#### ⟩ Proof the identity element in a group is unique.
-
+#### Proof the identity element in a group is unique.
 ###### proof:
 ```
     given a group (G, *)
-    suppose there exists e₁, and e₂ that are both identity elements.
+    suppose ∃ e₁, e₂, s.t both are identity elements.
     e₁ * e₂ = e₁
     e₁ * e₂ = e₂
     => e₁ = e₂
     ∎
 ```
 
-#### ⟩ Proof every element in a group has an unique inverse.
+#### Proof every element in a group has an unique inverse.
 
 ###### proof:
 ```
@@ -173,17 +176,17 @@ Show all three properties of a group in definition.
     ∎
 ```
 
-#### ⟩ Proof in a group the inverse of g⁻¹ is g, so (g⁻¹)⁻¹ = g
+#### Proof in a group the inverse of g⁻¹ is g, so (g⁻¹)⁻¹ = g
 ###### proof:
 ```
-    Let (G, *) be a group and g in G.
-    Note g * g⁻¹ = g⁻¹ * g = e
-    This means g is the inverse of g⁻¹
-    thus g = (g⁻¹)⁻¹
+    Let (G, *) be a group, g ∈ G.
+    g * g⁻¹ = g⁻¹ * g = e, ∴ g is the inverse of g⁻¹.
+    ∴ g = (g⁻¹)⁻¹.
     ∎
 ```
 
-#### ⟩ Proof
+#### Proof if either xy = e or yx = e then y is the inverse of x.
+
 ###### problem:
 ```
     Let G be a group and x, y in G,
@@ -216,12 +219,13 @@ Show all three properties of a group in definition.
     ∎
 ```
 
-
 ## Cancellation Laws
 ###### statement:
-    Suppose G in a group and a, b, c in G.
-    1. if ab = ac then b = c
-    2. if ac = bc then a = b
+```
+  Suppose G in a group and a, b, c in G.
+  1. if ab = ac then b = c
+  2. if ac = bc then a = b
+```
 
 ###### proof:
 ```
@@ -247,4 +251,4 @@ Show all three properties of a group in definition.
         = be
         = b
     ∎
-```
+n```
