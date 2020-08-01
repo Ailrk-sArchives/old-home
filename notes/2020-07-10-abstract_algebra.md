@@ -17,7 +17,7 @@ A set G with * a binary operation defined on G s.t
 ∀ all g in G, ∃ h s.t `g * h = h * g = e` (has inverse)
 
 ## Some examples
-#### Special Linear Group (Non abelian group // non commutative group)
+#### ⟩ Special Linear Group (Non abelian group // non commutative group)
 
 ###### define:
 ```
@@ -39,7 +39,7 @@ this shows * is a binary operation on G.
     A = |c d| in G, it's inverse is: (1 / det(A)) * |-c  a| ==  |-c  a|
 This shows (G, * ) is a group
 
-#### General Linear Group
+#### ⟩ General Linear Group
 
 define:
 ```
@@ -57,7 +57,7 @@ every infinite cyclic group is isomorphic to the additive group of Z (integerse)
 every cyclic group of prime order is a simple group which cannot be broken down into smaller groups.
 ```
 
-#### Additive group of integer modulo n
+#### ⟩ Additive group of integer modulo n
 
 ###### define:
 ```
@@ -72,7 +72,7 @@ so 9 = 1
 3 * 3 = 3 mod 4 + 3 mod 4 = 1 + 1 = 2
 // think elements in Z₄ as equivalence classes.
 
-#### Klein 4 group
+#### ⟩ Klein 4 group
 
 ###### define:
 ```
@@ -144,10 +144,10 @@ it will essentially contain the entire group.
 
 ## Some proofs
 
-#### Proof s set is a group.
+#### ⟩ Proof s set is a group.
 Show all three properties of a group in definition.
 
-#### Proof the identity element in a group is unique.
+#### ⟩ Proof the identity element in a group is unique.
 
 ###### proof:
 ```
@@ -159,7 +159,7 @@ Show all three properties of a group in definition.
     ∎
 ```
 
-#### Proof every element in a group has an unique inverse.
+#### ⟩ Proof every element in a group has an unique inverse.
 
 ###### proof:
 ```
@@ -173,7 +173,7 @@ Show all three properties of a group in definition.
     ∎
 ```
 
-#### Proof in a group the inverse of g⁻¹ is g, so (g⁻¹)⁻¹ = g
+#### ⟩ Proof in a group the inverse of g⁻¹ is g, so (g⁻¹)⁻¹ = g
 ###### proof:
 ```
     Let (G, *) be a group and g in G.
@@ -183,7 +183,7 @@ Show all three properties of a group in definition.
     ∎
 ```
 
-#### Proof
+#### ⟩ Proof
 ###### problem:
 ```
     Let G be a group and x, y in G,
