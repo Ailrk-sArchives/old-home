@@ -21,7 +21,7 @@ A set G with * a binary operation defined on G s.t
 
 ###### define:
 ```
-G = {∀2×2 complex matrices with determinant 1}
+G = { ∀2×2 complex matrices with determinant 1 }
 G = { |a b|  |  a, b, c, d ∈ ℂ ∧ ad - bc = 1 }
       |c d|
 (*) is matrix multiplication
@@ -43,7 +43,7 @@ This shows (G, * ) is a group
 
 define:
 ```
-G = {all 2x2 complex matrices with non zero determinant}
+G = {all 2×2 complex matrices with non zero determinant}
 (*) = matrix multiplication
 ```
 
@@ -92,7 +92,7 @@ so 9 = 1
     b * c = a
     c * b = a
 
-    a^2 = b^2 = c^2 = e
+    a² = b² = c² = e
 ```
 
 ###### properties:
@@ -106,7 +106,7 @@ so 9 = 1
     These are the only subgroups Klein 4 groups have
     cyclic subgroup:  // e.g a * a * a * ...
         <e> = {e}
-        <a> = {e, a}    // think a^0 = e, a = a, a^2 = e, a^3 = a * e = e ...
+        <a> = {e, a}    // think a⁰ = e, a = a, a² = e, a³ = a * e = e ...
         <b> = {e, b}
         <c> = {e, c}
 ```
@@ -116,7 +116,6 @@ it will essentially contain the entire group.
 
 
 ##### Subgroup lattice
-
               V
               .
               |
@@ -174,13 +173,13 @@ Show all three properties of a group in definition.
     ∎
 ```
 
-#### Proof in a group the inverse of g^(-1) is g, so (g^(-1))^(-1) = g
+#### Proof in a group the inverse of g⁻¹ is g, so (g⁻¹)⁻¹ = g
 ###### proof:
 ```
     Let (G, *) be a group and g in G.
-    Note g * g^(-1) = g^(-1) * g = e
-    This means g is the inverse of g^(-1)
-    thus g = (g^(-1))^(-1)
+    Note g * g⁻¹ = g⁻¹ * g = e
+    This means g is the inverse of g⁻¹
+    thus g = (g⁻¹)⁻¹
     ∎
 ```
 
@@ -201,11 +200,11 @@ Show all three properties of a group in definition.
     then
     yx
     = (yx) e
-    = (yx) (yy^(-1))
-    = y (x(yy^(-1)))     by assoc
-    = y( (xy) y^(-1))
-    = y (ey^(-1))
-    = y y^(-1)
+    = (yx) (yy⁻¹)
+    = y (x(yy⁻¹))     by assoc
+    = y( (xy) y⁻¹))
+    = y (ey⁻¹)
+    = y y⁻¹
     = e
 
     thus xy = e => yx = e
@@ -230,10 +229,10 @@ Show all three properties of a group in definition.
         Suppose ab = ac
         then b
         = eb
-        = (a^(-1)a) b
-        = a^(-1) (ab)
-        = a^(-1) (ac)
-        = (a^(-1)a) c
+        = (a⁻¹a) b
+        = a⁻¹ (ab)
+        = a⁻¹ (ac)
+        = (a⁻¹a) c
         = ec
         = c
     Proof 2:
@@ -241,10 +240,10 @@ Show all three properties of a group in definition.
         claim a = b
         then a
         = ae
-        = a (cc^(-1))
-        = (ac) c^(-1)
-        = (bc) c^(-1)
-        = b (cc^(-1))
+        = a (cc⁻¹)
+        = (ac) c⁻¹
+        = (bc) c⁻¹
+        = b (cc⁻¹)
         = be
         = b
     ∎

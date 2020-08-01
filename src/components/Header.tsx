@@ -53,8 +53,7 @@ function Avatar() {
           width={150}
           height={150}
           style={{
-            border: "1px solid DimGray",
-            borderRadius: 90
+            borderRadius: 90,
           }} />
       </Col>
       <Col {...css({paddingTop: "30px"})}>

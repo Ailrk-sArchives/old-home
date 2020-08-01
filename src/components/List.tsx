@@ -4,11 +4,13 @@ import React from 'react';
 import {css} from 'glamor';
 import {textTheme, linkStyle} from '../styles/styleElements';
 import {Link, useParams} from 'react-router-dom';
+import {HoverLink} from './Misc';
 
 const listRowStyle = css(textTheme, {
-  paddingBottom: "40px",
-  marginBottom: "20px",
-  borderLeft: "10px solid LightCoral",
+  paddingTop: "20px",
+  paddingBottom: "30px",
+  marginBottom: "50px",
+  borderLeft: "15px solid LightCoral",
 });
 
 function ListRow(props: {
@@ -21,9 +23,12 @@ function ListRow(props: {
   return (
     <Container {...listRowStyle}>
       <Col>
-        <Link to={`/article/${id}`} style={{...linkStyle, color: "DimGray"}}>
-          <h2><b>{title}</b></h2>
-        </Link>
+        <h3>
+          <HoverLink text={title}
+            link={`/#/article/${id}`}
+            ogColor={"DimGrey"}
+            onHoverColor={"LightCoral"} />
+        </h3>
       </Col>
       <Col {...css({fontSize: 20, paddingLeft: "50px", color: "LightCoral", fontWeight: "bold"})}>
         {time.toJSON().replace(/-/gi, '.').split('T')[0]}
