@@ -137,9 +137,9 @@ Thus r = 0.
 #### notation
 ```
 If G is a group, and x ∈ G, then <x> denotes all powers of x, namely
-<x> = {xⁿ | n ∈ ℤ }.
+<x> = { xⁿ | n ∈ ℤ }.
 If G is written additively,
-<x> = {nx | n ∈ ℤ }.
+<x> = { nx | n ∈ ℤ }.
 ```
 
 #### define

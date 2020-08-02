@@ -29,7 +29,7 @@ function App() {
         <Route exact path="/tag/:tag" component={TagList} />
         <Route exact path="/tags" component={Tags} />
       </Switch>
-    </HashRouter >
+    </HashRouter>
   );
 }
 

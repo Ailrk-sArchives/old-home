@@ -1,4 +1,4 @@
-import {Markdown, chronoList, indexTag} from '../state/markdowns';
+import {Markdown, chronoList, articlesDB} from '../state/markdowns';
 import {Container, Col, Badge} from 'react-bootstrap';
 import React from 'react';
 import {css} from 'glamor';
@@ -73,5 +73,5 @@ export function ChronoList() {
 
 export function TagList() {
   const {tag} = useParams();
-  return <List markdowns={indexTag.get(tag as string) ?? []} />
+  return <List markdowns={articlesDB.get(tag as string) ?? []} />
 }

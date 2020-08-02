@@ -1,11 +1,11 @@
 import React from 'react';
-import {indexTag} from '../state/markdowns';
+import {articlesDB} from '../state/markdowns';
 import {Container, Badge} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
 
 export function Tags() {
-  const tags = Array.from(indexTag.keys());
+  const tags = Array.from(articlesDB.keys("tag")!);
   return (
     <Container >
       <h3 style={{color: "DimGray", fontWeight: "bold"}}>All Tags</h3>

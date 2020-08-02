@@ -19,4 +19,3 @@ In [previous article](http://www.url.com) we talked about operating system as an
 ## Control and status register
 
 ## Instructions
-

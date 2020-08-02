@@ -1,14 +1,14 @@
-import React from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {Container} from 'react-bootstrap';
 import {StyleAttribute, css} from 'glamor';
-import {Markdown, db} from '../state/markdowns';
+import {Markdown, articlesDB} from '../state/markdowns';
 import {textTheme} from '../styles/styleElements';
 import {useParams} from 'react-router-dom';
 import '../styles/Article.css';
 
 export function ArticlePage() {
   const {id} = useParams();
-  const markdown = db.get(Number.parseInt(id as string));
+  const markdown = articlesDB.get(Number.parseInt(id as string));
   return <Article markdown={markdown} />;
 }
 
@@ -26,8 +26,29 @@ export function Article(props: {
   style?: StyleAttribute,
 }) {
   const {markdown, style} = props;
-  const article = markdown?.content ?? "Oppsy Doopsy!";
-  console.log(article);
+  const [article, setArticle] = useState<string>("");
+  const componentIsMounted = useRef(true);
+
+  // avoid asyc complete after component is unmounted.
+  useEffect(() => {
+    return () => {
+      componentIsMounted.current = false;
+    }
+  })
+
+  useEffect(() => {
+    const fetchArticle = async () => {
+      try {
+        const value = (await markdown?.content) ?? "Oppsy Doopsy!";
+        if (componentIsMounted.current) {
+          setArticle(value);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchArticle();
+  }, []);
 
   return (
     <Container {...style ?? defaultArticleStyle}>
