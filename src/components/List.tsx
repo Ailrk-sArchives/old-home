@@ -1,4 +1,4 @@
-import {Markdown, chronoList, articlesDB} from '../state/markdowns';
+import {Markdown, chronoList, articlesDB, notesDB, allDB} from '../state/markdowns';
 import {Container, Col, Badge} from 'react-bootstrap';
 import React from 'react';
 import {css} from 'glamor';
@@ -6,14 +6,14 @@ import {textTheme, linkStyle} from '../styles/styleElements';
 import {Link, useParams} from 'react-router-dom';
 import {HoverLink} from './Misc';
 
-const listRowStyle = css(textTheme, {
+const itemRowStyle = css(textTheme, {
   paddingTop: "20px",
   paddingBottom: "30px",
   marginBottom: "50px",
   borderLeft: "10px solid LightCoral",
 });
 
-function ListRow(props: {
+function ItemRow(props: {
   markdown: Markdown
 }) {
   const {markdown} = props;
@@ -21,7 +21,7 @@ function ListRow(props: {
   const {id, title, tag, time} = header;
 
   return (
-    <Container {...listRowStyle}>
+    <Container {...itemRowStyle}>
       <Col>
         <h3>
           <HoverLink text={title}
@@ -57,7 +57,8 @@ export function List(props: {
   markdowns: Array<Markdown>,
 }) {
   const {markdowns} = props;
-  const lists = markdowns.map(m => <ListRow markdown={m} key={m.header.id} />);
+  const lists =
+    markdowns.map(m => <ItemRow markdown={m} key={m.header.id} />);
   return (
     <Container>
       {
@@ -67,11 +68,15 @@ export function List(props: {
   );
 }
 
-export function ChronoList() {
-  return <List markdowns={chronoList()} />
+export function ArticleChronoList() {
+  return <List markdowns={chronoList(articlesDB)} />
+}
+
+export function NotesChronoList() {
+  return <List markdowns={chronoList(notesDB)} />
 }
 
 export function TagList() {
   const {tag} = useParams();
-  return <List markdowns={articlesDB.get(tag as string) ?? []} />
+  return <List markdowns={allDB.get(tag as string) ?? []} />
 }

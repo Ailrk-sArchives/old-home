@@ -1,16 +1,26 @@
-import markdowndb, {MarkdownDB, Markdown} from 'markdowndb.macro';
-import {MarkdownRuntimeDatabase, MarkdownStaticDatabase} from 'markdowndb.macro/dist/markdown-map';
-import {flat} from '../untils/flat';
+import {
+  MarkdownRuntimeDatabase,
+  MarkdownStaticDatabase,
+} from 'markdowndb.macro/dist/markdown-map';
+import markdowndb, {Markdown, MarkdownDB} from 'markdowndb.macro';
+import {unique, flat} from '../untils/list-ops';
+import {AllDB} from './alldb';
 
 export const articlesDB: MarkdownDB = markdowndb('articles', 'runtime');
-export const staticDB: MarkdownDB = markdowndb("notes", "static");
-console.log(Array.from(staticDB.values("default")!));
-export function chronoList(): Array<Markdown> {
-  const times = Array.from(articlesDB.keys("time")!).sort();
-  return flat(
+export const notesDB: MarkdownDB = markdowndb("notes", "static", "home");
+export const allDB: MarkdownDB = new AllDB([
+  articlesDB,
+  notesDB,
+]);
+
+export function chronoList(md: MarkdownDB): Array<Markdown> {
+  const times = Array.from(md.keys("time")!).sort().reverse();
+  const flatten = flat(
     times
-      .map(k => articlesDB.get(new Date(k)))
-      .filter(ml => ml !== undefined) as Array<Array<Markdown>>).reverse()
+      .map(k => md.get(new Date(k)))
+      .filter(ml => ml !== undefined) as Array<Array<Markdown>>);
+  return unique(flatten, (m) => m.header.id);
+
 }
 
 export type {

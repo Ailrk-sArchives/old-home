@@ -1,16 +1,9 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {Container} from 'react-bootstrap';
 import {StyleAttribute, css} from 'glamor';
-import {Markdown, articlesDB} from '../state/markdowns';
+import {Markdown} from '../state/markdowns';
 import {textTheme} from '../styles/styleElements';
-import {useParams} from 'react-router-dom';
 import '../styles/Article.css';
-
-export function ArticlePage() {
-  const {id} = useParams();
-  const markdown = articlesDB.get(Number.parseInt(id as string));
-  return <Article markdown={markdown} />;
-}
 
 const defaultArticleStyle = css(textTheme, {
   paddingLeft: "101px",
