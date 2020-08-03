@@ -10,7 +10,7 @@ const listRowStyle = css(textTheme, {
   paddingTop: "20px",
   paddingBottom: "30px",
   marginBottom: "50px",
-  borderLeft: "15px solid LightCoral",
+  borderLeft: "10px solid LightCoral",
 });
 
 function ListRow(props: {

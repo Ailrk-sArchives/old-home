@@ -24,7 +24,7 @@ export function Header() {
         <Col>
           <Link to={'/'} style={{...linkStyle, color: "LightCoral"}}>
             <h1 style={{fontWeight: "bolder", textShadow: "0px 1px, 1px 0px, 1px 1px"}}>
-              <FaBeer size={45} /><b> ⟨ A Bag of Words ⟩ </b>
+              <b> ⟨ A Bag of Words ⟩ </b>
             </h1>
           </Link>
         </Col>
