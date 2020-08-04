@@ -1,35 +1,151 @@
-<h1>Some polymorphism, some mtl, some lazyness</h1>
-<h2>polymorphism in hskell</h2>
-<h5>ad hoc polymorphism</h5>
-<p>Ad hoc polymorhism means a value can adopt any one of several types. For instance, function overloading (so does operator overloading of course) allows taking parameter with different types, so it's a example of ad hoc polymorphism.</p>
-<p>Typeclass achieve ad hoc polymorphism by providing an instance for each type implements the class. But besides this property a typeclass can also put constraint on type parameter, and that doesn't convey &quot;ad hoc&quot; feature, thus is not ad hoc polymorphism.</p>
-<p>So strip down, implementing different instances for each type and overloading for different parameters are really the same thing.</p>
-<p>Because typeclass has multi purpose, I was confusd by which part corresponds to ad hoc polymorpism.  <a href="https://stackoverflow.com/questions/63221632/is-this-understanding-correct-trait-and-function-overloading-both-achieved-ad-h">This</a> answer helped a lot!</p>
-<h5>parametric polymorpism</h5>
-<p>Referes to when a type of a value contains one or more unconstrained type variable. Unconstraied because if it is constrained, it lose gene generality and become ad hoc polymorpism. The type parameters then can be substituted by concrete types to form a concrete type.<br>
-If you think of a parametric polymorphic function first as a regular function that takes values as parameters, and besides that it takes concrete types too, then it can be regard as a <code>type to value mapping</code>.</p>
-<h2>Type system</h2>
-<h5>Rank N type</h5>
-<p>Rank N type is used to express polymorphic function as first class value. With higher ranked type you can pass a polymorphic function and constraint the type parameter in only one parameter. N means how deeply the type parameter is nested.</p>
-<pre><code class="language-haskell"><span class="hljs-comment">-- example rank 1 and rank n.</span>
-<span class="hljs-title">rank1</span> :: <span class="hljs-keyword">forall</span> n. <span class="hljs-type">Num</span> n =&gt; (n -&gt; n) -&gt; (<span class="hljs-type">Int</span>, <span class="hljs-type">Int</span>)
-<span class="hljs-title">rank1</span> f = (f <span class="hljs-number">1</span> :: <span class="hljs-type">Int</span>, f <span class="hljs-number">2</span> :: <span class="hljs-type">Int</span>)
-<span class="hljs-title">rank2</span> :: (<span class="hljs-keyword">forall</span> n. <span class="hljs-type">Num</span> n =&gt; n -&gt; n) -&gt; (<span class="hljs-type">Int</span>, <span class="hljs-type">Double</span>)
-<span class="hljs-title">rank2</span> f = (f <span class="hljs-number">1</span>, f <span class="hljs-number">1.0</span>)
+<h1>Some Abstract algebra 2</h1>
+<h2>Some more proof</h2>
+<h3>Proof of the formula for the inverse of a product.</h3>
+<h4>statement:</h4>
+<pre><code>  If G is a group, and x, y ∈ G, then (xy)⁻¹ = y⁻¹x⁻¹
 </code></pre>
-<p>For <code>rank1</code>, we first choose n then provide the function, so in this case the function <code>f</code> only works for the type n passed in.<br>
-For <code>rank2</code>, we provide function before we know the concrete type of n. This implies the function must be polymorphic over n, so <code>f</code> works for any type n as long as it has Num constraint.<br>
-You can apply f to both <code>Int</code> and <code>Double</code> in the <code>rank2</code> example because f is polymorphic (f has type <code>Num n =&gt; n -&gt; n</code> after it is passed in), but for <code>rank1</code> you can only apply one type because once n is inferred, f can only become one type (once f is applied to Int in the first argument, it can only be a function of type <code>Int -&gt; Int</code>).</p>
-<h5>Type operator</h5>
-<p>Function in type level that map a type to another type. People call it <code>type operator</code>, not type level funtion!</p>
-<h5>Higher kinded type</h5>
-<p>Type operator itself can be paraeterized by other type operators. A concrete type is just a conrete thing, denoted as <code>*</code>. <code>* -&gt; *</code> implies this type requires another<br>
-type as its &quot;kind parameter&quot; to make a concrete type.<br>
-Type operator is <code>mapping from type to type</code>. Higher kinded type generalized this dea and type operator first class in type level.</p>
-<h2>ST Monad</h2>
-<h5>ST monad and Rank N type.</h5>
-<p>in place updatable state<br>
-pure interface to the external<br>
-use rank 2 type to ensure encapsulation of the state.</p>
-<pre><code class="language-haskell"><span class="hljs-title">runST</span> :: <span class="hljs-keyword">forall</span> a. (<span class="hljs-keyword">forall</span> s. <span class="hljs-type">ST</span> s a) -&gt; a
+<h4>proof:</h4>
+<pre><code>  Suppose G is a group, x, y ∈ G. So x⁻¹, y⁻¹ ∈ G.
+  case 1:
+      (xy)(y⁻¹x⁻¹)
+    = x(y(y⁻¹x⁻¹)
+    = x(yy⁻¹x⁻¹)
+    = x(ex⁻¹)
+    = xx⁻¹
+    = e
+  case 2:
+      (y⁻¹x⁻¹)(xy)
+    = y⁻¹(x⁻¹(xy))
+    = y⁻¹(x⁻¹xy)
+    = y⁻¹(ey)
+    = y⁻¹y
+    e
+  thus
+    (xy)⁻¹ = (y⁻¹x⁻¹)
+    ∎
+</code></pre>
+<h3>Proof if x² = e ∀ x ∈ G then G is an abelian group</h3>
+<h4>statement:</h4>
+<pre><code>  If G is a gorup s.t ∀ x ∈ G, x² = e then  G is abelian.
+</code></pre>
+<h4>proof:</h4>
+<pre><code>  x² = e ⇒ x = x⁻¹.
+  xy = (xy)⁻¹ = y⁻¹x⁻¹ = yx
+  ∎
+</code></pre>
+<h2>The order of an element.</h2>
+<h4>define:</h4>
+<pre><code>  If G is a group, and g ∈ G, then we say g has finite order
+  if ∃ n ∈ ℤ s.t gⁿ = e. If such an n exists, the smallest such n is
+  called order of g, denoted o(g). If g does not have finite order,
+  we say that g has infinite order, denoted o(g) = ∞.
+</code></pre>
+<h4>example-1</h4>
+<pre><code>  G = ℚ* = {non zero rationals}, * = multiplication.
+  -1 ∈ ℚ* has finite order because (-1)²ⁿ = 1 where n ∈ ℤ.
+    o(-1) = 2 becase 2 is the smallest postive integer for (-1)² = e.
+    o(3) = ∞
+</code></pre>
+<h4>example-2</h4>
+<pre><code>  G = ℤ₂₁, ⊞ = addition mod 21
+  6 ∈ ℤ₂₁, 21 . 6 = 6 ⊞ 6 ⊞ 6 ⊞ ... ⊞ 6 = 0 => 6 has finite order.
+  note 7 . 6 = 0, => o(6) = 7
+</code></pre>
+<p>Side note</p>
+<pre><code>gⁿ = e for multiplication, n . g = e for addition
+</code></pre>
+<h2>Proof</h2>
+<h3>Proof the order of x is the order of x inverse. ✭</h3>
+<h4>statement:</h4>
+<pre><code>Let G be a group and x ∈ G, prove o(x) = o(x⁻¹)
+</code></pre>
+<h4>proof:</h4>
+<pre><code>  case 1: x has finite order.
+    let n = o(x), then xⁿ = e.
+      ⇒ (x⁻¹)ⁿ = x⁻ⁿ = (xⁿ)⁻¹ = e⁻¹ = e.
+      ⇒ n is an integer that satisfy (x⁻¹)ⁿ = e.
+      ⇒ o(x⁻¹) is finite and o(x⁻¹) ≤ o(x) = n.
+
+      more formally,
+      o(x) < ∞ ⇒ {
+          o(x⁻¹) < ∞,
+          o(x⁻¹) ≤ o(x) = n. ...₁
+      }.
+
+    ∵ x⁻¹ has finite order, apply the above to x⁻¹.
+    ⇔ o((x⁻¹)⁻¹) ≤ o(x⁻¹)
+    ⇔ o(x) ≤ o(x⁻¹)
+    ∵ ₁,
+    ⇔ o(x) = o(x⁻¹).
+
+  case 2: x has infinite order.
+    claim o(x) = ∞ ⇒ o(x⁻¹) = ∞.
+    This is the contrapositive of o(x⁻¹) < ∞ ⇒ o(x) < ∞,
+    which is shown above.
+   ∎
+</code></pre>
+<h3>Proof if gⁿ=e then the order of g divides n.</h3>
+<h4>statement:</h4>
+<pre><code>  Let G be a group, g ∈ G, n ∈ ℕ. Prove that if gⁿ = e, then
+  o(g) divides n. (o(g) | n)
+</code></pre>
+<h4>proof:</h4>
+<pre><code class="language-markown">  Suppose gⁿ = e, so g has finite order, say m = o(g).
+  By division algorithm, ∃ r, p ∈ ℤ s.t
+    n = mp + r where 0 ≤ r < m.
+
+  Note, e = gⁿ = gᵐᵖ+ʳ = gᵐᵖ.gʳ = (gᵐ)ᵖ.gʳ = eᵖ.gʳ = e.gʳ = gʳ.
+  So, gʳ = e.
+
+  But m is the smallest postive integer s.t gᵐ = e and r ≤ m.
+  Thus r = 0.
+  ⇔ n = mp
+  ⇔ m | n
+  ⇔ o(g) | n
+  ∎
+</code></pre>
+<h2>Cyclic Groups</h2>
+<h4>notation</h4>
+<pre><code class="language-markown">If G is a group, and x ∈ G, then <x> denotes all powers of x, namely
+⟨x⟩ = { xⁿ | n ∈ ℤ }.
+If G is written additively,
+⟨x⟩ = { nx | n ∈ ℤ }.
+</code></pre>
+<h4>define</h4>
+<pre><code class="language-markown">    A group G is cyclic if ∃ x ∈ G s.t G = ⟨X⟩ and in this case x is
+    called a generator of G.
+</code></pre>
+<h4>example-1</h4>
+<pre><code class="language-markown">    n ∈ ℕ, G = ℤₙ ⊞ = "addition modulo n"
+    1 is generator
+    because 1 ⊞ 1 ⊞ ..(n copies).. ⊞  1 = 0
+    ℤₙ = ⟨1⟩
+</code></pre>
+<h4>example-2</h4>
+<pre><code class="language-markown">    G = ℤ₅ ⊞ = "addition modulo n"
+    ℤ₅ = { 0, 1, 2, 3, 4, 5 }
+    3 ∈ ℤ₅
+    0 ⊞ 3 = 0
+    3 = 3
+    3 ⊞ 3 = 1
+    3 ⊞ 3 ⊞ 3 = 4
+    3 ⊞ 3 ⊞ 3 ⊞ 3 = 2
+    ℤ₅ = ⟨3⟩
+    Note also we have ⟨1⟩. Because ℤ₅ ⊂ { ℤₙ | n ∈ ℤ }
+</code></pre>
+<h2>Proof</h2>
+<h3>Proof if x is a generator so is its inverse</h3>
+<h4>statement:</h4>
+<pre><code class="language-markown">    if G = ⟨x⟩ then G = ⟨x⁻¹⟩
+</code></pre>
+<h4>proof:</h4>
+<pre><code class="language-markown">    Suppse G = ⟨x⟩. Take any g ∈ G,
+    then since G=⟨x⟩, ∃ n ∈ ℤ s.t. g = xⁿ.
+    then g⁻¹ = (xⁿ)⁻¹ = x⁻ⁿ = (x⁻¹)ⁿ ∈ ⟨x⁻¹⟩.
+    since ⟨x⁻¹⟩  is closd under inverses ∧ g⁻¹ ∈ ⟨x⁻¹⟩,
+    then g = (g⁻¹)⁻¹ ∈ ⟨x⁻¹⟩.
+    so G ⊆ ⟨x⁻¹⟩.
+    ∵ ⟨x⁻¹⟩ ⊆ G
+    G = ⟨x⁻¹⟩
+    ∎
 </code></pre>
