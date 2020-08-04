@@ -1,0 +1,92 @@
+<h1>Debugging with rust and haskell</h1>
+<ol>
+<li>
+<p>debugging in rust<br>
+rust has pretty good gdb support. Binary built from rustc can use gdb directly. Also you can debug test. <code>info locals</code> doesn't seems to work for some reasons but not a big deal.</p>
+</li>
+<li>
+<p>where to find things in cargo project(binary etc)?<br>
+binary are in <code>debug/</code>. There is a binary file at the top level, which is the entire program. If you want to debug test you can find it in deps. To know exactly which file is for test, run <code>cargo test</code> first to find out the path to the binary.</p>
+</li>
+<li>
+<p>haskell debugging?<br>
+<a href="https://www.quora.com/How-do-Haskell-programmers-debug">repl</a> is the fist resort.</p>
+</li>
+<li>
+<p>I wish a TUI for ghci when debugging.<br>
+TUI was really handy while I was using gdb. I wish there will be similar feature for ghci.</p>
+</li>
+</ol>
+<h1>codeWar</h1>
+<ol>
+<li>
+<p>Rank difficulty of problems?<br>
+CodeWar has some super hard problems with low rank, but easy problems with super high ranks. The best metric is how struggling it is in the first 5 minutes to get some clues of the problem. If five minutes passed still no idea at all it either means this question is very hard, or it requires some domain knowledges (Cat theory etc.)</p>
+</li>
+<li>
+<p>How to avoid redo everything upon realizing the solution is wrong?<br>
+Read question carefully. It's like how every high school teachers will say, but I really feel it when doing contest problems. Hours can be saved just simply by reading the question carefully.</p>
+</li>
+<li>
+<p>How to deal with problems with lots of cases?<br>
+If a problem needs to be split into too many cases, the first thing is to list down different cases and then write code for each one of them. Sometimes a problem has more cases than you expected.</p>
+</li>
+</ol>
+<h1>haskell</h1>
+<ol>
+<li>
+<p>Binding<br>
+Don't write super long expression, but making binding for multiple small components. Ultra long expressions are ugly no matter what.</p>
+</li>
+<li>
+<p>do notation<br>
+Use it as much as you can because it is really good. Some people against it but I dont't.</p>
+</li>
+<li>
+<p>translate imperative code<br>
+Biggest problem I had so far is to translate some function with a for loop which break earlier. I found foldl and scanl are a good way to simulate those behaviors.</p>
+</li>
+<li>
+<p>compose functions rather than construct parameters.<br>
+They are the same thing, but compose function make an expression easier reason about. Most of the time functions are predefined and has an exact type signature, on the other hand when making an argument you might need to try a lot of times to create a value that type checks.</p>
+</li>
+<li>
+<p>use inference<br>
+Using <code>_</code> as type hole to infer the type, or just simply check if something has the right type.</p>
+</li>
+<li>
+<p>first class function<br>
+It means more than just returning or passing functions. Functions become data type you can work with.  They can be functor, Applciative and so on, so you can compose them with these typeclasses.</p>
+</li>
+<li>
+<p>Language extensions?<br>
+Haven't use a lot. Some syntatic extensions are not that interesting, and you can live well without it. List some I used: <code>GADTs</code> make agda style data declarations. <code>RankNTypes</code> give your scope for forall, Template haskell and quasi quote for meta programming and DSL.</p>
+</li>
+<li>
+<p>Math?<br>
+Abstract algebra and logic for now. Do some cat theory later.</p>
+</li>
+</ol>
+<h1>rust.</h1>
+<ol>
+<li>
+<p>General chaining style?<br>
+If you think of a method as a function always take an implicit self as the first parameter, then method chaining is just a special way of writing Reader functor (or other way around).</p>
+</li>
+<li>
+<p>Take ownership in method chain<br>
+When chaining methods you can either pass reference or take ownership down to the next method. When taking the ownership you can not reference it somewhere else.</p>
+</li>
+<li>
+<p>reference in struct make lifetime contagious.<br>
+Once you have one reference in a struct you need a lifetime parameter for it. And you need to mark the lifetime for every instance of the struct in the code, which can be tedious. Need to watch out for that.</p>
+</li>
+<li>
+<p>Performance of iterator and for loop<br>
+In theory iterators will be compiled to the exact same code as for loop, but it happened multiple times for me that rewrite an iterator expression into for loop suddenly make everything much faster. Dunno why, mark on it.</p>
+</li>
+<li>
+<p>don't abusing traits.<br>
+Sometimes it is really not necessary traits. <a href="http://sriku.org/blog/2019/08/11/abstraction-is-the-root-of-all-evil/">Immature abstraction is bad bad</a></p>
+</li>
+</ol>

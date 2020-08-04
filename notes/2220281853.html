@@ -1,0 +1,131 @@
+<h1>rust passing closures and trait objectas</h1>
+<h2>Closure</h2>
+<h5>Closures are not function.</h5>
+<p>closures are a regular function pointer + the closure environment. Closure is anonymous function saved in a variable, means you have to care about all the lifetime constrains.</p>
+<h5>Each closure instance has its own Anonymous Type</h5>
+<p>Meaning, even if you have two closures with exactly the same type signature they are still considered different types. This is why you refer closure as type parameter with trait bound <code>Fn</code>, <code>FnMut</code>, <code>FnOnce</code>.</p>
+<pre><code class="language-rust"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Cacher</span></span>&lt;T&gt;
+<span class="hljs-keyword">where</span>
+    T: <span class="hljs-built_in">Fn</span>(<span class="hljs-built_in">u32</span>) -&gt; <span class="hljs-built_in">u32</span>
+{
+    <span class="hljs-function"><span class="hljs-keyword">fn</span>: <span class="hljs-title">T</span>,
+    <span class="hljs-title">value</span>: <span class="hljs-title">Option</span></span>&lt;<span class="hljs-built_in">u32</span>&gt;
+}
+</code></pre>
+<h5>How to define closure in type level?</h5>
+<p>As mentioned above, use type parameter with function trait bound.</p>
+<h5>Move?</h5>
+<p><code>move || {}</code> move ownership of environments, (Copy if it's primitives).</p>
+<h5>Boxed closure</h5>
+<p>needs to make a trait object to return a closure.</p>
+<h5>Fn Trait</h5>
+<ul>
+<li><code>FnOnce</code> for closures that capture ownership</li>
+<li><code>Fn</code> for borrow as immutable reference</li>
+<li><code>FnMut</code> for borrow as mutable reference</li>
+</ul>
+<h5>Function pointer fn?</h5>
+<ul>
+<li><code>fn f&lt;T&gt;(g: fn(T) -&gt; T)</code>;</li>
+<li>fn (function pointer) is a concrete type.</li>
+<li>fn implements all Fn Traits, so it can be passed and coerced into Fn traits.</li>
+<li>fn doesn't work with closure that capture environments. (It really resembles function ptr in C)</li>
+</ul>
+<h5>There is no trait alias. why?</h5>
+<p>Experimental. Just make a concrete type and alias that.</p>
+<h2>Polymorphism in rust</h2>
+<h5>Dispatch?</h5>
+<ul>
+<li>Some choices for achieving polymorphism.</li>
+<li>You have <code>staic dispatch</code> with type parameters</li>
+<li>and <code>dynamic dispatch</code> with reference to trait (Trait object)</li>
+</ul>
+<h5>Static dispatch</h5>
+<ul>
+<li><code>Monomorphization</code> generates specific version of code for a type parameter.</li>
+<li><code>Monomorphization</code> is also the mechanism used for ++ template.</li>
+<li>method can be dispatched by add trait bound for type parameter.</li>
+<li>Same code bloat problem as c++.</li>
+<li>for c++ without concept you can't express the existence of <code>method</code> in type level.</li>
+<li>static dispatch happens at compile time so allows inlining.</li>
+<li>some caveats for inlining:
+<ul>
+<li>too much inlining might bloat <a href="https://ecee.colorado.edu/~ecen4002/manuals/dsp56300family/ch8-i-cache.pdf">instruction cache</a></li>
+<li>poor caching can sometimes make static dispatch slower than dynamic dispatch</li>
+</ul>
+<pre><code class="language-rust"><span class="hljs-keyword">impl</span> Foo <span class="hljs-keyword">for</span> <span class="hljs-built_in">u8</span> {
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">method</span></span>(&amp;<span class="hljs-keyword">self</span>) -&gt; <span class="hljs-built_in">String</span> { <span class="hljs-built_in">format!</span>(<span class="hljs-string">"u8: {}"</span>, *<span class="hljs-keyword">self</span>) }
+}
+
+<span class="hljs-keyword">impl</span> Foo <span class="hljs-keyword">for</span> <span class="hljs-built_in">String</span> {
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">method</span></span>(&amp;<span class="hljs-keyword">self</span>) -&gt; <span class="hljs-built_in">String</span> { <span class="hljs-built_in">format!</span>(<span class="hljs-string">"string: {}"</span>, *<span class="hljs-keyword">self</span>) }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">f</span></span>&lt;T: Foo&gt;(x: T) {
+    x.method();
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> x = <span class="hljs-number">5u8</span>;
+    <span class="hljs-keyword">let</span> y = <span class="hljs-string">"Hello"</span>.to_string();
+
+    f(x);
+    f(y);
+}
+</code></pre>
+</li>
+</ul>
+<h5>Dynamic Dispatch from trait object.</h5>
+<ul>
+<li>
+<p>what is a trait object?</p>
+<ul>
+<li><code>&amp;Foo</code> can be a trait object. <code>Box&lt;Foo&gt;</code> can be a trait object.  just in general a value that can store any types the implement some traits.  and the type is unknown until runtime.</li>
+</ul>
+</li>
+<li>
+<p>How does trait object know what method to call?</p>
+<ul>
+<li>Like c++'s <code>vatable</code>. <code>rustc</code> will construct a record of methods, and at runtime it will find the right implementation by querying the record with runtime type information.</li>
+</ul>
+</li>
+<li>
+<p>Monomorphization and trait object involves?</p>
+<ul>
+<li>You don't know the type at runtime, so compiler is unable to monomorphize to any specific types. But there will be candidate types that could possibly works.  Of course the compiler won't generate a instance for every single possible type. Instead it will generate one copy.</li>
+</ul>
+</li>
+<li>
+<p>Trait object pros and cons?</p>
+<ul>
+<li>First of all something you can only done with trait object, so it definitely a pro... Besides that you have less bloated code compare with static dispatch.  Cons is when you are compiling your method call is virtual and needs to call the correct version at runtime, which essentially eradicates any chance for inlining.</li>
+</ul>
+</li>
+<li>
+<p>how to get a trait object?</p>
+<ul>
+<li>say <code>T</code> implements <code>Foo</code>. And you want a trait objeact from a fat ptr of <code>T</code>.</li>
+<li>to get a trait object you can either cast or coerce.</li>
+<li>ptr can by any pointer types like &amp;mut T or Box&lt;T&gt;, Cell&lt;T&gt;</li>
+<li>ptr cannot be a thin ptr like <code>*const T</code></li>
+</ul>
+<pre><code class="language-rust"><span class="hljs-keyword">let</span> t: &amp;T = ...;
+<span class="hljs-keyword">let</span> cast = t <span class="hljs-keyword">as</span> &amp;Foo;
+<span class="hljs-keyword">let</span> coerce: &amp;Foo = t;
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">fncoerce</span></span>(_unused: &amp;Foo) {}
+fncoerce(t)
+</code></pre>
+</li>
+<li>
+<p>memory layout?</p>
+<ul>
+<li>trait object is pointed by a fat pointer with layout similar to</li>
+</ul>
+<pre><code class="language-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">TraitObject</span></span> {
+    <span class="hljs-keyword">pub</span> data:*<span class="hljs-keyword">mut</span> ()
+    <span class="hljs-keyword">pub</span> vtable: *<span class="hljs-keyword">mut</span> ()
+}
+</code></pre>
+</li>
+</ul>
+<p>data points to type T, and vtable points to T's corresponding implementation of Foo</p>

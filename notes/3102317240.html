@@ -1,0 +1,70 @@
+<h1>Some typescript</h1>
+<h5>1. Typescript doesn't exist at runtime.</h5>
+<p>Runtime of typescript is defined by js standard, so typescript has no control over it. Because of this some features can only exist in compile time.<br>
+<strong>1</strong>. Interface can not exist in runtime, thus you can not have default implementation for interface. To work around one needs to extend from another concret class which implemented the interface.<br>
+<strong>2</strong>. You need type guard to check type's identity; there is even a dedicated syntaxt to write type guard. This could be eliminated withh RTTI.<br>
+<strong>3</strong>. Idiomatic way of doing runtime type checking is using string comparision based on <code>typeof</code> or tagged union.</p>
+<h5>2. Typescript try not to add too many crazy features on top of js.</h5>
+<p>This is more of a personal opinion. <code>namespace</code> is now marked as deprecated even thogh the way how it is transpiled is very clearly defined, and typescript itself heavly relied on it. I was thinking could it introduce a more ergnomic way of writing algebraic data type, like compile the adt's name as the <code>kind</code> property in current tagged union. But it seems too much work on top of js and will never happen.</p>
+<h5>3. want metaprogramming just use babel.</h5>
+<p>Neither js nor ts has good language level support for meta programming. Compare with python which you can almost override all syntax in the language, you can do very little on typescript. But this is not a problem if you can modifed the AST directly. Typescript and javascript today generally get compiled through babel, which is a perfect place to perform code transformation.</p>
+<h5>4. Type parameter can be more restrict than type they extends from.</h5>
+<p>Extends can be read as can assign to. The example below <code>const a: boolean = true as True</code> is valid because of structual typing, so <code>True</code> a valid candidate for T. But false is not assignable to true, so the default parameter doesn't work here.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> OnlyBool&lt;T&gt; {
+  (arg: T): T;
+}
+functor onlyBool&lt;T <span class="hljs-keyword">extends</span> <span class="hljs-built_in">boolean</span>&gt;(arg: T = <span class="hljs-literal">false</span>): T {
+  <span class="hljs-keyword">return</span> arg;
+}
+<span class="hljs-keyword">type</span> True = <span class="hljs-literal">true</span>;
+<span class="hljs-comment">// True extends boolean, but false cannot assign to it.</span>
+</code></pre>
+<h5>5. type equality</h5>
+<p>In a sound type system two type are equal if they are subtpe of each other. But in typescript <code>any</code> violate the law since it is both subtype and supertype of all types. So an implementation like <code>type&lt;A, B&gt; = A extend B ? B extend A ? true : false : false</code> doesn't cover all possibilities.<br>
+Better equality check:</p>
+<pre><code class="language-typescript">  <span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IfEqual&lt;T, U&gt; =
+    <span class="hljs-function">(<span class="hljs-params">&lt;G&gt;(<span class="hljs-params"></span>) =&gt; G <span class="hljs-keyword">extends</span> T ? 1 : 2</span>) <span class="hljs-params">extends</span>
+    (<span class="hljs-params">&lt;G&gt;(<span class="hljs-params"></span>) =&gt; G <span class="hljs-keyword">extends</span> U ? 1 : 2</span>) ? <span class="hljs-params">true</span> : <span class="hljs-params">false</span>;
+</span></code></pre>
+<p>It doesn't check on type directly but rather extend the comparison between 1 and 2.</p>
+<h5>6. Type family in typescript (express a type depends on other type).</h5>
+<p>Type alias plus conditional really gives you indexed type. You</p>
+<h5>7. Extract type from a value</h5>
+<p>This is very limited. It can either done my using <code>typeof</code> or type guard. <code>typeof</code> is convinent but it's restricted among primitives only.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">declare</span> <span class="hljs-keyword">const</span> a: <span class="hljs-built_in">number</span>;
+<span class="hljs-keyword">declare</span> <span class="hljs-keyword">const</span> x : <span class="hljs-keyword">typeof</span> a;
+<span class="hljs-keyword">declare</span> functor f(x): <span class="hljs-keyword">typeof</span> x;
+</code></pre>
+<h5>8. convert value to literal type</h5>
+<p>Infer by branch. This mechanism reflect the branch on term level to type level.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> x: <span class="hljs-built_in">boolean</span> =  getBool();
+<span class="hljs-keyword">if</span> (x === <span class="hljs-literal">true</span>) { <span class="hljs-keyword">const</span> a = x; }  <span class="hljs-comment">// x :: true</span>
+<span class="hljs-keyword">else</span> { <span class="hljs-keyword">const</span> b = x; }  <span class="hljs-comment">// y :: false</span>
+</code></pre>
+<h5>9. use literal type in term level</h5>
+<p>In <code>declare const a = IsEqual&lt;&quot;a&quot;, &quot;a&quot;&gt;;</code> a can only be true, so even it didn't get assigned with a value ts know it is a true. Similarly, <code>declare const b = IsEqual&lt;&quot;a&quot;, &quot;a&quot; extend true ? &quot;string1&quot; : &quot;string2&quot;&gt;</code> can only be <code>string1</code>.<br>
+The problem is this types only exist at type level. But since there is only one possible value for them, is there a way to extract it into term level? (I can think of using babel to replace the value directly. If it works it gonna be dependent type in typescript)</p>
+<h5>10. wierd typescript's interface overload.</h5>
+<p>Normally you think if you have overload you implement different versions of a function. But in typescript you define a function that accept all possible parameter of all overloads, and the only thing typescript does is to generate type signatures for each &quot;overload&quot;.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> I{
+  foo(a: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">number</span>,
+  foo(b: <span class="hljs-built_in">string</span>, c: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">string</span>,
+}
+</code></pre>
+<p>To implement this interface you need to declare both signature again, and add a &quot;real implementation&quot;</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">class</span> A implement I {
+  foo(a: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">number</span>,
+  foo(a: <span class="hljs-built_in">string</span>, b: <span class="hljs-built_in">number</span>): <span class="hljs-built_in">string</span>,
+  foo(a: <span class="hljs-built_in">number</span> | <span class="hljs-built_in">string</span>, b? <span class="hljs-built_in">number</span>): <span class="hljs-built_in">number</span> | <span class="hljs-built_in">string</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">"1"</span>;
+  }
+}
+</code></pre>
+<p>So overload in typescript really is just used to establish the correlation between parameter types and return types. You don't have c++ style overload that treat each overload as different functions.</p>
+<h5>11. what I want today.</h5>
+<p>I wanted to have a function works like this.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">get</span>&lt;<span class="hljs-string">"default"</span>&gt;(<span class="hljs-number">1</span>) <span class="hljs-comment">// -&gt; Map&lt;number, M&gt;</span>
+<span class="hljs-keyword">get</span>&lt;<span class="hljs-string">"time"</span>&gt;(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().toJSON()) <span class="hljs-comment">// -&gt; Map&lt;number, Array&lt;M&gt;&gt;</span>
+<span class="hljs-keyword">get</span>&lt;<span class="hljs-string">"tag"</span>&gt;(<span class="hljs-string">"t"</span>) <span class="hljs-comment">// -&gt; Map&lt;number, Array&lt;M&gt;&gt;</span>
+</code></pre>
+<p>It is possible if we can convnert this (<code>declare const b = IsEqual&lt;&quot;a&quot;, &quot;a&quot; extend true ? &quot;string1&quot; : &quot;string2&quot;&gt;</code>) from type level to value.</p>

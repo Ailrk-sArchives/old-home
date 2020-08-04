@@ -1,0 +1,120 @@
+<h1>types for typescripts.</h1>
+<ol>
+<li>
+<p>structural typing<br>
+Types are equivalence if they have the same shape. As it opposes to nominative tying. Structural typing can model js objects very well, you can write similar duck typing code as in JavaScript but type checked.</p>
+</li>
+<li>
+<p>tagged union<br>
+How algebraic data type is called in ts.<br>
+for example:</p>
+</li>
+</ol>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> Fish {
+  kind: <span class="hljs-string">"fish"</span>,
+  scaleColor: <span class="hljs-built_in">string</span>,
+}
+<span class="hljs-keyword">interface</span> Bird {
+  kind: <span class="hljs-string">"bird"</span>,
+  featherColor: <span class="hljs-built_in">string</span>,
+}
+<span class="hljs-keyword">interface</span> Animals = Fish | Bird;
+</code></pre>
+<p>and you match type with property <code>kind</code>. <code>kind</code> kinda works like data constructor in haskell (not!)</p>
+<ol start="3">
+<li><code>keyof</code> to get make union type.</li>
+</ol>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> A&lt;T&gt; = keyof T;
+</code></pre>
+<p>will give you union of literal types of keys of T.</p>
+<ol start="4">
+<li>
+<p>map types.<br>
+<code>type</code> can be thought as declaring a type level function.  so <code>type A&lt;T&gt; = keyof T</code> take type parameter <code>T</code><br>
+and return  a new type <code>keyof T</code><br>
+Mapping of types unlock a lot of type level operations.</p>
+</li>
+<li>
+<p><code>in</code> is a overloaded.</p>
+</li>
+<li>
+<p>type level<code>in</code> select each member of union type</p>
+</li>
+<li>
+<p>term level <code>for .. in</code> iterate overall enumerable properties, <code>in</code> alone is a membership test.</p>
+</li>
+<li>
+<p><code>for .. of</code> and <code>for .. in</code>?</p>
+</li>
+<li>
+<p><code>for .. in</code> is for enumerable properties. Using it to iterate over object properties.</p>
+</li>
+<li>
+<p><code>for .. of</code> is for iterate through objects. e.g <code>Array</code>, <code>String</code>, <code>TypedArray</code>, <code>Map</code> and <code>Set</code>.</p>
+</li>
+<li>
+<p>type aliases can only be referred recursively in a property.<br>
+This works.</p>
+</li>
+</ol>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> Tree&lt;T&gt; = {val: T, left: Tree&lt;T&gt;, right: Tree&lt;T&gt;}
+</code></pre>
+<p>But this doesn't</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> Yikes = <span class="hljs-built_in">Array</span>&lt;Yikes&gt;
+</code></pre>
+<p>Yikes!</p>
+<ol start="8">
+<li>Mapped types</li>
+</ol>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> Id&lt;T&gt; = { [P <span class="hljs-keyword">in</span> keyof T]: T[P] }
+</code></pre>
+<p>It has some pattern matching -ish features like</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> Readonly&lt;T&gt; = { readonly [P <span class="hljs-keyword">in</span> keyof T]: T[P] }
+<span class="hljs-keyword">type</span> Partial&lt;T&gt; = { [P <span class="hljs-keyword">in</span> keyof T]?: T[P] }
+</code></pre>
+<ol start="9">
+<li>
+<p>conditional types<br>
+Write some logics in type level. <code>A extends B</code> means A is safely assignable to B.  <code>A extends B ? X : Y</code> ≡ A ⊆ B → X ∧ A ⊊ B → Y</p>
+</li>
+<li>
+<p>never type<br>
+A function has never return type never return. Or in another word this type is not reachable.</p>
+</li>
+<li>
+<p>Distributive conditional types<br>
+suppose you have <code>type T = A | B | C</code>,  <code>T extends U ? X : Y</code> will distributed in to type <code>A extends U ? X : Y | B extends U ? X : Y | C extends U ? X : Y</code> It's like map conditional over union types.</p>
+</li>
+<li>
+<p>type inference in conditional types.<br>
+<code>infer</code> declaration introduce a type variable to be inferred.</p>
+</li>
+</ol>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> ReturnType&lt;T&gt; = T <span class="hljs-keyword">extends</span> (..args: <span class="hljs-built_in">any</span>[]) =&gt; infer R ? R : <span class="hljs-built_in">any</span>;
+</code></pre>
+<ol start="13">
+<li>pattern matching on conditionals</li>
+</ol>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> Unpacked&lt;T&gt; =
+  T <span class="hljs-keyword">extends</span> (infer U)[] ? U :
+  T <span class="hljs-keyword">extends</span> (...args: <span class="hljs-built_in">any</span>[]) =&gt; infer U ? U :
+  T <span class="hljs-keyword">extends</span> <span class="hljs-built_in">Promise</span>&lt;infer U&gt; ? U :
+  T;
+
+<span class="hljs-comment">// multiple candidates for the same type variable in co-variant position</span>
+<span class="hljs-comment">// causes a union type to be inferred.</span>
+<span class="hljs-keyword">type</span> Foo&lt;T&gt; = T <span class="hljs-keyword">extends</span> { a: infer R, b: infer R} ? R : never;
+Foo&lt;{a: <span class="hljs-built_in">string</span>, b: <span class="hljs-built_in">number</span>}&gt; <span class="hljs-comment">//  'string' | 'number'</span>
+
+<span class="hljs-comment">// intersection type is inferred for mulitple candidates for the same variable in</span>
+<span class="hljs-comment">// contra-varaint position</span>
+<span class="hljs-keyword">type</span> Bar&lt;T&gt; = T <span class="hljs-keyword">extends</span> { a: <span class="hljs-function">(<span class="hljs-params">x: infer U</span>) =&gt;</span> <span class="hljs-built_in">void</span>, b: <span class="hljs-function">(<span class="hljs-params">x: infer U</span>) =&gt;</span> <span class="hljs-built_in">void</span>} ? U never;
+Bar&lt;{ a: <span class="hljs-function">(<span class="hljs-params">x: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>, b: <span class="hljs-function">(<span class="hljs-params">x: <span class="hljs-built_in">number</span></span>) =&gt;</span> <span class="hljs-built_in">void</span> }&gt; <span class="hljs-comment">// string &amp; number</span>
+</code></pre>
+<ol start="14">
+<li>conclusion<br>
+Typescript use structural typing. You can use type aliase to make type level function to<br>
+make between types. Interface is like record type with the property name as access function.<br>
+Abstract data types are achieved by tagged union, and you can use conditionals to map types<br>
+non uniformly.</li>
+</ol>
