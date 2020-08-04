@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Row, Col, Container} from 'react-bootstrap';
 import {css} from 'glamor';
-import {FaBeer, FaBars} from 'react-icons/fa';
+import {FaBars} from 'react-icons/fa';
 import {Link} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
 import {Sidebar} from './Sidebar'
@@ -13,7 +13,7 @@ const headerStyle = css({
   width: "100%",
   paddingTop: "28px",
   paddingRight: "40px",
-  paddingLeft: "20px",
+  paddingLeft: "80px",
   marginBottom: "30px",
 });
 

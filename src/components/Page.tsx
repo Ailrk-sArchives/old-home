@@ -28,8 +28,18 @@ export function TagsPage() {
   const tags = Array.from(allDB.keys("tag")!);
   return (
     <Container>
-      <h3 style={{color: "DimGray", fontWeight: "bold"}}>All Tags</h3>
-      <div style={{...linkStyle, fontSize: 25, }}>
+      <h3 style={{
+        color: "DimGray",
+        fontWeight: "bold",
+          marginLeft: 30,
+          marginBottom: 40,
+      }}>All Tags</h3>
+      <div style={{
+        ...linkStyle,
+          fontSize: 25,
+          paddingLeft: 40,
+          paddingRight: 100,
+      }}>
         {
           tags.map(t =>
             <Badge variant="light" style={{marginRight: 10}}>
@@ -46,11 +56,12 @@ function AddPageTitle(props: {pageTitle: string, page: JSX.Element}) {
   const {pageTitle, page} = props;
   return (
     <Container>
-      <h3 style={{
+      <h2 style={{
         color: "DimGray",
         fontWeight: "bold",
         marginBottom: 40,
-      }}>{pageTitle}</h3>
+        marginLeft: 80,
+      }}>{`${pageTitle}`}</h2>
       {
         page
       }

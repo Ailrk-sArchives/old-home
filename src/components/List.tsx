@@ -7,7 +7,7 @@ import {Link, useParams} from 'react-router-dom';
 import {HoverLink} from './Misc';
 
 const itemRowStyle = css(textTheme, {
-  paddingTop: "20px",
+  marginLeft: "80px",
   paddingBottom: "30px",
   marginBottom: "50px",
   borderLeft: "10px solid LightCoral",
@@ -23,12 +23,12 @@ function ItemRow(props: {
   return (
     <Container {...itemRowStyle}>
       <Col>
-        <h3>
+        <h2>
           <HoverLink text={title}
             link={`/#/article/${id}`}
             ogColor={"DimGrey"}
             onHoverColor={"LightCoral"} />
-        </h3>
+        </h2>
       </Col>
       <Col {...css({fontSize: 20, paddingLeft: "50px", color: "LightCoral", fontWeight: "bold"})}>
         {time.toJSON().replace(/-/gi, '.').split('T')[0]}
@@ -39,7 +39,7 @@ function ItemRow(props: {
             tag?.map(t => (
               <span key={t}>
                 <Badge variant="light">
-                  <Link to={`/home/tag/${t}`} style={{...linkStyle, color: "LightCoral"}}>
+                  <Link to={`/tag/${t}`} style={{...linkStyle, color: "LightCoral"}}>
                     {t}
                   </Link>
                 </Badge>

@@ -1,13 +1,15 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {Container} from 'react-bootstrap';
+import {Container, Row} from 'react-bootstrap';
 import {StyleAttribute, css} from 'glamor';
 import {Markdown} from '../state/markdowns';
 import {textTheme} from '../styles/styleElements';
+import {HoverLink} from './Misc';
 import '../styles/Article.css';
 
 const defaultArticleStyle = css(textTheme, {
   paddingLeft: "101px",
   paddingTop: "30px",
+  marginBottom: "100px",
   overflow: "hidden",
 });
 
@@ -21,6 +23,7 @@ export function Article(props: {
   const {markdown, style} = props;
   const [article, setArticle] = useState<string>("");
   const componentIsMounted = useRef(true);
+  console.log(markdown?.header.source);
 
   // avoid asyc complete after component is unmounted.
   useEffect(() => {
@@ -45,9 +48,37 @@ export function Article(props: {
 
   return (
     <Container {...style ?? defaultArticleStyle}>
-      <div {...css({width: "90%", wordBreak: "break-word"})}>
+      <div {...css({
+        width: "90%",
+        wordBreak: "break-word",
+        marginBottom: "100px"
+      })}>
         <div className="Article" dangerouslySetInnerHTML={{__html: article}} />
       </div>
+      <hr />
+      <h1 style={{color: "DimGray", fontWeight: "bolder"}}>Source</h1>
+      <SourceList sources={markdown?.header.source} />
     </Container>
   );
+}
+
+function SourceList(props: {sources?: Array<string>}) {
+  const {sources} = props;
+  const row = (source: string) => {
+    return (
+      <Row>
+        <HoverLink text={source}
+          link={source}
+          ogColor={"DimGray"}
+          onHoverColor={"LightCoral"} />
+      </Row>
+    )
+  };
+  return (
+    <Container>
+      {
+        sources?.map(s => row(s))
+      }
+    </Container>
+  )
 }

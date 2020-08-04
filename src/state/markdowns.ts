@@ -12,6 +12,7 @@ export const allDB: MarkdownDB = new AllDB([
   articlesDB,
   notesDB,
 ]);
+console.log(Array.from(notesDB.entries("default")!));
 
 export function chronoList(md: MarkdownDB): Array<Markdown> {
   const times = Array.from(md.keys("time")!).sort().reverse();

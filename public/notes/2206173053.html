@@ -1,0 +1,35 @@
+<h1>Some polymorphism, some mtl, some lazyness</h1>
+<h2>polymorphism in haskell</h2>
+<h5>ad hoc polymorphism</h5>
+<p>Ad hoc polymorhism means a value can adopt any one of several types. For instance, function overloading (so does operator overloading of course) allows taking parameter with different types, so it's a example of ad hoc polymorphism.</p>
+<p>Typeclass achieve ad hoc polymorphism by providing an instance for each type implements the class. But besides this property a typeclass can also put constraint on type parameter, and that doesn't convey &quot;ad hoc&quot; feature, thus is not ad hoc polymorphism.</p>
+<p>So strip down, implementing different instances for each type and overloading for different parameters are really the same thing.</p>
+<p>Because typeclass has multi purpose, I was confusd by which part corresponds to ad hoc polymorpism.  <a href="https://stackoverflow.com/questions/63221632/is-this-understanding-correct-trait-and-function-overloading-both-achieved-ad-h">This</a> answer helped a lot!</p>
+<h5>parametric polymorpism</h5>
+<p>Referes to when a type of a value contains one or more unconstrained type variable. Unconstraied because if it is constrained, it lose gene generality and become ad hoc polymorpism. The type parameters then can be substituted by concrete types to form a concrete type.<br>
+If you think of a parametric polymorphic function first as a regular function that takes values as parameters, and besides that it takes concrete types too, then it can be regard as a <code>type to value mapping</code>.</p>
+<h2>Type system</h2>
+<h5>Rank N type</h5>
+<p>Rank N type is used to express polymorphic function as first class value. With higher ranked type you can pass a polymorphic function and constraint the type parameter in only one parameter. N means how deeply the type parameter is nested.</p>
+<pre><code class="language-haskell"><span class="hljs-comment">-- example rank 1 and rank n.</span>
+<span class="hljs-title">rank1</span> :: <span class="hljs-keyword">forall</span> n. <span class="hljs-type">Num</span> n =&gt; (n -&gt; n) -&gt; (<span class="hljs-type">Int</span>, <span class="hljs-type">Int</span>)
+<span class="hljs-title">rank1</span> f = (f <span class="hljs-number">1</span> :: <span class="hljs-type">Int</span>, f <span class="hljs-number">2</span> :: <span class="hljs-type">Int</span>)
+<span class="hljs-title">rank2</span> :: (<span class="hljs-keyword">forall</span> n. <span class="hljs-type">Num</span> n =&gt; n -&gt; n) -&gt; (<span class="hljs-type">Int</span>, <span class="hljs-type">Double</span>)
+<span class="hljs-title">rank2</span> f = (f <span class="hljs-number">1</span>, f <span class="hljs-number">1.0</span>)
+</code></pre>
+<p>For <code>rank1</code>, we first choose n then provide the function, so in this case the function <code>f</code> only works for the type n passed in.<br>
+For <code>rank2</code>, we provide function before we know the concrete type of n. This implies the function must be polymorphic over n, so <code>f</code> works for any type n as long as it has Num constraint.<br>
+You can apply f to both <code>Int</code> and <code>Double</code> in the <code>rank2</code> example because f is polymorphic (f has type <code>Num n =&gt; n -&gt; n</code> after it is passed in), but for <code>rank1</code> you can only apply one type because once n is inferred, f can only become one type (once f is applied to Int in the first argument, it can only be a function of type <code>Int -&gt; Int</code>).</p>
+<h5>Type operator</h5>
+<p>Function in type level that map a type to another type. People call it <code>type operator</code>, not type level funtion!</p>
+<h5>Higher kinded type</h5>
+<p>Type operator itself can be paraeterized by other type operators. A concrete type is just a conrete thing, denoted as <code>*</code>. <code>* -&gt; *</code> implies this type requires another<br>
+type as its &quot;kind parameter&quot; to make a concrete type.<br>
+Type operator is <code>mapping from type to type</code>. Higher kinded type generalized this dea and type operator first class in type level.</p>
+<h2>ST Monad</h2>
+<h5>ST monad and Rank N type.</h5>
+<p>in place updatable state<br>
+pure interface to the external<br>
+use rank 2 type to ensure encapsulation of the state.</p>
+<pre><code class="language-haskell"><span class="hljs-title">runST</span> :: <span class="hljs-keyword">forall</span> a. (<span class="hljs-keyword">forall</span> s. <span class="hljs-type">ST</span> s a) -&gt; a
+</code></pre>

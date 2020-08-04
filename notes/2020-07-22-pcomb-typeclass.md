@@ -1,5 +1,5 @@
 -- tag haskell parser typeclass
--- title Note: Revist some parser combinator stuffs.
+-- title Note: some parser combinator stuffs.
 -- date 2020-07-22
 -- source https://stackoverflow.com/questions/29861388/when-is-it-useful-to-define-multiple-lifetimes-in-a-struct
           https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html
