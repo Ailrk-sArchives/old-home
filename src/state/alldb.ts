@@ -1,6 +1,6 @@
 import type {MarkdownDB, Markdown, ViewType} from 'markdowndb.macro/dist/types';
 import {notUndefined} from '../untils/typeguards';
-import {flat, chainIterators} from '../untils/list-ops';
+import {flat} from '../untils/list-ops';
 
 export class AllDB implements MarkdownDB {
   list?: Array<MarkdownDB> = undefined;
@@ -8,7 +8,6 @@ export class AllDB implements MarkdownDB {
   public constructor(list: Array<MarkdownDB>) {
     this.list = list;
   }
-
   get(key: number): Markdown | undefined;
   get(key: Date | string): Array<Markdown> | undefined;
   get(key: number | Date | string):
@@ -22,37 +21,37 @@ export class AllDB implements MarkdownDB {
     return flat(this.list?.map(db => db.get(key)).filter(notUndefined)!);
   }
 
-  entries(view: "default"): IterableIterator<[number, Markdown]> | undefined;
-  entries(view: "time" | "tag"): IterableIterator<[string, Array<Markdown>]> | undefined;
+  entries(view: "default"): Array<[number, Markdown]> | undefined;
+  entries(view: "time" | "tag"): Array<[string, Array<Markdown>]> | undefined;
   entries(view: ViewType):
-    | (IterableIterator<[number, Markdown]> | undefined)
-    | (IterableIterator<[string, Array<Markdown>]> | undefined) {
-    if (view === "default") return this.megaIterators(m => m.entries(view));
-    else return this.megaIterators(m => m.entries(view));
+    | (Array<[number, Markdown]> | undefined)
+    | (Array<[string, Array<Markdown>]> | undefined) {
+    if (view === "default") return this.megaList(m => m.entries(view));
+    else return this.megaList(m => m.entries(view));
   }
 
-  values(view: "default"): IterableIterator<Markdown> | undefined;
-  values(view: "time" | "tag"): IterableIterator<Array<Markdown>> | undefined;
+  values(view: "default"): Array<Markdown> | undefined;
+  values(view: "time" | "tag"): Array<Array<Markdown>> | undefined;
   values(view: ViewType):
-    | IterableIterator<Markdown> | undefined
-    | IterableIterator<Array<Markdown>> | undefined {
-    if (view === "default") return this.megaIterators(m => m.values(view));
-    else return this.megaIterators(m => m.values(view));
+    | Array<Markdown> | undefined
+    | Array<Array<Markdown>> | undefined {
+    if (view === "default") return this.megaList(m => m.values(view));
+    else return this.megaList(m => m.values(view));
   }
 
-  keys(view: "default"): IterableIterator<number> | undefined;
-  keys(view: "time" | "tag"): IterableIterator<string> | undefined;
+  keys(view: "default"): Array<number> | undefined;
+  keys(view: "time" | "tag"): Array<string> | undefined;
   keys(view: ViewType):
-    | IterableIterator<number> | undefined
-    | IterableIterator<string> | undefined {
-    if (view === "default") return this.megaIterators(m => m.keys(view));
-    else return this.megaIterators(m => m.keys(view));
+    | Array<number> | undefined
+    | Array<string> | undefined {
+    if (view === "default") return this.megaList(m => m.keys(view));
+    else return this.megaList(m => m.keys(view));
   }
 
-  megaIterators<T>(cb: (m: MarkdownDB) => IterableIterator<T> | undefined) {
+  megaList<T>(cb: (m: MarkdownDB) => Array<T> | undefined) {
     const makeIteratorArray =
-      <T>(cb: (m: MarkdownDB) => IterableIterator<T> | undefined) =>
+      <T>(cb: (m: MarkdownDB) => Array<T> | undefined) =>
         this.list!.map(cb)!.filter(notUndefined);
-    return chainIterators(makeIteratorArray(cb));
+    return flat(makeIteratorArray(cb));
   }
 }

@@ -23,7 +23,6 @@ export function Article(props: {
   const {markdown, style} = props;
   const [article, setArticle] = useState<string>("");
   const componentIsMounted = useRef(true);
-  console.log(markdown?.header.source);
 
   // avoid asyc complete after component is unmounted.
   useEffect(() => {
@@ -35,6 +34,7 @@ export function Article(props: {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
+        console.log(markdown?.content);
         const value = (await markdown?.content) ?? "Oppsy Doopsy!";
         if (componentIsMounted.current) {
           setArticle(value);
@@ -64,9 +64,9 @@ export function Article(props: {
 
 function SourceList(props: {sources?: Array<string>}) {
   const {sources} = props;
-  const row = (source: string) => {
+  const row = (source: string, idx: number) => {
     return (
-      <Row>
+      <Row key={idx}>
         <HoverLink text={source}
           link={source}
           ogColor={"DimGray"}
@@ -77,7 +77,7 @@ function SourceList(props: {sources?: Array<string>}) {
   return (
     <Container>
       {
-        sources?.map(s => row(s))
+        sources?.map((s, idx) => row(s, idx))
       }
     </Container>
   )

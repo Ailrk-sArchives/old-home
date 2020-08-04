@@ -25,7 +25,7 @@ function ItemRow(props: {
       <Col>
         <h2>
           <HoverLink text={title}
-            link={`/#/article/${id}`}
+            link={`${process.env.PUBLIC_URL}/#/article/${id}`}
             ogColor={"DimGrey"}
             onHoverColor={"LightCoral"} />
         </h2>

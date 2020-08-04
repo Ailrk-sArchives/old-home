@@ -25,7 +25,7 @@ export function unique<T>(list: Array<T>, key: (val: T) => number): Array<T> {
 }
 
 type IteratorList<T> = Array<Iterator<T, T, undefined>>;
-export function* chainIterators<T>(iters: IteratorList<T>) {
+export function* flatIterators<T>(iters: IteratorList<T>) {
   for (const iter of iters) {
     let doneFlag: boolean = false;
     while (!doneFlag) {
