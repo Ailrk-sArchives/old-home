@@ -22,11 +22,11 @@
 </code></pre>
 <p>Parsing and code generation are just standard compiler process; transform is where code transform happen. You work with AST created in the parser part, find and modify  nodes you are interested, then generate code based on the new ast.</p>
 <h5>visitor pattern on AST.</h5>
-<p>Visitor pattern is used to traversal accross AST. Visitor will traversal all nodes in an AST, and only perform operation on some particular ones (maybe based on some predicates act on the node).</p>
+<p>Visitor pattern is used to traversal across AST. Visitor will traversal all nodes in an AST, and only perform operation on some particular ones (maybe based on some predicates act on the node).</p>
 <h5>terms:</h5>
 <ul>
 <li>Path represents the link between two nodes. Path is reactive, thus any modification on the tree will be reflected.</li>
-<li>Avoid state for code transformation, because it's very easy to make inconsistent tree. more on <a href="https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md#state">here</a></li>
+<li>Avoid state for code transformation, because it's very easy to make inconsistent tree. More on <a href="https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md#state">here</a></li>
 <li>When creating a new scope you give it a path and a path and a parent scope.</li>
 <li>Binding are references that are all belong to a particular scope.</li>
 </ul>
@@ -35,7 +35,7 @@
 <li><code>babel-parser</code>
 <ul>
 <li>parse(code) (parse string directly)</li>
-<li>parse(code, { scourceType: &quot;module&quot;, plugins: [&quot;jsx&quot;]}) (add babel options)</li>
+<li>parse(code, { sourceType: &quot;module&quot;, plugins: [&quot;jsx&quot;]}) (add babel options)</li>
 </ul>
 </li>
 <li><code>babel-traverse</code> (easy way of writing visitor)
@@ -72,7 +72,7 @@
 </code></pre>
 </li>
 </ul>
-<p>Quasiquote make things so much better! I hope quasiquotes can have syntax highlight too, but it seem not very viable.</p>
+<p>Quasi quote make things so much better! I hope quasi quotes can have syntax highlight too, but it seem not very viable.</p>
 <h5>best practices.</h5>
 <p><strong>1</strong>. Create helper builder and checker.<br>
 Template can to some extend replace helper builder.</p>
@@ -81,6 +81,7 @@ Try to merge visitors whenever possible, and favor manual look up than traverse.
 <p><strong>3</strong>. Optimizing nested visitors<br>
 If there is a nested visitor, it's better to store the visitor in a variable and pass the same object each time. Otherwise each time call the parent visitor the nested visitor will also create the nested visitor, which can be very costly.</p>
 <h2>Runtime</h2>
+<p>Pretty high level view of v8 internals. Apparently v8 has some major overhual on its internal, today's component works a lot different from what it was in 2017. (Crankshaft to Turbofan and Ignition)</p>
 <h5>v8 overview</h5>
 <p>Three statges of execution</p>
 <ol>
@@ -90,7 +91,7 @@ If there is a nested visitor, it's better to store the visitor in a variable and
 </ol>
 <h5>JIT process</h5>
 <p>Interpreter has very little room for optimization because of the lack of information upon execution. But compiling the entire source code takes too long for large code base. Maintaining a good balance is very important for JIT.</p>
-<p>When first executing a piece of code, <code>Profiler</code> will run it through interpreter, and makes profiling informations like how often a function is invoked. This will tag different code segments as warm code segments and <code>hotspots</code>. Warm code segments will be compiled by baseline compiler, which compile faster. <code>Hotspots</code> will be compiled by optimized compiler (<code>-O2</code>), it compiles slower, but its more beneficialsince <code>hotspot</code> code get invoked very frequently.</p>
+<p>When first executing a piece of code, <code>Profiler</code> will run it through interpreter, and makes profiling informations like how often a function is invoked. This will tag different code segments as warm code segments and <code>hotspots</code>. Warm code segments will be compiled by baseline compiler, which compile faster. <code>Hotspots</code> will be compiled by optimized compiler (<code>-O2</code>), it compiles slower, but its more beneficial, since <code>hotspot</code> code get invoked very frequently.</p>
 <p>Assumptions are made by optimized compiler when compiling <code>hotspot</code> code. But when those assumptions are invalidated you need <code>deoptimization</code> to discard the optimized code.</p>
 <pre><code>(SRC) → ⟨ Parser ⟩
   ⇒ (AST) → ⟨ Interpreter Ignition ⟩ ⇒ (bytecode sequence)
@@ -116,14 +117,14 @@ x: 1          x: 1
               y: 2
 </code></pre>
 <p>Bot <code>Map M</code> and <code>Map N</code> are kept in the memory, and the arrow is also stored to indicate how the shape of object is migrated. Not the order of adding properties will result as another hidden class, so it is possible that you have two hidden classes for the same type of object.</p>
-<h5>inline caching (IC).</h5>
+<h5>Inline caching (IC).</h5>
 <p>Repeated call to the same method tend to have the same type of object. If we know the type of object upfont, we don't need to ask for how the object is structured and how do we access it. Inline caching will cache the object's <code>hidden class</code>, and at the next time of the function call it can use the cached information to address object properties directly.<br>
 Specifically, after two successful call of a function to objects with the same hidden class, v8 will assume all calls afterwards are calling with the same hidden class, and jump directly to the memory address of a specific property based on the offset of that hidden class.<br>
 This assumption will fail if two objects' properties are initialized in different order even if when they have the same type. In that case inline caching will either not performed or fail. In case of failure compiler need to deoptimize which is a very slow process.</p>
-<h5>ignition</h5>
+<h5>Ignition</h5>
 <p>Has a <code>Bytecode Generator</code> which bytecodes into sequence of bytecodes. Bytecode sequences are basic unit of code segments. The interpreter will run those sequence and collect feedbacks for profiling.</p>
 <h5>Turbo Fan</h5>
-<p>A compile backend.</p>
+<p>A compiler back end.</p>
 <ul>
 <li>instruction selection and scheduling.</li>
 <li>register allocation.</li>
@@ -132,8 +133,6 @@ This assumption will fail if two objects' properties are initialized in differen
 <li>architecture specific optimization.</li>
 </ul>
 <p><code>Hotspot</code> are usually get compiled and optimized here. But compiling itself cost a lot too.</p>
-<h5>Sea of Nodes</h5>
-<p>TODO</p>
 <h5>&quot;morphisms&quot; of inline caching</h5>
 <ul>
 <li>monomorphic: operations that hidden classes of arguments are always the same</li>
@@ -144,7 +143,7 @@ This assumption will fail if two objects' properties are initialized in differen
 <h5>pointer compression</h5>
 <p>Store 32 bit offsets from some base address rather than using full 64 bit address.</p>
 <h5>pointer tagging</h5>
-<p>In object based languages (js, lisp... whatever only pass around pointers of objects), generally each objecet will have a specific object header (like <code>PyObject_HEAD</code> in python). This is true for even a simple integer, which can be very expensive. It's very likely that the header itself is much bigger than the ingerger size. Besides that, pointer referenced integers cannot be used to performed fast integer arithmetics, because to access the underline value you need an extra indirection of dereferece.<br>
+<p>In object based languages (js, lisp... whatever only pass around pointers of objects), generally each objecet will have a specific object header (like <code>PyObject_HEAD</code> in python). This is true for even a simple integer, which can be very expensive. It's very likely that the header itself is much bigger than the integer size. Besides that, pointer referenced integers cannot be used to performed fast integer arithmetics, because to access the underline value you need an extra indirection of dereferece.<br>
 V8 pointers are folded with tag bits. Tag bit signals either strong or weak pointers to objects in the heap, or a small integer. The value of an integer can be stored directly in the tagged value, thus eliminate extra allocations and indirections.<br>
 Modern CPU requires pointers to be aligned to speed up access. If all pointers are aligned by 4, then the last bit must be 0. If it is 1 then it must be a tagged pointer.<br>
 Side note: Small integer sometimes written as <code>smi</code>.</p>
@@ -154,7 +153,7 @@ Side note: Small integer sometimes written as <code>smi</code>.</p>
 <ul>
 <li>Instantiate objects' properties in the same order.</li>
 <li>Avoid dynamically adding property. If possible, instantiating all properties up front.</li>
-<li>Run the same method repeatdely is more optimized than run many methods only once.</li>
+<li>Run the same method repeatedly is more optimized than run many methods only once.</li>
 <li>Try not to have sparse array. When array is too sparse v8 will make it a dictionary.</li>
 <li>If a numberic value is bigger than 31 bits (max of tagged pointer), it will be boxed. So try to use 31 bits signed number as much as possible.</li>
 </ul>

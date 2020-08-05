@@ -1,52 +1,41 @@
 <h1>Parser combinator in Haskell (in repo Notes/haskell..pinciple../parser )</h1>
-<h5>1. How to define parser in haskell?</h5>
+<h5>1. Parser</h5>
 <pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">newtype</span> <span class="hljs-type">Parser</span> a = <span class="hljs-type">Parser</span> {<span class="hljs-title">parse</span> :: <span class="hljs-type">String</span> -&gt; [(<span class="hljs-title">a</span>, <span class="hljs-type">String</span>)]}</span>
 </code></pre>
 <p>Essentially a function</p>
-<h5>2. It looks so similar with State.</h5>
+<h5>2. It looks very similar with State.</h5>
 <p>Parser is probably one of the most typical use case for a state monad.  You need some place to hold the position in current input stream for the entire parsing process. You can probably implement a parser with StateT alone.</p>
 <h5>3. What is State after all?</h5>
 <p>Although it is called <code>State</code>,</p>
 <pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">newtype</span> <span class="hljs-type">State</span> s a = {<span class="hljs-title">runState</span> :: <span class="hljs-title">s</span> -&gt; (<span class="hljs-title">a</span>, <span class="hljs-title">s</span>)}</span>
 </code></pre>
 <p>It's really just a reader that transform current state to the next one, and the actual state is the parameter of runState. So essentially State encapsulate all the computation involves with the state <code>s</code> in to a monad where the state is passed as parameter by default.</p>
-<h5>4. Some intuitions about typeclasses for Parser? Like what does they do?</h5>
-<p>Functor:<br>
-simply apply a funciton to parsed result.<br>
-You can use it to make a slightly different parser based on an existed one.<br>
-Applicative:<br>
-pure construct a Parser with the given result regardless what the state is.<br>
-(&lt;*&gt;) just like how applicative work for List, but replacingf the state along the way.<br>
-Monad:<br>
-Again, like applicative, it works like List monad.<br>
-MonadPlus:<br>
-mplus means concat the result of two parser into one list.<br>
-identity is a parser that return an empty list.<br>
-Alternative<br>
-an empty list is regard as the failure case.</p>
-<h5>5. Conclusion about typeclasses with context</h5>
-<p>If a typeclass holds some context, it might has higher kind. For example, Monad is <code>* -&gt; *</code><br>
-When you have the same typeclass for different types:</p>
-<p>The abstract notion of the typeclass will not change. Namely the typeclass will always works according to its type signature. For a functor the notion is to apply (a -&gt; b) into the value in the functorial context. No matter what structure the context has, this goal will always be achieved.</p>
-<p>On the other hand, what will happen in the context during the computation depends on types. For Parser Functor it will replace the old state with a new one, while for a Maybe functor will return Some or None value based on what value the function is applied to.</p>
-<p>Different typeclasses for the same type usually have similar effect. Functor, Applicative, Monad for State all substitute old state with the new one. Similarly those typeclasses for Maybe all return Nothing if a value is absent.</p>
-<p>It's a pretty rough intuition, I might need to learn some Cat theory?</p>
-<h5>6. Some intuition about parser combinator in general</h5>
-<p>Each parser is a function. You can make more complicated parsers based on simpler one by combining one parser function to another. In haskell some of this combination mechanics can be regard as functionalities provided by typeclasses. For instance, Alternative is a very good choice for implement option combinator, you can just implement that.</p>
-<h5>7. How many parser combinators are there?</h5>
-<pre><code>item: parse for any character.
-sequence: parse one thing, then parse another thing. (can be thought as monad &gt;&gt;)
-option: parse either one or another. (alternative &lt;|&gt;)
-some: like regex +
-many: like regex *
-oneOf: parse if the string match one of the element
-chianl: for parsing left recursive grammar
-These are some basic combinators.
-</code></pre>
-<h5>8. Rough process of Parsec?</h5>
-<pre><code>Define Tokens with Tok.LanguageDef () // a record of all token definitions.
-Define lexers `Tok.TokenParser ()`
-Define your AST
-Parse from token into AST
-Eval or codeGen depends on what you want to do
-</code></pre>
+<h5>What is context?</h5>
+<p>It's a very sloppy note with bunch of heuristics. I already modified this text once but still doesn't seem quite right. Maybe the only way to know it better is to learn some type theory.<br>
+When doing <code>Functors</code> or <code>Monad</code> people talks about context without good examples. First to denote a context with type system you need higher kinded type. With a type <code>f a</code> of kind <code>* -&gt; *</code> you can have <code>f</code> as a type operator with a type parameter <code>a</code>, or a type indexed by <code>a</code>. And when you are defining things like functor you define <code>fmap :: (a -&gt; b) -&gt; f a -&gt; f b</code>, which in type level you are saying there exists a <code>fmap</code> implementation for this higher kinded type that if you pass <code>a -&gt; b</code> and a value of this type it will gives you <code>f b</code> back. These are all denoted at type level, so no real context involved so far.<br>
+But when you are defining the <code>fmap</code> in term level, you can bring some meaning of the context. For instance, if you have <code>Maybe a</code>, the value of type <code>Maybe a</code> can be <code>Just a</code> or <code>Nothing.</code> It's the present of <code>Maybe</code> in type system make it possible, or <code>Maybe</code> attached more meaning to <code>a</code>.<br>
+Another example <code>State s a</code>. At type level you can think it as value with type <code>a</code> surrounded by <code>State s</code>. In definition <code>runState :: s -&gt; (a, s)</code> is what really defines the <code>context</code>. It's a function reads a value s with type <code>s</code>, and return the value <code>a</code> and a new state. While executing <code>runState</code> the context will always exists along a, which is the point of state (pass the state implicitly).</p>
+<h5>Parser combinator</h5>
+<ul>
+<li>Each parser is a function.</li>
+<li>You can make more complicated parsers based on simpler one by combining one parser function to another.</li>
+<li>In Haskell some of combinators can be achieve by implementing some typeclass. For instance, Alternative can be option combinator since they have the same type.</li>
+</ul>
+<h5>Common combinators</h5>
+<p>item: parse for any character.<br>
+sequence: parse one thing, then parse another thing. (can be thought as monad &gt;&gt;)<br>
+option: parse either one or another. (alternative &lt;|&gt;)<br>
+some: like regex +<br>
+many: like regex *<br>
+oneOf: parse if the string match one of the element<br>
+chianl: for parsing left recursive grammar<br>
+These are some basic combinators.</p>
+<h5>Parsec</h5>
+<p>Everybody use library to write parser.</p>
+<ul>
+<li>Define Tokens with Tok.LanguageDef () // a record of all token definitions.</li>
+<li>Define lexers <code>Tok.TokenParser ()</code></li>
+<li>Define your AST</li>
+<li>Parse from token into AST</li>
+<li>Eval or codeGen depends on what you want to do</li>
+</ul>
