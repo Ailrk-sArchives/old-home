@@ -1,10 +1,10 @@
 import {
   MarkdownRuntimeDatabase,
   MarkdownStaticDatabase,
+  AllDB,
 } from 'markdowndb.macro/dist/markdown-map';
 import markdowndb, {Markdown, MarkdownDB} from 'markdowndb.macro';
 import {unique, flat} from '../untils/list-ops';
-import {AllDB} from './alldb';
 
 export const articlesDB: MarkdownDB = markdowndb('articles', 'runtime');
 export const notesDB: MarkdownDB = markdowndb("notes", "static", "/home");
