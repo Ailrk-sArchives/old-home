@@ -5,13 +5,13 @@
           https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html
 ;;
 # Parser combinator in Haskell (in repo Notes/haskell..pinciple../parser )
-##### 1. How to define parser in haskell?
+##### 1. Parser
 ``` haskell
 newtype Parser a = Parser {parse :: String -> [(a, String)]}
 ```
 Essentially a function
 
-##### 2. It looks so similar with State.
+##### 2. It looks very similar with State.
 Parser is probably one of the most typical use case for a state monad.  You need some place to hold the position in current input stream for the entire parsing process. You can probably implement a parser with StateT alone.
 
 ##### 3. What is State after all?
@@ -21,49 +21,31 @@ newtype State s a = {runState :: s -> (a, s)}
 ```
 It's really just a reader that transform current state to the next one, and the actual state is the parameter of runState. So essentially State encapsulate all the computation involves with the state `s` in to a monad where the state is passed as parameter by default.
 
-##### 4. Some intuitions about typeclasses for Parser? Like what does they do?
-Functor:
-    simply apply a funciton to parsed result.
-    You can use it to make a slightly different parser based on an existed one.
-Applicative:
-    pure construct a Parser with the given result regardless what the state is.
-    (<*>) just like how applicative work for List, but replacingf the state along the way.
-Monad:
-    Again, like applicative, it works like List monad.
-MonadPlus:
-    mplus means concat the result of two parser into one list.
-    identity is a parser that return an empty list.
-Alternative
-    an empty list is regard as the failure case.
+##### What is context?
+It's a very sloppy note with bunch of heuristics. I already modified this text once but still doesn't seem quite right. Maybe the only way to know it better is to learn some type theory.
+When doing `Functors` or `Monad` people talks about context without good examples. First to denote a context with type system you need higher kinded type. With a type `f a` of kind `* -> *` you can have `f` as a type operator with a type parameter `a`, or a type indexed by `a`. And when you are defining things like functor you define `fmap :: (a -> b) -> f a -> f b`, which in type level you are saying there exists a `fmap` implementation for this higher kinded type that if you pass `a -> b` and a value of this type it will gives you `f b` back. These are all denoted at type level, so no real context involved so far.
+But when you are defining the `fmap` in term level, you can bring some meaning of the context. For instance, if you have `Maybe a`, the value of type `Maybe a` can be `Just a` or `Nothing.` It's the present of `Maybe` in type system make it possible, or `Maybe` attached more meaning to `a`.
+Another example `State s a`. At type level you can think it as value with type `a` surrounded by `State s`. In definition `runState :: s -> (a, s)` is what really defines the `context`. It's a function reads a value s with type `s`, and return the value `a` and a new state. While executing `runState` the context will always exists along a, which is the point of state (pass the state implicitly).
 
-##### 5. Conclusion about typeclasses with context
-If a typeclass holds some context, it might has higher kind. For example, Monad is `* -> *`
-When you have the same typeclass for different types:
+##### Parser combinator
+- Each parser is a function.
+- You can make more complicated parsers based on simpler one by combining one parser function to another.
+- In Haskell some of combinators can be achieve by implementing some typeclass. For instance, Alternative can be option combinator since they have the same type.
 
-The abstract notion of the typeclass will not change. Namely the typeclass will always works according to its type signature. For a functor the notion is to apply (a -> b) into the value in the functorial context. No matter what structure the context has, this goal will always be achieved.
+##### Common combinators
+item: parse for any character.
+sequence: parse one thing, then parse another thing. (can be thought as monad >>)
+option: parse either one or another. (alternative <|>)
+some: like regex +
+many: like regex *
+oneOf: parse if the string match one of the element
+chianl: for parsing left recursive grammar
+These are some basic combinators.
 
-On the other hand, what will happen in the context during the computation depends on types. For Parser Functor it will replace the old state with a new one, while for a Maybe functor will return Some or None value based on what value the function is applied to.
-
-Different typeclasses for the same type usually have similar effect. Functor, Applicative, Monad for State all substitute old state with the new one. Similarly those typeclasses for Maybe all return Nothing if a value is absent.
-
-It's a pretty rough intuition, I might need to learn some Cat theory?
-
-##### 6. Some intuition about parser combinator in general
-Each parser is a function. You can make more complicated parsers based on simpler one by combining one parser function to another. In haskell some of this combination mechanics can be regard as functionalities provided by typeclasses. For instance, Alternative is a very good choice for implement option combinator, you can just implement that.
-
-##### 7. How many parser combinators are there?
-    item: parse for any character.
-    sequence: parse one thing, then parse another thing. (can be thought as monad >>)
-    option: parse either one or another. (alternative <|>)
-    some: like regex +
-    many: like regex *
-    oneOf: parse if the string match one of the element
-    chianl: for parsing left recursive grammar
-    These are some basic combinators.
-
-##### 8. Rough process of Parsec?
-    Define Tokens with Tok.LanguageDef () // a record of all token definitions.
-    Define lexers `Tok.TokenParser ()`
-    Define your AST
-    Parse from token into AST
-    Eval or codeGen depends on what you want to do
+##### Parsec
+Everybody use library to write parser.
+- Define Tokens with Tok.LanguageDef () // a record of all token definitions.
+- Define lexers `Tok.TokenParser ()`
+- Define your AST
+- Parse from token into AST
+- Eval or codeGen depends on what you want to do
