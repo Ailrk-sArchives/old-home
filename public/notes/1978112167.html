@@ -1,18 +1,18 @@
 <h1>Note: Some rust lifetime and borrow checkers 2020-07-11</h1>
 <h5>1. lifetime</h5>
-<p>scope that a given reference is valid. Or scope that a entity is not destructed.</p>
+<p>A scope in which a given reference is valid. Or a scope that an entity is not destructed.</p>
 <h5>2. borrow checker</h5>
-<p>compile time analysis to make sure no reference are invalid</p>
+<p>Compile time analysis to make sure no reference are invalid. Basic borrow checker rules are there are only one mutable reference at a time.</p>
 <h5>3. what does borrow checker check?</h5>
-<p>Mainly reference. In C all dangling ptrs happen from having alias of a entity but not know if it is valid or not.</p>
+<p>References. In C all dangling ptrs happen from having alias of a entity but not know if it is valid or not. Borrow checker ban mutiple mutable reference to prevent this problem.</p>
 <h5>4. how do I know the lifetime of something?</h5>
 <p>Check the scope. If a reference is used when the value it points to is dropped it's a dangling reference.</p>
 <h5>5. What's the point of lifetime parameter?</h5>
-<p>Tell compiler the lifetime of a reference. In case it cannot inference.</p>
+<p>Tell compiler the lifetime of a reference. In case it cannot infer.</p>
 <h5>6. When can a compiler infer the lifetime?</h5>
-<p>If it's within one scope you can easily tell if a reference is valid. But when a function take references as parameter it is hard for compiler to tell.</p>
+<p>If it's within one scope you can easily tell if a reference is valid. But when a function take references as parameter it is hard for compiler to know.</p>
 <h5>7. But why compiler can't tell the life time of its parameter?</h5>
-<p>All compiler can know is in runtime it will receive a reference, but it has know information about how long the value the reference point to will live.  The problem is more obvious when there are multiple references parameter.  Like if the function do something with one of the reference and return it back how long will it live.</p>
+<p>All a compiler can know is in runtime it will receive a reference, but it has no information about how long the value the reference point to will live.  The problem is more obvious when there are multiple reference parameters.  If the function do something with one of the reference and return it back how long will it live.</p>
 <h5>8. Consequence of dangling pointer?</h5>
 <p>Reading any system programming materials you always see people say &quot;dangling pointer bad&quot;, &quot;avoid dangling pointers&quot;, but what harm do they do exactly? The most straight forward answer is core dump, but is there ways to rewind from a core dump? And if a pointer is dangling and not used by anybody then isn't it just chilling there and do nothing? I guess knowing how bad the problem can be is the only way to know how useful borrow checker really is.</p>
 <p>Assume you have a pointer point to some object on heap. The heap is deallocated by the pointer is still accessible.</p>
@@ -88,13 +88,13 @@ hold in A doesn't follow the same lifetime rule.</p>
 <p>so what does it follow? There are two possibility:</p>
 <ol>
 <li>'b is longer than 'a. Then you can still access the reference even if B is dropped.</li>
-<li>'b is shorter than 'a. It means the reference in A doesn't life as long as A, AKA, dangling pointer.  you will not have it. since if you have a struct you always at least specify the lifetime of it's reference is as long as the struct.</li>
+<li>'b is shorter than 'a. It means the reference in A doesn't live as long as A, AKA, dangling pointer. You will not have it. Because if you have a struct you will always specify that it's reference lives at least as long as the struct itself.</li>
 </ol>
 <h5>14. But how exactly does compiler ensure lifetime of reference is at least the same as the struct?</h5>
 <p>In case of (<code>'b</code> is shorter than <code>'a</code>), say you have a struct <code>struct B&lt;'a, 'b&gt; (&amp;'a A&lt;'b&gt;)</code> A as lifetime a, and A's reference has lifetime <code>b</code>.<br>
 But when you're defining A as <code>struct A&lt;'a&gt; (&amp;'a i32)</code>, it's reference has the same lifetime as the struct itself.<br>
 This means the only valid struct is <code>'b &gt; 'a</code>, so that the reference A holds life at least as long as itself. If it's another case it is not valid in the first place.</p>
-<p>so I guess if compiler see two different lifetime parameter it will only infer one is longer than the other. Since you have no way to express a struct hold a reference which lives shorter</p>
+<p>So I guess if compiler see two different lifetime parameter it will only infer one is longer than the other. Since you have no way to express a struct hold a reference which lives shorter</p>
 <h5>15. What is anonymous lifetime?</h5>
 <p>For some common cases you don't need to specify the lifetime parameter. Compiler will follow the (lifetime elision) rule to assign lifetime for you.</p>
 <h5>16. How do compiler do that?</h5>

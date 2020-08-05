@@ -1,21 +1,11 @@
--- tag abstract-algebra
--- title More abstract algebra. Proofs and subgroups.
--- date 2020-08-01
--- source https://www.youtube.com/watch?v=xX-vBP3Yfuc&list=PL0vayjHV8kQCAll2Pb7JM4IOtLd6jPJMC&index=2&t=8s
-;;
-# More abstract algebra
-
-## Even more proof
-
-### Prove (ℝ+, +) is not cyclic
-#### statement:
-```
-    (ℝ+, +) is not cyclic
-```
-
-#### proof by contradiction:
-```
-    Suppose (ℝ+, +) is cyclic. Then ∃ x ∈ ℝ s.t ℝ = ⟨x⟩.
+<h1>More abstract algebra</h1>
+<h2>Even more proof</h2>
+<h3>Prove (ℝ+, +) is not cyclic</h3>
+<h4>statement:</h4>
+<pre><code>    (ℝ+, +) is not cyclic
+</code></pre>
+<h4>proof by contradiction:</h4>
+<pre><code>    Suppose (ℝ+, +) is cyclic. Then ∃ x ∈ ℝ s.t ℝ = ⟨x⟩.
     so
     ℝ = ⟨x⟩ = { n * x | n ∈ ℤ } ... ₁
 
@@ -30,22 +20,16 @@
 
     Thus (ℝ+, +) is not cyclic
     ∎
-```
-
-### Prove (ℤ×ℤ, +) is not cyclic
-#### statement:
-```
-    (ℤ×ℤ, +) is not cyclic
-```
-
-#### side note:
-```
-    (ℤ, +) = ⟨1⟩
-```
-
-#### proof by contradiction again...:
-```
-    Suppose that (ℤ×ℤ, +) is cyclic, then
+</code></pre>
+<h3>Prove (ℤ×ℤ, +) is not cyclic</h3>
+<h4>statement:</h4>
+<pre><code>    (ℤ×ℤ, +) is not cyclic
+</code></pre>
+<h4>side note:</h4>
+<pre><code>    (ℤ, +) = ⟨1⟩
+</code></pre>
+<h4>proof by contradiction again...:</h4>
+<pre><code>    Suppose that (ℤ×ℤ, +) is cyclic, then
     ∃ a, b ∈ ℤ s.t ℤ×ℤ = ⟨(a, b)⟩
 
     we know (1, 1) ∈ ℤ×ℤ
@@ -70,71 +54,51 @@
 
     Thus (ℤ×ℤ, +) is not cyclic
     ∎
-```
-
-
-### Prove every cyclic group is abelian
-#### statement:
-```
-    Every cyclic group is abelian.
-```
-
-#### proof:
-```
-    Suppose G = ⟨x⟩ is cyclic.
+</code></pre>
+<h3>Prove every cyclic group is abelian</h3>
+<h4>statement:</h4>
+<pre><code>    Every cyclic group is abelian.
+</code></pre>
+<h4>proof:</h4>
+<pre><code>    Suppose G = ⟨x⟩ is cyclic.
     ∃ a, b ∈ G s.t. a = xⁿ, b = xᵐ for some n, m ∈ ℤ.
     then
         ab = xⁿxᵐ = xⁿ⁺ᵐ = xᵐ⁺ⁿ = xᵐxⁿ = ba
     ∎
-```
-
-
-## Subgroup
-#### define:
-```
-Let (G, *) be a group. A subgroup of (G, *) is a subset H ⊆ G s.t.
+</code></pre>
+<h2>Subgroup</h2>
+<h4>define:</h4>
+<pre><code>Let (G, *) be a group. A subgroup of (G, *) is a subset H ⊆ G s.t.
 H is also a group under the same operation *.
-```
-
-#### example-1
-```
-G = ℤ, + = "addition".
+</code></pre>
+<h4>example-1</h4>
+<pre><code>G = ℤ, + = "addition".
 H = 3ℤ = { 3n | n ∈ ℤ }, + = "addition".
 H is a subgroup of G.
-```
-
-#### example-2
-```
-G is a group, {e} and G are both subgroup og G.
-```
-
-#### example-3
-```
-G is a group and x ∈ G.
+</code></pre>
+<h4>example-2</h4>
+<pre><code>G is a group, {e} and G are both subgroup og G.
+</code></pre>
+<h4>example-3</h4>
+<pre><code>G is a group and x ∈ G.
 then ⟨x⟩ = {xⁿ | n ∈ ℤ} is a subgroup of G.
-```
-
-#### example-4
-```
-Additive group of integer modulo 4.
+</code></pre>
+<h4>example-4</h4>
+<pre><code>Additive group of integer modulo 4.
 ℤ₄ = {0, 1, 2, 3}
 ⟨2⟩ = {0, 2}
 // it's a proper subgroup.
-```
-
-#### example-5
-```
-Let G be a group.
+</code></pre>
+<h4>example-5</h4>
+<pre><code>Let G be a group.
 Let Z(G) = {x ∈ G | xg = gx ∀ g ∈ G}
 where Z is called `center of G`
 Z(G) ≤ G.
-```
-
-#### example-6
-```
-GL: General Linear group
+</code></pre>
+<h4>example-6</h4>
+<pre><code>GL: General Linear group
 SL: Special Linear group
 G = GL(n, ℂ) = { all n×n complex matrices with non zero determinant }
 H = SL(n, ℂ) = { all n×n complex matrices with determinant 1 }
 H ≤ G
-```
+</code></pre>

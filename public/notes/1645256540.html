@@ -1,5 +1,5 @@
 <h1>Typescript moduels, async in react.</h1>
-<h2>Moduels in typescript</h2>
+<h2>Modules in typescript</h2>
 <h5>1. Modules execute on their own scope</h5>
 <p>Like all modern module systems. If all functions are pure then the module is just a namespace. But if there is state, since the module is scoped it can serve as a container, avoiding global state.</p>
 <h5>2. ECMAScript</h5>
@@ -27,7 +27,7 @@ useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;<
 }, []);
 </code></pre>
 <h5>2. Race condition</h5>
-<p><code>useEffect</code> can depend on some prop, and when the prop update useEffect might send the async request again before the previous reuqest resolved. If the second request arrive eariler it will cause a race condition. Solution is to cancel the previous request when sending a new request. Or maybe use sequence number?</p>
+<p><code>useEffect</code> can depend on some prop, and when the prop update useEffect might send the asynchronous request again before the previous reuqest resolved. If the second request arrive earlier it will cause a race condition. Solution is to cancel the previous request when sending a new request. Or maybe use sequence number?</p>
 <h2>Code splitting</h2>
 <p>Webpack allows code splitting, which means it bundles your code into chunks, and each chunk and be download asynchronously. This allows to load a fast-to-load minial bundle, and adding more bundle asynchronously after that. So for instance in <code>create-react-app</code>, as long as there are no static files in <code>public</code> folder all codes will eventually be delivered to client side. But with code splitting this can happen in a non blocking manner so the load time doesn't feel so long.</p>
 <h2>Link Local npm package</h2>
@@ -38,5 +38,4 @@ useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;<
 <h5>Down level iteration for ES5</h5>
 <p>An iteration over array or string will be simply compiled to a simple loop, but for a general iterator the compiler will needs to shove an entire implementation of the iterator protocol, which can bloat the code size.</p>
 <h2>Promise are not evaluated lazily</h2>
-<p>Executor passed into the promise will be called immediately. All the chain calls are just methods to access the result of executor. I am a little bit surprised because I always thought promises are lazily evaluated. But if you think carefylly about it there is no special reason for it to be so. Promise is deisgned to replace callback style async call, which you typically need to pass a callback to handle the value when it is arrived, and another callback to handle error case. With promise you don't pass these two functions into another async function, but rather wrap the entire async computation in a promise, then use <code>then</code> and <code>catch</code> to pass those callbacks.</p>
-<h2></h2>
+<p>Executor passed into the promise will be called immediately. All the chain calls are just methods to access the result of executor. I am a little bit surprised because I always thought promises are lazily evaluated. But if you think carefully about it there is no special reason for it to be so. Promise is designed to replace callback style asynchronous call, which you typically need to pass a callback to handle the value when it is arrived, and another callback to handle error case. With promise you don't pass these two functions into another async function, but rather wrap the entire async computation in a promise, then use <code>then</code> and <code>catch</code> to pass those callbacks.</p>
