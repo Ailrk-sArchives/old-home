@@ -1,21 +1,21 @@
 <h1>Typescript moduels, async in react.</h1>
-<h2>moduels in typescript</h2>
-<h5>1. modules execute on their own scope</h5>
+<h2>Moduels in typescript</h2>
+<h5>1. Modules execute on their own scope</h5>
 <p>Like all modern module systems. If all functions are pure then the module is just a namespace. But if there is state, since the module is scoped it can serve as a container, avoiding global state.</p>
 <h5>2. ECMAScript</h5>
 <p>Any file containing top-level import or export is considered a module. Otherwise the file is treated as a script.</p>
-<h5>3. re-export doesn't import value locally.</h5>
+<h5>3. Re-export doesn't import value locally.</h5>
 <p>Re-export simply propagate the value to the next import.</p>
-<h5>4. export * from &quot;module&quot;;</h5>
+<h5>4. Export * from &quot;module&quot;;</h5>
 <p>Export everthing. This can be used as top level export.</p>
-<h5>5. import for side effects.</h5>
+<h5>5. Import for side effects.</h5>
 <p>If a module has no export, import it will simply execute it. It's useful for setting up an environment.</p>
-<h5>6. barrel.</h5>
+<h5>6. Barrel.</h5>
 <p>Re-exporting everything in index.ts.</p>
 <h2>async in react.</h2>
-<p>Async requets can cause some problems in react component.</p>
-<h5>1. Async response can arrive after a component is teared down.</h5>
-<p>Async response can arrive after the component is unmounted. This will cause a react's runtime exception, which is an error message. Not a big deal but it can be better.</p>
+<p>Asynchronous requests can cause some problems in react component.</p>
+<h5>1. Asynchronous response can arrive after a component is teared down.</h5>
+<p>Asynchronous response can arrive after the component is unmounted. This will cause a React's runtime exception, which is an error message. Not a big deal but it can be better.</p>
 <pre><code class="language-typescript"><span class="hljs-keyword">const</span> ismounted = useRef&lt;<span class="hljs-built_in">boolean</span>&gt;(<span class="hljs-literal">true</span>);
 
 useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
