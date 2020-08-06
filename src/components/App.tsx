@@ -6,6 +6,7 @@ import {
   ArticlePage,
   ArticleChronoListPage,
   NoteChronoListPage,
+  OthersChronoListPage,
   TagListPage,
   TagsPage,
 } from './Page';
@@ -33,6 +34,7 @@ function App() {
         <Route exact path="/tag/:tag" component={TagListPage} />
         <Route exact path="/tags" component={TagsPage} />
         <Route exact path="/notes" component={NoteChronoListPage} />
+        <Route exact path="/others" component={OthersChronoListPage} />
       </Switch>
     </HashRouter>
   );

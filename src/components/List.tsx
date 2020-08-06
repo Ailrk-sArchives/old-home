@@ -1,4 +1,4 @@
-import {Markdown, chronoList, articlesDB, notesDB, allDB} from '../state/markdowns';
+import {Markdown, chronoList, articlesDB, notesDB, othersDB, allDB} from '../state/markdowns';
 import {Container, Col, Badge} from 'react-bootstrap';
 import React from 'react';
 import {css} from 'glamor';
@@ -74,6 +74,10 @@ export function ArticleChronoList() {
 
 export function NotesChronoList() {
   return <List markdowns={chronoList(notesDB)} />
+}
+
+export function OthersChronoList() {
+  return <List markdowns={chronoList(othersDB)} />
 }
 
 export function TagList() {

@@ -8,10 +8,12 @@ import {unique, flat} from '../untils/list-ops';
 
 export const articlesDB: MarkdownDB = markdowndb('articles', 'runtime');
 export const notesDB: MarkdownDB = markdowndb("notes", "static", "/home");
+export const othersDB: MarkdownDB = markdowndb("others", "static", "/home");
 
 export const allDB: MarkdownDB = new AllDB([
   articlesDB,
   notesDB,
+  othersDB,
 ]);
 
 export function chronoList(md: MarkdownDB): Array<Markdown> {

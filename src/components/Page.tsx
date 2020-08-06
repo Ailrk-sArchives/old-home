@@ -1,6 +1,11 @@
 import React from 'react';
 import {Article} from './Article';
-import {ArticleChronoList, NotesChronoList, TagList} from './List';
+import {
+  ArticleChronoList,
+  NotesChronoList,
+  OthersChronoList,
+  TagList,
+} from './List';
 import {allDB} from '../state/markdowns';
 import {useParams} from 'react-router-dom';
 import {Container, Badge} from 'react-bootstrap';
@@ -19,6 +24,9 @@ export const ArticleChronoListPage: React.FC<{}> = () =>
 export const NoteChronoListPage: React.FC<{}> = () =>
   <AddPageTitle pageTitle={"Notes"} page={<NotesChronoList />} />;
 
+export const OthersChronoListPage: React.FC<{}> = () =>
+  <AddPageTitle pageTitle={"Notes"} page={<OthersChronoList />} />;
+
 export const TagListPage: React.FC<{}> = () => {
   const {tag} = useParams();
   return <AddPageTitle pageTitle={`Tag: ${tag as string}`} page={<TagList />} />;
@@ -31,14 +39,14 @@ export function TagsPage() {
       <h3 style={{
         color: "DimGray",
         fontWeight: "bold",
-          marginLeft: 30,
-          marginBottom: 40,
+        marginLeft: 30,
+        marginBottom: 40,
       }}>All Tags</h3>
       <div style={{
         ...linkStyle,
-          fontSize: 25,
-          paddingLeft: 40,
-          paddingRight: 100,
+        fontSize: 25,
+        paddingLeft: 40,
+        paddingRight: 100,
       }}>
         {
           tags.map(t =>
