@@ -51,8 +51,8 @@
 ## The order of an element.
 #### define:
 ```
-  If G is a group, and g ∈ G, then we say g has finite order
-  if ∃ n ∈ ℤ s.t gⁿ = e. If such an n exists, the smallest such n is
+  If G is a group, and g ∈ G, then we say g has finite order if
+  ∃ n ∈ ℤ s.t gⁿ = e. If such an n exists, the smallest such n is
   called order of g, denoted o(g). If g does not have finite order,
   we say that g has infinite order, denoted o(g) = ∞.
 ```

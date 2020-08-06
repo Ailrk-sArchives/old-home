@@ -1,0 +1,160 @@
+<h1>Some mixin.</h1>
+<p>Today do some oop. ewww.</p>
+<h2>Mixin</h2>
+<h4>Mixin as composable subclass</h4>
+<p>Each mixin is a partially defined subclass that can be applied to a superclass to compose a full implementation.</p>
+<h4>Lingo for mixins</h4>
+<ul>
+<li><code>Mixin definition</code>: Definition of the mixin class itself.</li>
+<li><code>Mixin application</code>: Application of mixin subclasses, which produces a new superclass.</li>
+</ul>
+<p>Compare with traditional subclassing, mixin definitions doesn't have a fixed superclass, so they are free to to be composed to form <code>mixin application</code>.</p>
+<h4>Hypothetical example</h4>
+<p>If typescript support mixin, the syntax can be:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">class</span> B <span class="hljs-keyword">extends</span> A <span class="hljs-keyword">with</span> M {}
+</code></pre>
+<p>where the superclass is A-with-M rather than A. A-with-M is the Mixin application. The inheritance process is <code>Top -&gt; A -&gt; A with M -&gt; B</code></p>
+<h4>Isn't it similar to trait or typeclass?</h4>
+<p>No. The naming is very chaotic. Some people refer trait as mixin, but in rust trait is typeclass.</p>
+<h4>What's the difference?</h4>
+<p><strong>1</strong> Typeclass provides type constrains, while mixin have no impact on type system except the <code>minxin application</code> part.</p>
+<pre><code class="language-haskell"><span class="hljs-comment">-- typeclass serves as type constraints</span>
+<span class="hljs-comment">-- By implementing Eq you not only have the definition of (==),</span>
+<span class="hljs-comment">-- but also a notion to restrict the range the type parameter can take.</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Val</span> = <span class="hljs-type">Val</span> a</span>
+<span class="hljs-class"><span class="hljs-keyword">instance</span> (<span class="hljs-type">Eq</span> <span class="hljs-title">a</span>) =&gt; <span class="hljs-type">Val</span> a <span class="hljs-keyword">where</span></span>
+    (<span class="hljs-type">Val</span> a) == (<span class="hljs-type">Val</span> b) = a == b
+<span class="hljs-title">foo</span> :: (<span class="hljs-type">Eq</span> a) =&gt; a -&gt; a -&gt; boolean
+</code></pre>
+<pre><code class="language-typescript"><span class="hljs-comment">// Eq mixin relies on the existence of `value` property</span>
+<span class="hljs-keyword">class</span> Eq {
+    <span class="hljs-keyword">declare</span> <span class="hljs-keyword">public</span> id: <span class="hljs-built_in">number</span>;
+    eq(other: Eq) {
+        <span class="hljs-keyword">this</span>.id == other.id;
+    }
+}
+<span class="hljs-keyword">class</span> A { <span class="hljs-keyword">public</span> value: <span class="hljs-built_in">string</span> = <span class="hljs-string">""</span>; }
+<span class="hljs-keyword">interface</span> A <span class="hljs-keyword">extends</span> Eq {};
+applyMixin(A, [Eq]);
+</code></pre>
+<p><strong>2</strong> typeclass can achieve ad hoc polymorphism by providing implementation for different type, while mixin is not polymorphic.</p>
+<pre><code class="language-haskell"><span class="hljs-comment">-- similar to function overloading, here (==) is overloaded</span>
+<span class="hljs-comment">-- with different implementations for Val and Lue.</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Val</span> a = <span class="hljs-type">Val</span> a</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Lue</span> a = <span class="hljs-type">Lue</span> a</span>
+<span class="hljs-class"><span class="hljs-keyword">instance</span> (<span class="hljs-type">Eq</span> <span class="hljs-title">a</span>) =&gt; <span class="hljs-type">Val</span> a <span class="hljs-keyword">where</span></span>
+    (<span class="hljs-type">Val</span> a) == (<span class="hljs-type">Val</span> b) = a == b
+<span class="hljs-class"><span class="hljs-keyword">instance</span> (<span class="hljs-type">Eq</span> <span class="hljs-title">a</span>) =&gt; <span class="hljs-type">Lue</span> a <span class="hljs-keyword">where</span></span>
+    (<span class="hljs-type">Lue</span> a) == (<span class="hljs-type">Lue</span> b) = a != b
+</code></pre>
+<p>In contrast, mixin only have one implementation. Implementation of typeclass is based on the pair between typeclass and type while for mixin implementation is based on the definition of mixin itself.</p>
+<p><strong>3</strong> typeclass has no concept of inheritance, while mixin is a way to insert class definition into an inheritance hierarchy.</p>
+<p>Mixin class will eventually be applied and merged into an inheritance tree, while typeclass have no idea of inheritance what so ever. Superclass and subclass in typeclass is another way of saying you must provide a instance of some typeclasses in order to implement this class.</p>
+<h4>What's the difference between abstract class default implementation?</h4>
+<p>Abstract class + default implementation is still normal subclassing, which on subclass has one fixed superclass.</p>
+<p>Mixin allows you to have multiple mixin definitions composed to make a different superclass to inherit from.</p>
+<h4>How do I feel about it?</h4>
+<p>It's not a real abstraction technic, it just builds a concrete implementation from smaller concrete implementations.</p>
+<h2>Declaration merging</h2>
+<h4>Different types of declarations</h4>
+<p>Based on where the declaration exists, declarations in typescript can be roughly classified into three categories. Differences are subtle but it gives a sense of the boundary between compile time and runtime constructs.</p>
+<ul>
+<li>Namespace-creating declaration. Declare names that are accessible with dot notation. (<code>var name; (()=&gt;{val.foo=1})(val);</code>)</li>
+<li>Type-creating declaration. Declare type.</li>
+<li>Value-creating declaration. Simple name binding that is visible in the output code.</li>
+</ul>
+<h4>Declaration type table (just get it from ts handbook)</h4>
+<table>
+<thead>
+<tr>
+<th>Declaration</th>
+<th>Namespace</th>
+<th>Type</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Namespace</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>Class</td>
+<td></td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>Enum</td>
+<td></td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>Interface</td>
+<td></td>
+<td>X</td>
+<td></td>
+</tr>
+<tr>
+<td>Type Alias</td>
+<td></td>
+<td>X</td>
+<td></td>
+</tr>
+<tr>
+<td>Function</td>
+<td></td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>Variable</td>
+<td></td>
+<td></td>
+<td>X</td>
+</tr>
+</tbody>
+</table>
+<h4>Interface declaration merging</h4>
+<pre><code class="language-typescript"><span class="hljs-keyword">interface</span> Foo {foo(a: <span class="hljs-built_in">string</span>);}
+<span class="hljs-keyword">interface</span> Foo {foo(a: <span class="hljs-built_in">number</span>);}
+</code></pre>
+<h4>Namespace is flexible for declaration merging</h4>
+<p><strong>1</strong> Namespace with namespace, works as c++.</p>
+<pre><code class="language-typescript">namspace A {
+    foo: <span class="hljs-built_in">string</span> = <span class="hljs-number">10</span>;
+}
+<span class="hljs-comment">// will compile to</span>
+<span class="hljs-keyword">var</span> A;
+(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">A</span>) </span>{
+    A.foo = <span class="hljs-number">10</span>;
+})(A || (A = {}))
+</code></pre>
+<p><strong>2</strong> Namespace with enum to add static function for it.<br>
+<strong>3</strong> Namespace with class allows to define internal class.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">class</span> Album {
+    label: Album.AlbumLabel;
+}
+<span class="hljs-keyword">namespace</span> Album {
+    <span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> AlbumLabel {}
+}
+</code></pre>
+<p><strong>4</strong> Namespace with function. You can extend the function with extra members. It essentially gives function <code>static</code> in c and still type check.</p>
+<h2>ts enum</h2>
+<h4>How does typescript compile enum?</h4>
+<pre><code class="language-typescript"><span class="hljs-keyword">enum</span> E { A, B };
+</code></pre>
+<p>This will be compiled to</p>
+<pre><code class="language-typescript"><span class="hljs-comment">// essentially how they compile namespace, but will different logic.</span>
+<span class="hljs-comment">// note assignment in js will return the rhs value. It's really weird.</span>
+<span class="hljs-comment">// It basically creates a circular key reference each other.</span>
+<span class="hljs-keyword">var</span> E; (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">E</span>) </span>{E[E[<span class="hljs-string">"A"</span>]] = <span class="hljs-number">0</span> = <span class="hljs-string">"A"</span>; E[E[<span class="hljs-string">"B"</span>]] = <span class="hljs-number">1</span> = <span class="hljs-string">"B"</span>;} (E || E = {}))
+</code></pre>
+<p>In addition, there is a difference between const and non const enum when they are addressed in code. For const enum some optimization can be performed (get inlined).</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">enum</span> E { A, B }; <span class="hljs-keyword">const</span> <span class="hljs-keyword">enum</span> CE { A, B };
+<span class="hljs-keyword">let</span> a = E.A;    <span class="hljs-comment">// =&gt; compile to let a = E.A;</span>
+<span class="hljs-keyword">let</span> b = CE.A;   <span class="hljs-comment">// =&gt; compile to let b = 0;</span>
+</code></pre>
