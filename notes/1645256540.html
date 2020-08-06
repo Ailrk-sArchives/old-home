@@ -39,3 +39,25 @@ useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;<
 <p>An iteration over array or string will be simply compiled to a simple loop, but for a general iterator the compiler will needs to shove an entire implementation of the iterator protocol, which can bloat the code size.</p>
 <h2>Promise are not evaluated lazily</h2>
 <p>Executor passed into the promise will be called immediately. All the chain calls are just methods to access the result of executor. I am a little bit surprised because I always thought promises are lazily evaluated. But if you think carefully about it there is no special reason for it to be so. Promise is designed to replace callback style asynchronous call, which you typically need to pass a callback to handle the value when it is arrived, and another callback to handle error case. With promise you don't pass these two functions into another async function, but rather wrap the entire async computation in a promise, then use <code>then</code> and <code>catch</code> to pass those callbacks.</p>
+<h2>Common pattern type Class&lt;T&gt; = Function &amp; { prototype: T }</h2>
+<p>Works like the classical linked list definition. <code>&amp;</code> is use to add new properties to exist type. It's applicable with any types includes built-ins, so it's a good way to extend build-ins without touching oop.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">type</span> LList&lt;T&gt; = T &amp; { next LList&lt;T&gt;};
+<span class="hljs-keyword">type</span> Class&lt;T&gt; = <span class="hljs-built_in">Function</span> &amp; {prototype: T};
+</code></pre>
+<h2>You have abstract class in typescript</h2>
+<p>Never know it before.</p>
+<h2>typeof at typelevel.</h2>
+<p><code>typeof</code> can also be used at type level gives <code>decltype</code> style inference.</p>
+<pre><code class="language-typescript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fn</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-keyword">return</span> {a: <span class="hljs-number">1</span>, b: <span class="hljs-number">2</span>}};
+<span class="hljs-keyword">declare</span> <span class="hljs-keyword">const</span> b: ReturnType&lt;<span class="hljs-keyword">typeof</span> fn&gt;;
+</code></pre>
+<p>A special case for <code>typeof</code> on const array literal.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> data = [<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>] <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>;
+<span class="hljs-keyword">type</span> Data = <span class="hljs-keyword">typeof</span> data[<span class="hljs-built_in">number</span>]; <span class="hljs-comment">// "a" | "b"</span>
+</code></pre>
+<h2>tsc configs</h2>
+<ul>
+<li>noEmitOnError (refuse to compile when there is type error)</li>
+<li>noImplicitAny</li>
+<li>strictNullChecks (is on with <code>struct: true</code>)</li>
+</ul>
