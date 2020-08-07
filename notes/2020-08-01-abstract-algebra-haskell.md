@@ -1,4 +1,4 @@
--- tag math abstract-algebra
+-- tag note math abstract-algebra
 -- title abstract algebra. Order of an element, cyclic group.
 -- date 2020-08-01
 -- source https://www.youtube.com/watch?v=xX-vBP3Yfuc&list=PL0vayjHV8kQCAll2Pb7JM4IOtLd6jPJMC&index=2&t=8s

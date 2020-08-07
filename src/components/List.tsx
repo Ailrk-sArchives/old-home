@@ -80,6 +80,10 @@ export function OthersChronoList() {
   return <List markdowns={chronoList(othersDB)} />
 }
 
+export function ReportChronoList() {
+  return <List markdowns={chronoList(othersDB)} />
+}
+
 export function TagList() {
   const {tag} = useParams();
   return <List markdowns={allDB.get(tag as string) ?? []} />

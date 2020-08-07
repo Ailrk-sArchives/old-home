@@ -1,4 +1,4 @@
--- tag math abstract-algebra
+-- tag note math abstract-algebra
 -- title Note: Some abstract algebra
 -- date 2020-07-10
 -- source https://www.youtube.com/watch?v=xX-vBP3Yfuc&list=PL0vayjHV8kQCAll2Pb7JM4IOtLd6jPJMC&index=2&t=8s

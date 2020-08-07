@@ -1,36 +1,22 @@
--- tag note math abstract-algebra
--- title More abstract algebra.
--- date 2020-08-06
--- source https://www.youtube.com/watch?v=xX-vBP3Yfuc&list=PL0vayjHV8kQCAll2Pb7JM4IOtLd6jPJMC&index=2&t=8s
-;;
-# Today's abstract algebra
-
-## General linear group
-#### define
-```
-    GL(n, ℝ)
+<h1>Today's abstract algebra</h1>
+<h2>General linear group</h2>
+<h4>define</h4>
+<pre><code>    GL(n, ℝ)
     = {all n×n matrices with nonzero determinant and real entries}
     = {all n×n intertable matrices with real entries}
-```
-
-## Special linear group
-#### define
-```
-    SL(n, ℝ) =
+</code></pre>
+<h2>Special linear group</h2>
+<h4>define</h4>
+<pre><code>    SL(n, ℝ) =
         {all matrices with determinant equal to 1 and real entries}
-```
-
-## Proof
-### prove the special linear group is a subgroup of the general linear group.
-
-#### statement
-```
-SL(n, ℝ) ≤ GL(n, ℝ)
-```
-
-#### proof
-```
-    Suppose H = SL(n, ℝ)
+</code></pre>
+<h2>Proof</h2>
+<h3>prove the special linear group is a subgroup of the general linear group.</h3>
+<h4>statement</h4>
+<pre><code>SL(n, ℝ) ≤ GL(n, ℝ)
+</code></pre>
+<h4>proof</h4>
+<pre><code>    Suppose H = SL(n, ℝ)
             G = GL(n, ℝ)
 
     1. note I = |1 0|
@@ -47,19 +33,15 @@ SL(n, ℝ) ≤ GL(n, ℝ)
        ⇒ A ∈ SL(n, ℝ)
     so SL(n, ℝ) is a group
     ∵ SL(n, ℝ) ≤ GL(n, ℝ)
-```
-
-### Prove a finite nonempty subset of G closed under the group operation is a subgroup
-#### statement:
-```
-Supose G is a group and H is a finite nonempty subset of G which
+</code></pre>
+<h3>Prove a finite nonempty subset of G closed under the group operation is a subgroup</h3>
+<h4>statement:</h4>
+<pre><code>Supose G is a group and H is a finite nonempty subset of G which
 is closed under the group operation.
 Prove H ≤ G.
-```
-
-#### proof:
-```
-    1. H ≢ ∅ by defition.
+</code></pre>
+<h4>proof:</h4>
+<pre><code>    1. H ≢ ∅ by defition.
     2. H is closed under group operation by definition.
     3. let x ∈ H.
        note x², x³, x⁴, ... ∈ H,
@@ -77,17 +59,13 @@ Prove H ≤ G.
        So H is closed under inverse.
     so H ≤ G
     ∎
-```
-
-### Prove the intersection of two subgroups is also a group
-#### statement:
-```
-If G is a group and H, K ≤ G, then H ∩ K ≤ G.
-```
-
-#### proof:
-```
-    Suppose H, K ≤ G.
+</code></pre>
+<h3>Prove the intersection of two subgroups is also a group</h3>
+<h4>statement:</h4>
+<pre><code>If G is a group and H, K ≤ G, then H ∩ K ≤ G.
+</code></pre>
+<h4>proof:</h4>
+<pre><code>    Suppose H, K ≤ G.
     1. since H, K ≤ G, H ≢ ∅ ∧ G ≢ ∅.
        thus H ∩ K ≢ ∅.
     2. let x, y ∈ H ∩ K.
@@ -101,12 +79,10 @@ If G is a group and H, K ≤ G, then H ∩ K ≤ G.
        x⁻¹ ∈ H ∧ x⁻¹ ⇔ K ⇔ x⁻¹ ∈ H ∩ K
     so H ∩ K ∈ G
     ∎
-```
-
-### Proof. the center of a subgroup of GL(2, ℂ)
-#### statement:
-```
-G = GL(2, ℂ),
+</code></pre>
+<h3>Proof. the center of a subgroup of GL(2, ℂ)</h3>
+<h4>statement:</h4>
+<pre><code>G = GL(2, ℂ),
 H =
   { |a b|       |        }
   { |c d|  ∈ G  |  c = 0 },
@@ -115,41 +91,27 @@ B =
   { |0 d|  ∈ H  |  a = d ≢ 0 ∧ b = 0 }
 
 prove Z(H) = B
-```
-
-#### proof:
-```
-TODO
-```
-
-## Direct product of cyclic groups
-TODO
-
-## Function
-#### define
-```
-    A function f from S to T is a rule that to every element s ∈ S
+</code></pre>
+<h4>proof:</h4>
+<pre><code>TODO
+</code></pre>
+<h2>Direct product of cyclic groups</h2>
+<p>TODO</p>
+<h2>Function</h2>
+<h4>define</h4>
+<pre><code>    A function f from S to T is a rule that to every element s ∈ S
     assigns an element f(s) ∈ T.
-```
-
-#### Notation
-```
-    f : S → T
+</code></pre>
+<h4>Notation</h4>
+<pre><code>    f : S → T
     S = domain,
     T = codomain.
-```
-
-#### example-1
-```
-```
-
-#### example-2
-```
-```
-
-#### example-3
-```
-```
-
-## Relation
-TODO
+</code></pre>
+<h4>example-1</h4>
+<pre><code></code></pre>
+<h4>example-2</h4>
+<pre><code></code></pre>
+<h4>example-3</h4>
+<pre><code></code></pre>
+<h2>Relation</h2>
+<p>TODO</p>

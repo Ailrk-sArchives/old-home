@@ -1,4 +1,4 @@
--- tag math abstract-algebra
+-- tag note math abstract-algebra
 -- title More abstract algebra. Proofs and subgroups.
 -- date 2020-08-04
 -- source https://www.youtube.com/watch?v=xX-vBP3Yfuc&list=PL0vayjHV8kQCAll2Pb7JM4IOtLd6jPJMC&index=2&t=8s
