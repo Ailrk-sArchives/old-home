@@ -7,7 +7,7 @@
 
 ## Some more proof
 
-### Proof of the formula for the inverse of a product.
+### Proof of the formula for the inverse of a product. ✭
 #### statement:
 ```
   If G is a group, and x, y ∈ G, then (xy)⁻¹ = y⁻¹x⁻¹
@@ -65,7 +65,7 @@
     o(3) = ∞
 ```
 
-#### example-2
+#### example-2 ✭
 ```
   G = ℤ₂₁, ⊞ = addition mod 21
   6 ∈ ℤ₂₁, 21 . 6 = 6 ⊞ 6 ⊞ 6 ⊞ ... ⊞ 6 = 0 => 6 has finite order.
@@ -171,7 +171,7 @@ If G is written additively,
 ```
 
 ## Proof
-### Proof if x is a generator so is its inverse
+### Proof if x is a generator so is its inverse ✭
 #### statement:
 ```markown
     if G = ⟨x⟩ then G = ⟨x⁻¹⟩

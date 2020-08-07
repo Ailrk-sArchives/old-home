@@ -94,7 +94,7 @@ where a ∈ G, prove H ≤ G.
     ∎
 ```
 
-### Prove the cenralizer is a subgroup.
+### Prove the cenralizer(center) is a subgroup. ✭
 
 #### statement:
 ```

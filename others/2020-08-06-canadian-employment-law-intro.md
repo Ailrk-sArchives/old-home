@@ -13,7 +13,7 @@ Direct `contratual relationship` between a compnay and an individual.
 #### Employee
 1. Employment-specific statutes
 2. Administrative obligations
-3. Reasonable notice for `indefinite hires` unlesss there are clear terms regarding termination of employment
+3. Reasonable notice for `indefinite hires` unless there are clear terms regarding termination of employment
 4. Contract of service
 5. Part of the business of the company.
 
@@ -46,7 +46,7 @@ There is no standalone `intern` section in employment law, so being hired as an 
 
 `Note` When a company providing you an `intern` position it could either be as an employee or an independent contractor.
 
-`Note` `co-op` job can be paied less, so be notice.
+`Note` `co-op` job can be paid less, so be notice.
 
 ## employment agreement
 Clear and mutual understanding of the expectations and obligations during the relationship.
@@ -55,12 +55,14 @@ Any dispute that is not specified on the agreement will be took into common law 
 
 `Note`: The agreement is unenforceable if it is signed after the person already has the job (for lack of consideration).
 
-`Note`: `signing bonus`, which gives you couple hundered bucks, and now you are agreed with the a agreement.
+`Note`: traps in form of `signing bonus`, which gives you couple hundered bucks, but need you to agree with a new agreement.
+
+`Note`: `signing bonus` is also a common way for employers to keep people longer.
 
 ## key employment compliance issues
 #### Employment standard
 - Employers need to record keeping, hours of work, minimum wages, overtime pay/time off, vacation time off and pay.
-- Minimum wages apply to all employees, so you can not say because I am an intern so you pay me less than that.
+- Minimum wages apply to all employees, so you can not say because I am an intern so you pay me less.
 
 #### Human rights
 ...
@@ -72,7 +74,7 @@ Any dispute that is not specified on the agreement will be took into common law 
 Termination will happen in two from: "cause" and "without cause"
 
 #### Terminated for Cause
-Termination with cause has very high threshold, meaning you have serious misconduct.
+Termination with cause has very high threshold, meaning you need to have serious misconduct.
 
 `Note` If you are simply suck you will not be terminated with cause.
 

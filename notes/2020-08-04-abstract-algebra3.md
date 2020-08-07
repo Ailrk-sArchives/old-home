@@ -73,7 +73,7 @@
 ```
 
 
-### Prove every cyclic group is abelian
+### Prove every cyclic group is abelian ✭
 #### statement:
 ```
     Every cyclic group is abelian.
@@ -89,7 +89,7 @@
 ```
 
 
-## Subgroup
+## Subgroup ✭
 #### define:
 ```
 Let (G, *) be a group. A subgroup of (G, *) is a subset H ⊆ G s.t.
@@ -122,7 +122,7 @@ Additive group of integer modulo 4.
 // it's a proper subgroup.
 ```
 
-#### example-5
+#### example-5 ✭
 ```
 Let G be a group.
 Let Z(G) = {x ∈ G | xg = gx ∀ g ∈ G}
@@ -130,7 +130,7 @@ where Z is called `center of G`
 Z(G) ≤ G.
 ```
 
-#### example-6
+#### example-6 ✭
 ```
 GL: General Linear group
 SL: Special Linear group
