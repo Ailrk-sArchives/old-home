@@ -49,8 +49,8 @@ export function TagsPage() {
         paddingRight: 100,
       }}>
         {
-          tags.map(t =>
-            <Badge variant="light" style={{marginRight: 10}}>
+          tags.map((t, idx) =>
+            <Badge variant="light" style={{marginRight: 10}} key={idx}>
               <Link to={`/tag/${t}`} style={{...linkStyle, color: "LightCoral"}}>
                 {t}
               </Link>
@@ -76,5 +76,3 @@ function AddPageTitle(props: {pageTitle: string, page: JSX.Element}) {
     </Container>
   );
 }
-
-

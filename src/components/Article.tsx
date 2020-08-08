@@ -29,7 +29,7 @@ export function Article(props: {
     return () => {
       componentIsMounted.current = false;
     }
-  })
+  }, []);
 
   useEffect(() => {
     const fetchArticle = async () => {

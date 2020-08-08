@@ -121,37 +121,3 @@ prove Z(H) = B
 ```
 TODO
 ```
-
-## Direct product of cyclic groups
-TODO
-
-## Function
-#### define
-```
-    A function f from S to T is a rule that to every element s ∈ S
-    assigns an element f(s) ∈ T.
-```
-
-#### Notation
-```
-    f : S → T
-    S = domain,
-    T = codomain.
-```
-
-#### example-1
-```
-```
-
-#### example-2
-```
-```
-
-#### example-3
-```
-```
-
-## Relation
-TODO
-
-good ood
