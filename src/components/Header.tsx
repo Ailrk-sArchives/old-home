@@ -17,13 +17,24 @@ const headerStyle = css({
   marginBottom: "30px",
 });
 
+export function CollapsedHeader() {
+  return (
+    <Container>
+      <Row style={{paddingTop: "40px", marginLeft: "30px"}}>
+      <Toggle />
+      </Row>
+      <hr {...css({paddingBottom: "30px", marginTop: "50px"})} />
+    </Container>
+  )
+}
+
 export function Header() {
   return (
     <Container>
       <Row {...headerStyle} xs={8}>
         <Col>
           <Link to={'/'} style={{...linkStyle, color: "LightCoral"}}>
-            <h1 style={{fontWeight: "bolder", textShadow: "0px 1px, 1px 0px, 1px 1px"}}>
+            <h1 style={{fontSize: "3em", fontWeight: "bolder", textShadow: "0px 3px, 3px 0px, 3px 3px"}}>
               <b> ⟨ A Bag of Words ⟩ </b>
             </h1>
           </Link>

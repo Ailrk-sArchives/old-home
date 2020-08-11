@@ -8,7 +8,7 @@ export const centerLabel = css({
 
 export const textTheme = css({
   fontFamily: "Ubuntu",
-  fontSize: "22px",
+  fontSize: "1.2em",
   lineHeight: 2.1,
 });
 

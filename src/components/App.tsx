@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {HashRouter, Switch, Route} from 'react-router-dom';
-import {Header} from './Header';
+import {Header, CollapsedHeader} from './Header';
 import {About} from './About';
+import {useWindowSize} from '../state/hooks';
 import {
   ArticlePage,
   ArticleChronoListPage,
@@ -24,9 +25,13 @@ function App() {
   // }, []);
   // console.log(test);
 
+  const {width} = useWindowSize();
+
   return (
     <HashRouter>
-      <Header />
+      {
+        width > 1000 ? <Header /> : <CollapsedHeader />
+      }
       <Switch>
         <Route exact path="/article/:id" component={ArticlePage} />
         <Route exact path="/" component={ArticleChronoListPage} />

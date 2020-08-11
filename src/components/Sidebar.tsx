@@ -4,24 +4,31 @@ import {css} from 'glamor';
 import {Link} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
 import {FaTimes} from 'react-icons/fa';
+import {useWindowSize} from '../state/hooks';
 
 
-const sidebarStyle = css({
+const wideSideBarStyle = css({
   position: "fixed",
+  background: "WhiteSmoke",
+  zIndex: "1000",
+  top: 0,
+  paddingTop: "30px",
+  paddingLeft: "20px",
   height: "100%",
   width: "100%",
-  background: "WhiteSmoke",
-  paddingTop: "30px",
-  paddingLeft: "30px",
+});
+
+const collapsedSidebarStyle = css({
   top: 0,
 });
 
 export function Sidebar(props: {
   setSidebarOn: React.Dispatch<React.SetStateAction<boolean>>
 }) {
+  const {width} = useWindowSize();
   const {setSidebarOn} = props;
   return (
-    <Container {...sidebarStyle}>
+    <Container {...(width > 1000 ? wideSideBarStyle : collapsedSidebarStyle)}>
       <FaTimes style={{
         marginLeft: "10px",
         color: "Salmon",

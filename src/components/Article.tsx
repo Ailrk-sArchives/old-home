@@ -7,7 +7,7 @@ import {HoverLink} from './Misc';
 import '../styles/Article.css';
 
 const defaultArticleStyle = css(textTheme, {
-  paddingLeft: "101px",
+  paddingLeft: "60px",
   paddingTop: "30px",
   marginBottom: "100px",
   overflow: "hidden",

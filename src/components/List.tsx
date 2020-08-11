@@ -8,10 +8,13 @@ import {HoverLink} from './Misc';
 
 const itemRowStyle = css(textTheme, {
   marginLeft: "80px",
+  paddingRight: "140px",
   paddingBottom: "30px",
   marginBottom: "50px",
   borderLeft: "10px solid LightCoral",
 });
+
+const collapsedItemRowStyle = css()
 
 function ItemRow(props: {
   markdown: Markdown
@@ -23,14 +26,14 @@ function ItemRow(props: {
   return (
     <Container {...itemRowStyle}>
       <Col>
-        <h2>
+        <h2 style={{fontSize: "1.5em"}}>
           <HoverLink text={title}
             link={`${process.env.PUBLIC_URL}/#/article/${id}`}
             ogColor={"DimGrey"}
             onHoverColor={"LightCoral"} />
         </h2>
       </Col>
-      <Col {...css({fontSize: 20, paddingLeft: "50px", color: "LightCoral", fontWeight: "bold"})}>
+      <Col {...css({fontSize: "1em", paddingLeft: "50px", color: "LightCoral", fontWeight: "bold"})}>
         {time.toJSON().replace(/-/gi, '.').split('T')[0]}
       </Col>
       <Col {...css({paddingLeft: "45px"})}>
