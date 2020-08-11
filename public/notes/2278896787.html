@@ -1,0 +1,39 @@
+<h1>NodeJs more on event loop</h1>
+<h2>Note on different event queues</h2>
+<h4>Timer Queue</h4>
+<p>Any call to <code>setTimeout</code> or <code>setInterval</code> will makes node add a timer to the timers heap (there is a heap area specifically for allocating timeres...). When the event loop is visiting the timer queue, node will check the timers heap and looking for expired timers. More than one expired timer will cause there callback be invoked in the order of they were set.</p>
+<p>Note timer queue doesn't enforce the timeout duration, it only ensure the callback will be called after the timer is expired, but it doesn't care about how long it is expired.</p>
+<h4>Next tick Queue</h4>
+<p>Next tick queue is not natively provided by the libuv. Node runtime implement it for itself.</p>
+<p>Note recursively call <code>process.nextTick</code> will cause the event loop never leave the next tick queue, which can cause starvation.</p>
+<h4>Immediate Queue</h4>
+<p>Different from <code>setTimeout</code> with 0 timeout, immediate queue will be processed immediately after IO phrase.</p>
+<h4>Promises</h4>
+<p>Promise callback is called a microtask, and it will be queued in the microtask queue.</p>
+<p>Note that if node finished microtask queue, but there are new items added into the next tick queue in the mean time, it will go back to next tick queue again. Actually it will only leave microtask and next tick queue untill they are all empty.</p>
+<p>Also note that next tick queue is managed by node and microtask queue is managed by v8.</p>
+<h2>IO and libuv</h2>
+<p>V8 alone doesn't provide any asyncrhonous IO facilities. All the underlying asychronous IO complexities are provided by libuv.</p>
+<h4>Event loop and javascript</h4>
+<pre><code>===================================================================
+    libuv                        js
+===================================================================
+    timers                    setTimeout/setInterval
+   pending IO callback        return value from IO / IO errors
+   idle handlers
+   prepare handlers
+   IO Poll
+   Check handlers             setImmediate
+   Close handler              .on('close', ...)
+===================================================================
+</code></pre>
+<p>Compare with the conceptual event loop structure in node in which there are 4 different phases, there are 7 phrases in libuv.</p>
+<ul>
+<li>Time: It is just the same as <code>Timer queue</code> in node's point of view</li>
+<li>Pending IO callback: Run pending IO callbacks.</li>
+<li>Idle handlers: Libuv use this phrase to run some internal code.</li>
+<li>Prepare handlers: Run some preparation code before polling for IO.</li>
+<li>IO poll: wait for IO complete</li>
+<li>Check handler: Run some code afte polling. (setImmediate is ran here)</li>
+<li>Close handler: run clean up callback and close IO operations.</li>
+</ul>

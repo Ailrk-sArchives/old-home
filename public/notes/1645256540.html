@@ -1,4 +1,4 @@
-<h1>Typescript moduels, async in react.</h1>
+<h1>Typescript modules; async in react; prototype chain</h1>
 <h2>Modules in typescript</h2>
 <h5>1. Modules execute on their own scope</h5>
 <p>Like all modern module systems. If all functions are pure then the module is just a namespace. But if there is state, since the module is scoped it can serve as a container, avoiding global state.</p>
@@ -12,7 +12,7 @@
 <p>If a module has no export, import it will simply execute it. It's useful for setting up an environment.</p>
 <h5>6. Barrel.</h5>
 <p>Re-exporting everything in index.ts.</p>
-<h2>async in react.</h2>
+<h2>Async in react.</h2>
 <p>Asynchronous requests can cause some problems in react component.</p>
 <h5>1. Asynchronous response can arrive after a component is teared down.</h5>
 <p>Asynchronous response can arrive after the component is unmounted. This will cause a React's runtime exception, which is an error message. Not a big deal but it can be better.</p>
@@ -60,4 +60,129 @@ useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;<
 <li>noEmitOnError (refuse to compile when there is type error)</li>
 <li>noImplicitAny</li>
 <li>strictNullChecks (is on with <code>struct: true</code>)</li>
+</ul>
+<h2>Prototype Chain Model</h2>
+<h4>Why don't store methods in instance?</h4>
+<p>Methods won't change, but if you store them in the instance directly for each new ins you will need another copy of the function, and it can be a waste of memory.</p>
+<p>Prototype sovle the problem by storing common properties of all instances who holds reference to it.</p>
+<h4>How to access prototype?</h4>
+<ul>
+<li><code>Object.getPrototypeOf(object) and Object.setPrototypeOf(object)</code> (standard)</li>
+<li><code>o.__proto__</code> (all implementations have it)</li>
+</ul>
+<p><code>Note</code>:  <code>Func.prototype</code> is the property of the function that specifies the object which will be assigned as prototype of instances created by <code>Func</code>.</p>
+<h4>Inheriting &quot;methods&quot;</h4>
+<p>When an <code>inherited method</code> is called, <code>this</code> will points to the inheriting object. Rule of thumbs: value closer to the callsite in the prototype chain will be used.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">let</span> o = {a: <span class="hljs-number">2</span>, m: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.a + <span class="hljs-number">1</span>}};
+<span class="hljs-keyword">let</span> p = <span class="hljs-built_in">Object</span>.create(o);   <span class="hljs-comment">// p inherits from o;</span>
+p.a = <span class="hljs-number">20</span>;
+p.m();  <span class="hljs-comment">// m will access 20 rather than 2.</span>
+</code></pre>
+<h4>How does different ways of creating objecte determine prototype chain.</h4>
+<h5>Created with syntax contructs</h5>
+<p>Syntax contructs means value can be created with specific syntaxs like <code>{}</code>.</p>
+<p>Some examples:</p>
+<h6>Syntax <code>const o = {a: 1}</code></h6>
+<p><code>o -&gt; Object.prototype -&gt; null</code></p>
+<h6>Syntax <code>const b = [1, 2]</code></h6>
+<p><code>b -&gt; Array.prototype -&gt; Object.prototype -&gt; null</code></p>
+<h6>Syntax <code>const f = function () {return 2}</code></h6>
+<p><code>f -&gt; Function.prototype -&gt; Object.prototype -&gt; null</code></p>
+<h5>Created with a constructor.</h5>
+<p>Example from MDN</p>
+<pre><code class="language-typescript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">G</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">this</span>.vertices = []
+    <span class="hljs-keyword">this</span>.edges = []
+}
+G.prototype = {
+    addVertex: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">v</span>) </span>{
+        <span class="hljs-keyword">this</span>.vertices.push(v);
+    }
+}
+<span class="hljs-keyword">const</span> g = <span class="hljs-keyword">new</span> G();
+</code></pre>
+<p>Where each instance will have <code>vertices</code> and <code>edges</code>, and there prototype will have <code>addVertex</code> function.</p>
+<p><code>new</code> keyword gives functions a different semantic. Calling a function with <code>new</code> will bind a new object to <code>this</code> of the function body, set it's prototype to the function's prototype, and return it after the function returned. (normally return with void).<br>
+The prototype chain for <code>g</code> is:</p>
+<pre><code>g -> G.prototype -> Function.prototype -> Object.prototype -> null
+</code></pre>
+<h6>Create with <code>Object.create(object)</code></h6>
+<p><code>Object.create</code> was introduced to make prototype inheritance easier to write. Name create is a little bit misleading beacuse it is not sheerly create an object, but create an object that inherit from another.</p>
+<p>Again, example from mdn:</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">let</span> a = {a:<span class="hljs-number">1</span>};
+<span class="hljs-comment">// a -&gt; Object.prototype -&gt; null</span>
+
+<span class="hljs-keyword">let</span> b = <span class="hljs-built_in">Object</span>.object(a);
+<span class="hljs-comment">// b -&gt; a -&gt; Object.prototype -&gt; null</span>
+
+<span class="hljs-comment">// b.a = 10 add a new property on instance b, which will</span>
+<span class="hljs-comment">// shadow a in b's prototype.</span>
+<span class="hljs-comment">// note: this will not be allowed in typescript.</span>
+b.a = <span class="hljs-number">10</span>
+
+<span class="hljs-keyword">let</span> d = <span class="hljs-built_in">Object</span>.create(<span class="hljs-literal">null</span>)
+<span class="hljs-comment">// d -&gt; null</span>
+d.hasOwnProperty === <span class="hljs-literal">false</span>;
+</code></pre>
+<h5>Create with class</h5>
+<p>Class is really a sugar for prototype. Let's try to rewrite this class definition to prototype style...</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">class</span> Polygon {
+    <span class="hljs-keyword">constructor</span>(<span class="hljs-params">height, width</span>) {
+        <span class="hljs-keyword">this</span>.height = heigh;
+        <span class="hljs-keyword">this</span>.width = width;
+    }
+
+    log() {
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${<span class="hljs-keyword">this</span>.heigh}</span> x <span class="hljs-subst">${<span class="hljs-keyword">this</span>.width}</span>`</span>);
+    }
+}
+<span class="hljs-keyword">class</span> Square <span class="hljs-keyword">extends</span> Polygon {
+    <span class="hljs-keyword">constructor</span>(<span class="hljs-params">sideLength</span>) {
+        <span class="hljs-keyword">super</span>(sideLength, sideLength);
+    }
+    area() {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.heigh * <span class="hljs-keyword">this</span>.width;
+    }
+    sideLength(newLength) {
+        <span class="hljs-keyword">this</span>.height = newLength;
+        <span class="hljs-keyword">this</span>.width = newLength;
+    }
+}
+<span class="hljs-keyword">let</span> square = <span class="hljs-keyword">new</span> Square(<span class="hljs-number">2</span>);
+</code></pre>
+<p>This goes to</p>
+<pre><code class="language-typescript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Polygon</span>(<span class="hljs-params">heigh, width</span>) </span>{
+    <span class="hljs-keyword">this</span>.heigh = heigh;
+    <span class="hljs-keyword">this</span>.width = width;
+}
+Polygon.prototype.log = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${<span class="hljs-keyword">this</span>.heigh}</span> x <span class="hljs-subst">${<span class="hljs-keyword">this</span>.width}</span>`</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Square</span>(<span class="hljs-params">sideLength</span>) </span>{
+    Polygon.call(<span class="hljs-keyword">this</span>, sideLength, sideLength);
+}
+
+<span class="hljs-comment">// chain Square's prototype with the new object inherit from</span>
+<span class="hljs-comment">// Polygon.prototype.</span>
+<span class="hljs-comment">// Square.prototype -&gt; Polygon.prototype</span>
+Square.prototype = <span class="hljs-built_in">Object</span>.create(Polygon.prototype);
+
+Square.prototype.area = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.heighi * <span class="hljs-keyword">this</span>.with};
+Square.prototype.sideLength = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">sideLength</span>) </span>{
+    <span class="hljs-keyword">this</span>.heigh = sideLength;
+    <span class="hljs-keyword">this</span>.with = sideLength;
+}
+</code></pre>
+<h4>Performance problems.</h4>
+<ol>
+<li>Lookup for properties higher up on the chain is inefficient.</li>
+<li>Trying to access nonexistent properties will end up traverse the entire chian.</li>
+<li>All enumerable properties will be traversed when iterating over properties of an object.</li>
+<li><code>hasOwnProperty</code> will not traverse the chain. It will only check if the current object has certain property defined for itself. (In fact it is the only function that deal with prototype chain and does not traverse the entire chain).</li>
+</ol>
+<h4>Caveats</h4>
+<ul>
+<li>Make sure there is no super long prototype chain, because it will cause performance issues (like long <code>mro</code> in python).</li>
+<li>Never extend native prototype. It's like change metaclass in python, which pollutes the entire class inheritance.</li>
 </ul>

@@ -6,9 +6,25 @@ import {
 import markdowndb, {Markdown, MarkdownDB} from 'markdowndb.macro';
 import {unique, flat} from '../untils/list-ops';
 
-export const articlesDB: MarkdownDB = markdowndb('articles', 'runtime');
-export const notesDB: MarkdownDB = markdowndb("notes", "static", "/home");
-export const othersDB: MarkdownDB = markdowndb("others", "static", "/home");
+export const articlesDB: MarkdownDB = markdowndb({
+  markdownDir: 'articles',
+  mode: 'runtime',
+  logLevel: "silence",
+});
+
+export const notesDB: MarkdownDB = markdowndb({
+  markdownDir: "notes",
+  mode: "static",
+  publicURL: "/home",
+  logLevel: "silence",
+});
+
+export const othersDB: MarkdownDB = markdowndb({
+  markdownDir: "others",
+  mode: "static",
+  publicURL: "/home",
+  logLevel: "silence",
+});
 
 export const allDB: MarkdownDB = new AllDB([
   articlesDB,

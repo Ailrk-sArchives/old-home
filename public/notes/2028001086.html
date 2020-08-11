@@ -1,0 +1,95 @@
+<h1>Worker threads in node</h1>
+<h2>Pig picture</h2>
+<p>Worker threads are actually isolated v8 instance. Each worker thread will have its own event loop. The main difference from multiprocessing is you can have shared memory with buffer array, but for process you can only use IPC.</p>
+<p>Worker threads runs worker scripts, which can be both another file (passed as filename) or source code in text.</p>
+<p>Each worker thread has it's own isolated v8 environment, and its execution will be isolated from other worker threads. The only way to communicate is to share memory with the main thread (by messge channel).</p>
+<h2>V8 isolation</h2>
+<h4>Isolated instance.</h4>
+<p>V8 <a href="https://v8docs.nodesource.com/node-0.8/d5/dda/classv8_1_1_isolate.html">isolations</a> are separated from each other, and each isolation has its own heap and microtask queue. Not like in c++ threads can access whatever, by default there is nothing shared between two isolations.</p>
+<h4>Implementation</h4>
+<p>V8 isolates are isolate from each other, so to achieve communication across parent and child worker threads will requires some extra help from underlying c++ api.  Creation of wroker threads involve two steps, worker initialization and worker execution.</p>
+<p>During worker initialization worker instances are initialized, and the first communication between parent and child workers is set up to allows passing essential config data from parent to child.</p>
+<p>In worker exection, worker script will be executed with the access of two things: <code>workerData</code> provided by user; config data sent by the parent thread worker during the first communication.</p>
+<pre><code>worker thread implementation                                Userland
+============================================================<
+Parent Js script                          Worker Js Script
+==============↑===========================↑=================< Node
+Node Workers  |                           | Node Worker
+initilization +==public message channel===+  Execution
+   script                                     script
+=====↓===========================================↑==========<
+     +--------initialization message channel-----+  c++ worker
+                       worker.cc                    implementation
+============================================================
+</code></pre>
+<h5>Initialization steps</h5>
+<ol>
+<li>New Worker instance from <code>worker_threads</code></li>
+<li>Parent initilization script calls into c++, which will create an empty worker object.</li>
+<li>The worker object will generate a thread id to itself.</li>
+<li>Create an empty initilization message channel in c++.</li>
+<li>Create a public message channel in javascript side.</li>
+<li>The parent worker calls <a href="http://worker.cc">worker.cc</a>, send initialization metadata to initialization message channel.</li>
+</ol>
+<h5>Execution steps.</h5>
+<ol>
+<li>Create and a new v8 isolate to the worker.</li>
+<li>Initialize libuv for the v8 isolate so the worker can have its own event loops.</li>
+<li>Execute worker execution script.</li>
+<li>Worker execution script calls into c++, get the metadata send from parent worker thread in the initialization step.</li>
+<li>Worker execution script execute the work (file or code).</li>
+</ol>
+<h4>Worker thread pooling</h4>
+<p>Like a normal thread, pooling can help reduce the overhead of frequently spawn new threads.</p>
+<h2>apis.</h2>
+<h4>class: MessageChannel</h4>
+<p>An asychronous two way communication channel (public channel described above). It has two ports <code>port1</code> and <code>port2</code>, which links to <code>MessagePort</code> instances.</p>
+<h4>class: MessagePort extends EventEmitter</h4>
+<p>Represent one end of the <code>MessageChannel</code>. It's the instance will be used to send and receive data.</p>
+<h5>Events of MessagePort</h5>
+<ul>
+<li>'close' emitted once either side of the channel has been disconnected.</li>
+<li>'message' for incoming message</li>
+<li>'messageerror' when deserializing message failed.</li>
+</ul>
+<h5>port.close()</h5>
+<p>Emit <code>close</code> event on both <code>MessagePort</code>.</p>
+<h5>port.postMessage(value[,transferlist])</h5>
+<p>Value be sent is compatible with <code>structured clone algorithm</code></p>
+<ul>
+<li><code>transferlist</code> can be a list of <code>ArrayBuffer</code>, <code>MessagePort</code>, and <code>FileHandle</code> objects.</li>
+<li>After transfering, data in <code>transferlist</code> will no longer be able to be used on the sending side (moved).</li>
+<li>Shared memory like <code>SharedArrayBuffer</code> can not be listed in <code>transferlist</code>, because it can be accessed by both sides of the <code>MessageChannel</code>.</li>
+<li>An argument that is not in the transferlist will be copied.</li>
+</ul>
+<h5>port.ref(), port.unref()</h5>
+<p><code>unref</code> will allow the thread to exit if it is the only active handle on the event system.<br>
+<code>ref</code> is the opposite of <code>ref</code>, and it will automatically be called once <code>message</code> listener is attached.</p>
+<h5><code>Notes</code> for transferring TypedArrays and Buffers.</h5>
+<p>Be careful when transferring <code>ArrayBuffer</code>. If an <code>TypedArray</code> is accessed after it's corresponding <code>ArrayBuffer</code> is transferred, it will be a dangling pointer.</p>
+<p>An <code>ArrayBuffer</code> can be marked with markAsUntransferable, doing so will ensure it can only be cloned.</p>
+<h4>Worker</h4>
+<p>Mainly some options on the constructors and some events. Just check the doc.</p>
+<h4>others</h4>
+<h5>markAsUntransferable(obj)</h5>
+<p>The marked obj will ignored if it occurs in port.postMessage(). (post by copy rather than move).</p>
+<h5>moveMessagePortToContext(port, contextifiedSandbox)</h5>
+<p>Swith the <code>MessagePort</code> to a different vm Context.</p>
+<h5>parentPort</h5>
+<p>Alias for <code>MessagePort</code> on the parent end.</p>
+<h5>receiveMessageOnPort(port)</h5>
+<p>Receive one message from a give <code>MessagePort</code>. <code>message</code> event will not be emitted if this function is used.</p>
+<h5>resourceLimits</h5>
+<pre><code>resourceLimits = {
+    maxYoungGenerationSizeMb,
+    maxOldGenerationSizeMb,
+    codeRangeSizeMb,
+    stackSizeMb,
+}
+</code></pre>
+<p>These are good to know information for child worker threads. (In main thread this will return an empty object)</p>
+<h5>threadId</h5>
+<p>Unique in a single proces.</p>
+<h5>workerData</h5>
+<p>The data is cloned</p>
+<h2>Dos and Donts</h2>
