@@ -5,6 +5,7 @@ import {css} from 'glamor';
 import {textTheme, linkStyle} from '../styles/styleElements';
 import {Link, useParams} from 'react-router-dom';
 import {HoverLink} from './Misc';
+import {useWindowSize} from '../state/hooks';
 
 const itemRowStyle = css(textTheme, {
   marginLeft: "80px",
@@ -14,7 +15,14 @@ const itemRowStyle = css(textTheme, {
   borderLeft: "10px solid LightCoral",
 });
 
-const collapsedItemRowStyle = css()
+const collapsedItemRowStyle = css(textTheme, {
+  marginLeft: "30px",
+  fontSize: "0.8em",
+  paddingRight: "50px",
+  paddingBottom: "30px",
+  marginBottom: "50px",
+  borderLeft: "10px solid LightCoral",
+})
 
 function ItemRow(props: {
   markdown: Markdown
@@ -22,9 +30,10 @@ function ItemRow(props: {
   const {markdown} = props;
   const {header} = markdown;
   const {id, title, tag, time} = header;
+  const {width} = useWindowSize();
 
   return (
-    <Container {...itemRowStyle}>
+    <Container {...(width > 600 ? itemRowStyle : collapsedItemRowStyle)}>
       <Col>
         <h2 style={{fontSize: "1.5em"}}>
           <HoverLink text={title}
@@ -33,10 +42,10 @@ function ItemRow(props: {
             onHoverColor={"LightCoral"} />
         </h2>
       </Col>
-      <Col {...css({fontSize: "1em", paddingLeft: "50px", color: "LightCoral", fontWeight: "bold"})}>
+      <Col {...css({fontSize: "1em", paddingLeft: "20px", color: "LightCoral", fontWeight: "bold"})}>
         {time.toJSON().replace(/-/gi, '.').split('T')[0]}
       </Col>
-      <Col {...css({paddingLeft: "45px"})}>
+      <Col {...css({paddingLeft: "22px"})}>
         <h4>
           {
             tag?.map(t => (

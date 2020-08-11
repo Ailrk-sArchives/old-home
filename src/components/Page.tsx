@@ -11,6 +11,7 @@ import {useParams} from 'react-router-dom';
 import {Container, Badge} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
+import {useWindowSize} from '../state/hooks';
 
 export function ArticlePage() {
   const {id} = useParams();
@@ -62,13 +63,15 @@ export function TagsPage() {
 
 function AddPageTitle(props: {pageTitle: string, page: JSX.Element}) {
   const {pageTitle, page} = props;
+  const {width} = useWindowSize();
   return (
     <Container>
       <h2 style={{
         color: "DimGray",
         fontWeight: "bold",
+          fontSize: '2em',
         marginBottom: 40,
-        marginLeft: 80,
+          marginLeft: (width > 600 ? 80 : 40 ),
       }}>{`${pageTitle}`}</h2>
       {
         page
