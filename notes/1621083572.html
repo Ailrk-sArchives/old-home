@@ -1,0 +1,97 @@
+<h1>Today's abstract algebra</h1>
+<h2>General linear group</h2>
+<h4>define</h4>
+<pre><code>    GL(n, ℝ)
+    = {all n×n matrices with nonzero determinant and real entries}
+    = {all n×n intertable matrices with real entries}
+</code></pre>
+<h2>Special linear group</h2>
+<h4>define</h4>
+<pre><code>    SL(n, ℝ) =
+        {all matrices with determinant equal to 1 and real entries}
+</code></pre>
+<h2>Proof</h2>
+<h3>prove the special linear group is a subgroup of the general linear group.</h3>
+<h4>statement</h4>
+<pre><code>SL(n, ℝ) ≤ GL(n, ℝ)
+</code></pre>
+<h4>proof</h4>
+<pre><code>    Suppose H = SL(n, ℝ)
+            G = GL(n, ℝ)
+
+    1. note I = |1 0|
+                |0 1|
+       det(I) = 1, so I ∈ H. ⇒ I ≢ ∅
+    2. take A, B ∈ SL(n, ℝ)
+       so
+       det(A) = 1, det(B) = 1.
+       det(AB) = det(A)det(B) = 1 . 1 = 1
+       ⇒ AB ∈ SL(n, ℝ)
+    3. take A ∈ SL(n, ℝ)
+       so det(A) = 1
+       det(A⁻¹) = (det(A))⁻¹ = 1⁻¹ = 1
+       ⇒ A ∈ SL(n, ℝ)
+    so SL(n, ℝ) is a group
+    ∵ SL(n, ℝ) ≤ GL(n, ℝ)
+</code></pre>
+<h3>Prove a finite nonempty subset of G closed under the group operation is a subgroup</h3>
+<h4>statement:</h4>
+<pre><code>Supose G is a group and H is a finite nonempty subset of G which
+is closed under the group operation.
+Prove H ≤ G.
+</code></pre>
+<h4>proof:</h4>
+<pre><code>    1. H ≢ ∅ by defition.
+    2. H is closed under group operation by definition.
+    3. let x ∈ H.
+       note x², x³, x⁴, ... ∈ H,
+       but H is finite, so ∃ m, n ∈ ℤ, m ≢ n s.t. xᵐ = xⁿ.
+       Without lost of generality, assume m > n.
+       Note xᵐ⁻ⁿ = e, so xᵐ⁻ⁿ⁻¹ = x⁻¹.
+
+       Since m > n, m - n > 0.
+       So m - n ≥ 1.
+
+       if m - n = 1: x⁻¹ = x¹⁻¹ = e ∈ H.
+       if m 0 n > 1:
+           xᵐ⁻ⁿ⁻¹ ∈ x², x³, x⁴, ... ∈ H.
+       in both cases x⁻¹ ∈ H.
+       So H is closed under inverse.
+    so H ≤ G
+    ∎
+</code></pre>
+<h3>Prove the intersection of two subgroups is also a group</h3>
+<h4>statement:</h4>
+<pre><code>If G is a group and H, K ≤ G, then H ∩ K ≤ G.
+</code></pre>
+<h4>proof:</h4>
+<pre><code>    Suppose H, K ≤ G.
+    1. since H, K ≤ G, H ≢ ∅ ∧ G ≢ ∅.
+       thus H ∩ K ≢ ∅.
+    2. let x, y ∈ H ∩ K.
+       thus x, y ∈ H ∧ x, y ∈ K.
+       since H close under group operation, xy ∈ H
+       since K close under group operation, xy ∈ K
+       xy ∈ H ∩ K
+    3. x ∈ H ∩ K.
+       x ∈ H ∧ x ∈ K.
+       because H, K close undere inverse
+       x⁻¹ ∈ H ∧ x⁻¹ ⇔ K ⇔ x⁻¹ ∈ H ∩ K
+    so H ∩ K ∈ G
+    ∎
+</code></pre>
+<h3>Proof. the center of a subgroup of GL(2, ℂ)</h3>
+<h4>statement:</h4>
+<pre><code>G = GL(2, ℂ),
+H =
+  { |a b|       |        }
+  { |c d|  ∈ G  |  c = 0 },
+B =
+  { |a b|       |                    }
+  { |0 d|  ∈ H  |  a = d ≢ 0 ∧ b = 0 }
+
+prove Z(H) = B
+</code></pre>
+<h4>proof:</h4>
+<pre><code>TODO
+</code></pre>

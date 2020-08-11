@@ -61,7 +61,7 @@ The problem is this types only exist at type level. But since there is only one 
 }
 </code></pre>
 <p>So overload in typescript really is just used to establish the correlation between parameter types and return types. You don't have c++ style overload that treat each overload as different functions.</p>
-<h5>11. What I want today.</h5>
+<h5>11. today's random.</h5>
 <p>I wanted to have a function works like this.</p>
 <pre><code class="language-typescript"><span class="hljs-keyword">get</span>&lt;<span class="hljs-string">"default"</span>&gt;(<span class="hljs-number">1</span>) <span class="hljs-comment">// -&gt; Map&lt;number, M&gt;</span>
 <span class="hljs-keyword">get</span>&lt;<span class="hljs-string">"time"</span>&gt;(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().toJSON()) <span class="hljs-comment">// -&gt; Map&lt;number, Array&lt;M&gt;&gt;</span>

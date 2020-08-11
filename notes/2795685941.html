@@ -158,3 +158,52 @@ applyMixin(A, [Eq]);
 <span class="hljs-keyword">let</span> a = E.A;    <span class="hljs-comment">// =&gt; compile to let a = E.A;</span>
 <span class="hljs-keyword">let</span> b = CE.A;   <span class="hljs-comment">// =&gt; compile to let b = 0;</span>
 </code></pre>
+<h2>today's random</h2>
+<h3>Dynamic scoping vs lexical scoping and this in js.</h3>
+<p>When I was learning js I conclude <code>this</code> is an example of dynamic scoping, but it's not quite right. <code>this</code> is just a sugar for passing a implicit parameter. But because the binding mechanism depends on how the function is called, it's really similar to dynamic scoping.</p>
+<h4>Dynamic scope</h4>
+<p>Scope is determined by call stack at runtime.</p>
+<h4>Lexical scope</h4>
+<p>Scope is determined at compile time based on the declaration.</p>
+<h4>This in js</h4>
+<p>For a normal <code>function</code> what <code>this</code> refers to depends on where the invocation heppends. It's like self in python and rust, <code>:</code> in lua, nothing special about it really.</p>
+<h4>Randome ECMAScript spec for <code>this</code></h4>
+<p>Implementation of <code>this</code> is specified by ECMAScript spec. It defines <code>GetThisEnvironment()</code>, which is a function to finds the environment instance that currently supplies the binding of <code>this</code>.</p>
+<h4><code>this</code> in Function context.</h4>
+<p>Arrow function doesn't have it's own this, but rather inherit <code>this</code> from the parent's one.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> obj = { f: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-keyword">this</span>; }
+<span class="hljs-keyword">const</span> f1 = obj.f;
+obj.f() === f1();
+</code></pre>
+<p>value of <code>this</code> in regular function depends on how it is calle. It will be undefined in <code>strict mode</code>.</p>
+<pre><code>const obj = { f: function() {return this;} };
+const f1 = obj.f;
+obj.f() !== f1;
+// obj.f() return obj, f1 return global in non strict mode, and undefined in strict mode.
+</code></pre>
+<p>You can rebind <code>this</code> of a regular function.</p>
+<pre><code>const obj = { f: function() {return this;} };
+const f1 = obj.f;
+f1.bind(obj);
+obj.f() === f1; // no problem
+</code></pre>
+<h4><code>this</code> in  class context.</h4>
+<p>In base class <code>this</code> behaves exactly the same as function, because under the hood class can be desugared into funcitons. All non-static methods will be added to the prototype of <code>this.</code></p>
+<p>In derived class, there is no default <code>this</code> binding. By calling <code>super()</code> <code>this</code> will be bind to base class. The bindinng process is similar to <code>this = new Base();</code>. This is why any reference of <code>this</code> before <code>super()</code> is invalid.</p>
+<h4><code>Function</code> apis works with <code>this</code></h4>
+<p>Assume this code exists.</p>
+<pre><code class="language-typescript">funcitons add(c, d) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.a + <span class="hljs-keyword">this</span>.b + c + d;
+}
+<span class="hljs-keyword">let</span> o = {a: <span class="hljs-number">1</span>, b: <span class="hljs-number">3</span>};
+</code></pre>
+<h5>call and apply</h5>
+<p><code>o</code> defined above will become this in the following invocation.</p>
+<pre><code class="language-typescript">add.call(o, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>);
+add.apply(o, [<span class="hljs-number">5</span>, <span class="hljs-number">7</span>]);
+</code></pre>
+<h5>bind</h5>
+<p><code>add1</code> below will be a funciton with <code>oo</code> as it's <code>this</code>.</p>
+<pre><code class="language-typescript"><span class="hljs-keyword">const</span> oo = {a: <span class="hljs-number">10</span>, b: <span class="hljs-number">20</span>};
+<span class="hljs-keyword">const</span> add1 = add.bind(oo);
+</code></pre>
