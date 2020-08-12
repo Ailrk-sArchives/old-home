@@ -1,7 +1,7 @@
 .Article>h1 {
   color: DimGray;
   font-weight: bolder;
-  text-shadow: 0px 1px, 1px 0px, 1px 1px;
+  text-shadow: 0px 1px, 1px 0px, 0px 1px;
 }
 
 .Article>h2 {
@@ -12,12 +12,13 @@
   color: DimGray;
   font-weight: bolder;
   text-shadow: 0px 0px, 0px 0px, 0px 1px;
-  line-height: 80px;
+  line-height: 2em;
 }
 
 .Article>p {
   font-size: 1em;
   color: DimGray;
+  line-height: 1.8em;
 }
 
 .Article a {
@@ -25,10 +26,10 @@
 }
 
 .Article>h1 {
-  line-height: 110px;
+  line-height: 3em;
 }
 .Article>h2 {
-  line-height: 90px;
+  line-height: 2em;
 }
 
 .Article li {
@@ -38,7 +39,7 @@
 .Article>h4, h5, h6 {
   color: LightCoral;
   font-weight: bold;
-  line-height: 40px;
+  line-height: 2em;
 }
 
 .Article pre {
@@ -46,11 +47,4 @@
   margin-bottom: 50px;
 }
 
-
-.Article > h1 {
-  line-height: 50px;
-}
-.Article > h2 {
-  line-height: 40px;
-}
 

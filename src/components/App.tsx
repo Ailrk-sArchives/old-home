@@ -15,15 +15,6 @@ import {
 import 'highlightjs/styles/github.css';
 
 function App() {
-  // const [test, setTest] = useState<string>("Not found");
-  // useEffect(() => {
-  //   axios.get<string>(process.env.PUBLIC_URL + "/test.html")
-  //     .then(t => {
-  //       setTest(t.data);
-  //       console.log(process.env.PUBLIC_URL + "/test.html");
-  //     });
-  // }, []);
-  // console.log(test);
 
   const {width} = useWindowSize();
 

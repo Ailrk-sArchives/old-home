@@ -1,14 +1,23 @@
+/* @font-face { */
+/*   font-family: 'Lato'; */
+/*   src: local('Lato'), url(./assets/fonts/Lato-Regular.ttf) format('ttf'); */
+/* } */
+
 @font-face {
-  font-family: 'Lato';
-  src: local('Lato'), url(./assets/fonts/Lato-Regular.ttf) format('ttf');
+  font-family: 'RobotoSlab';
+  src: local('RobotoSlab'), url(./assets/fonts/RobotoSlab-VariableFont_wght.ttf) format('ttf');
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Lato', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: 'RobotoSlab', 'Lato', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+:not(b) {
+   font-family: RobotoSlab;
 }
 
 code {

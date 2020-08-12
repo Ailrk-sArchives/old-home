@@ -34,8 +34,8 @@ export function Header() {
       <Row {...headerStyle} xs={8}>
         <Col>
           <Link to={'/'} style={{...linkStyle, color: "LightCoral"}}>
-            <h1 style={{fontSize: "3em", fontWeight: "bolder", textShadow: "0px 2px, 2px 0px, 2px 2px"}}>
-              <b> ⟨ A Bag of Words ⟩ </b>
+            <h1 style={{fontSize: "2em", fontWeight: "bolder", textShadow: "0px 1px, 1px 0px, 1px 1px"}}>
+              <b> A Bag of Words  </b>
             </h1>
           </Link>
         </Col>

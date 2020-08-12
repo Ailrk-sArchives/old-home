@@ -6,15 +6,26 @@ export function HoverLink(props: {
   link: string,
   ogColor: string,
   onHoverColor: string,
+  element?: (text: string) => JSX.Element,
 }) {
-  const {text, link, ogColor, onHoverColor} = props;
+  const {text, link, ogColor, onHoverColor, element} = props;
   const [color, setColor] = useState<string>(ogColor);
+  const ele = element?.(text) ?? (<b>{text}</b>);
   return (
     <a href={link} style={{...linkStyle, color: color}}
       onMouseEnter={() => setColor(onHoverColor)}
       onMouseLeave={() => setColor(ogColor)}>
-      <b>  {text}</b>
+      {ele}
     </a>);
+}
+
+export function toBoldH2(text: string) {
+  return (
+    <h2>
+      <b style={{textShadow: "1px 0px, 0px 1px"}}>
+        {text}
+      </b>
+    </h2>);
 }
 
 

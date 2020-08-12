@@ -69,9 +69,9 @@ function AddPageTitle(props: {pageTitle: string, page: JSX.Element}) {
       <h2 style={{
         color: "DimGray",
         fontWeight: "bold",
-          fontSize: '2em',
-        marginBottom: 40,
-          marginLeft: (width > 600 ? 80 : 40 ),
+        fontSize: '1.5em',
+        marginBottom: '2em',
+        marginLeft: (width > 600 ? '3em' : '1.8em'),
       }}>{`${pageTitle}`}</h2>
       {
         page
