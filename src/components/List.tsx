@@ -1,12 +1,11 @@
 import {Markdown, chronoList, articlesDB, notesDB, othersDB, allDB} from '../state/markdowns';
-import {Container, Row, Col, Badge} from 'react-bootstrap';
+import {Container, Col, Badge} from 'react-bootstrap';
 import React from 'react';
 import {css} from 'glamor';
 import {textTheme, linkStyle} from '../styles/styleElements';
 import {Link, useParams} from 'react-router-dom';
 import {HoverLink, toBoldH2} from './Misc';
 import {useWindowSize} from '../state/hooks';
-import {FaCaretRight} from 'react-icons/fa';
 
 const itemRowStyle = css(textTheme, {
   marginLeft: "2em",
@@ -32,23 +31,14 @@ function ItemRow(props: {
     <Container {...(width > 600 ? itemRowStyle : collapsedItemRowStyle)}>
       <Col>
         <h3 style={{fontSize: "1.5em"}}>
-
-          <Row>
-            <FaCaretRight
-              display={"inline"}
-              style={{
-                color: "LightCoral",
-                paddingTop: "0.2em",
-              }} />
-            <HoverLink text={title}
-              link={`${process.env.PUBLIC_URL}/#/article/${id}`}
-              ogColor={"DimGrey"}
-              onHoverColor={"LightCoral"}
-              element={toBoldH2} />
-          </Row>
+          <HoverLink text={`${title}`}
+            link={`${process.env.PUBLIC_URL}/#/article/${id}`}
+            ogColor={"DimGrey"}
+            onHoverColor={"LightCoral"}
+            element={toBoldH2} />
         </h3>
       </Col>
-      <Col {...css({fontSize: "0.8em", paddingLeft: "20px", color: "Gainsboro", fontWeight: "bold"})}>
+      <Col style={{fontSize: "0.8em", paddingLeft: "20px", color: "Gainsboro", fontWeight: "bold"}} >
         {time.toJSON().replace(/-/gi, '.').split('T')[0]}
       </Col>
       <Col {...css({paddingLeft: "20px"})}>

@@ -8,10 +8,10 @@ import {useWindowSize} from '../state/hooks';
 
 
 const wideSideBarStyle = css({
+  top: 0,
   position: "fixed",
   background: "WhiteSmoke",
-  zIndex: "1000",
-  top: 0,
+  zIndex: 1000,
   paddingTop: "30px",
   paddingLeft: "20px",
   height: "100%",

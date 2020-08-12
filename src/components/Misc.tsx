@@ -23,6 +23,8 @@ export function toBoldH2(text: string) {
   return (
     <h2>
       <b style={{textShadow: "1px 0px, 0px 1px"}}>
+        <span style={{color: "LightCoral"}}>◯</span>
+          &nbsp;
         {text}
       </b>
     </h2>);

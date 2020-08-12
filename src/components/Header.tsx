@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, CSSProperties} from 'react';
 import {Row, Col, Container} from 'react-bootstrap';
 import {css} from 'glamor';
 import {FaBars} from 'react-icons/fa';
@@ -6,7 +6,9 @@ import {Link} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
 import {Sidebar} from './Sidebar'
 import {HoverLink} from './Misc';
+import {useWindowSize} from '../state/hooks';
 import Chiruno from '../assets/ghead.png';
+import Beach from '../assets/beach.png';
 
 const headerStyle = css({
   height: "100px",
@@ -17,37 +19,93 @@ const headerStyle = css({
   marginBottom: "30px",
 });
 
-export function CollapsedHeader() {
+function Title(props: {letterSpacing?: string}) {
+  const {letterSpacing} = props;
   return (
-    <Container>
-      <Row style={{paddingTop: "40px", marginLeft: "30px"}}>
-      <Toggle />
-      </Row>
-      <hr {...css({paddingBottom: "30px", marginTop: "50px"})} />
-    </Container>
+    <h1 style={{
+      fontSize: "3em",
+      letterSpacing: letterSpacing ?? "0.05em",
+      fontFamily: "RobotoSlab",
+    }}>
+      A Bag of Words
+    </h1>
+  );
+}
+
+function Background(props: {img: string, height?: string}) {
+  const {img, height} = props;
+  return (
+
+    <div style={{
+      backgroundImage: `url(${img})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      pointerEvents: 'none',
+      filter: "contrast(40%) blur(3px)",
+      height: height ?? '20em',
+      width: '100%',
+      position: 'absolute',
+      overflow: 'hidden',
+      zIndex: -1,
+    }}
+    />
+  );
+}
+
+export function CollapsedHeader() {
+  const {width} = useWindowSize();
+  const toggleTopPadding = width > 700 ? "100px" : "30px";
+  return (
+    <div style={{marginBottom: 40, color: "WhiteSmoke"}}>
+
+      <Container>
+        <Background img={Beach} height={"10em"} />
+        <Row style={{
+          marginLeft: "20px",
+          paddingRight: "50px",
+          marginTop: "30px",
+        }}> <Title letterSpacing={"0em"} /> </Row>
+
+        <Row style={{
+          paddingTop: toggleTopPadding,
+          marginLeft: "10px",
+          marginBottom: "15px",
+        }}>
+          <Toggle style={{color: "LightCoral"}} />
+        </Row>
+      </Container>
+    </div >
   )
 }
 
 export function Header() {
   return (
-    <Container>
-      <Row {...headerStyle} xs={8}>
-        <Col>
-          <Link to={'/'} style={{...linkStyle, color: "LightCoral"}}>
-            <h1 style={{fontSize: "2em", fontWeight: "bolder", textShadow: "0px 1px, 1px 0px, 1px 1px"}}>
-              <b> A Bag of Words  </b>
-            </h1>
-          </Link>
-        </Col>
-        <Row>
-          <Toggle />
+    <div className={"Header"}
+      style={{
+        marginBottom: 80,
+      }}>
+      <Background img={Beach} />
+      <Container>
+        <Row {...headerStyle} xs={8}>
+          <Col >
+            <Link to={'/'} style={{
+              ...linkStyle,
+              color: "WhiteSmoke",
+            }}>
+              <Title />
+            </Link>
+          </Col>
+          <Row> <Toggle /> </Row>
         </Row>
-      </Row>
-      <Row>
-        <Avatar />
-      </Row>
-      <hr {...css({paddingBottom: "30px", marginTop: "50px"})} />
-    </Container>
+        <Row>
+          <Avatar />
+        </Row>
+      </Container>
+    </div>
   )
 }
 
@@ -65,42 +123,47 @@ function Avatar() {
           height={150}
           style={{
             borderRadius: 90,
+            border: "white solid 5px",
           }} />
       </Col>
       <Col {...css({paddingTop: "30px"})}>
         <Row>
           <HoverLink text={"Jimmy Yao's blog"}
             link={"https://ailrk.github.io/home"}
-            ogColor={"DimGray"}
+            ogColor={"WhiteSmoke"}
             onHoverColor={"LightCoral"} />
         </Row>
         <Row>
           <HoverLink text={"Github: https://github.com/ailrk"}
             link={"https://github.com/ailrk"}
-            ogColor={"DimGray"}
+            ogColor={"WhiteSmoke"}
             onHoverColor={"LightCoral"} />
         </Row>
-        <Row {...css({color: "DimGray"})}>
+        <Row {...css({color: "WhiteSmoke"})}>
           <b> Email: jimmy123good@hotmail.com </b>
         </Row>
       </Col>
     </Row>
   );
 }
+function Toggle(props: {style?: CSSProperties}) {
+  const {style} = props;
+  const toggleStyle: CSSProperties = {
+    ...{
+      cursor: "pointer",
+      paddingTop: "4px",
+      color: "WhiteSmoke"
+    },
+    ...style,
+  };
 
-function Toggle() {
-  const toggleStyle = css({
-    cursor: "pointer",
-    paddingTop: "4px",
-  });
   const [sidebarOn, setSidebarOn] = useState<boolean>(false);
   return (
     <>
       {
         sidebarOn ? <Sidebar setSidebarOn={setSidebarOn} /> :
           <FaBars size={35}
-            {...toggleStyle}
-            style={{color: "LightCoral"}}
+            style={toggleStyle}
             onClick={() => {setSidebarOn(s => !s)}} />
       }
     </>);
