@@ -5,6 +5,7 @@ import {About} from './About';
 import {useWindowSize} from '../state/hooks';
 import {
   ArticlePage,
+  AboutMePage,
   ArticleChronoListPage,
   NoteChronoListPage,
   OthersChronoListPage,
@@ -31,6 +32,7 @@ function App() {
         <Route exact path="/tags" component={TagsPage} />
         <Route exact path="/notes" component={NoteChronoListPage} />
         <Route exact path="/others" component={OthersChronoListPage} />
+        <Route exact path="/about" component={AboutMePage} />
       </Switch>
     </HashRouter>
   );

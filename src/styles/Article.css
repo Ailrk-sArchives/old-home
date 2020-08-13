@@ -17,7 +17,7 @@
 
 .Article>p {
   font-size: 1em;
-  color: DimGray;
+  color: black;
   line-height: 1.8em;
 }
 
@@ -26,10 +26,12 @@
 }
 
 .Article>h1 {
-  line-height: 3em;
+  line-height: 1.5em;
+  margin-bottom: 40px;
 }
+
 .Article>h2 {
-  line-height: 2em;
+  line-height: 1.3em;
 }
 
 .Article li {

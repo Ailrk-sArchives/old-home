@@ -1,4 +1,45 @@
 <h1>Some llvm-hs</h1>
-<h2>LLVM Overview</h2>
+<h2>LLVM</h2>
 <p>LLVM has bunch of subprojects, which make it hard to navigate for newbies like me. Normally when people address LLVM <code>ir</code> they are talking about the <a href="https://github.com/llvm/llvm-project/tree/master/llvm/lib"><code>llvm-core</code></a> library. It's the library that provides code generations and <code>target and source</code> independent optimizations. Many of other subprojects are around providing support for <code>clang</code>, which is not really important for writing your own compiler.</p>
-<h4></h4>
+<h3>Classical compiler design</h3>
+<p><code>Frontend -&gt; Optmizer -&gt; Backend</code>, Compiler archtecture has been like this for eon. Frontend parses the source code and transfrom it into AST. Errors like naming conflict, type error, and syntax error can be caught at this stage (not necessary to be here. For some compiler typechecking is done on the typed ir). Some frontend convert ast into ir, some doesn't, it all depends on how the backend is structured. The optimizater takes the ir or ast as the input, and perform bunch of code transformations to improve the performance. Optimizations can be performed at this stage is restricted to those that are platform independent. That is, it only takes care about proving the logic of the program, but it cannot take the advantage of some specific benefits provided by the target architecture. (It's kinda like writing babel transform, you take the ast, find the pattern and shove another version of the code into it. Or maybe babel plugin is a way to write customized optimizer..)</p>
+<h3>LLVM overview</h3>
+<h4>Benefits</h4>
+<pre><code>C ---->--+                                + x86 back end   -> x86
+         |                                |
+Haskell -+-> llvm-ir -> llvm optimizer -> +  arm back end  -> arm
+         |                                |
+Rust ->--+                                + riscv bank end -> riscv
+</code></pre>
+<p>LLVM provides a common IR format that different compiler frontend can compile to , and it will handle the rest of the compilation. The ir is easy to target, and llvm provides thorough solution for llvm-ir optimization and code-generation, the binary get generate can be very efficient. It's like a lsp situation, you have the llvm-ir as the middle layer to bridge between frontend and backend, so you can take the advantage of the established backend that supports llvm-ir.</p>
+<p>So now if you want to write a compiler targeting llvm-ir,you are really just writing the front-end,</p>
+<h4>How people eeuse compiler archtectures of other languages?</h4>
+<p>The goal of llvm is to have a reusable compiler archtecture to deal with common tasks compiler will face. The incentive arises from the fact that most of compilers have their specific implementations for the entire pipeline, and most of them are deeply coupled between each components, which makes other compiler that wants to reuse them more difficult.</p>
+<p>One way to reuse compiler archtecture is to compile to C. The compiler can just treat c as an IR, and use gcc to generate target code. This approach is not as terrible as it seems, but it does make debugging harder and impose some limitations that you will only have with C (no tail recursion). GHC can target to C, but it has bad performance and it is generally used to port GHC to other platforms.</p>
+<p>Java bytecode is a very good target if you want to utilize all the efforts people put into <code>JVM</code> runtime, but <code>JVM</code> is highly optimized and deeply tight with java's object model, which can leads to suboptimal code for languages don't follow the same model.</p>
+<p>For gcc, it has standalone IR called <code>GIMPLE</code>, which can potentially be a good target, but because gcc is designed to be monolithic, GIMPLE can not be used as a standalone library, if you want to target gcc's internal representation you must pull the inards out.</p>
+<p>There are a lot of ways to hack around, but llvm helps provide a standard solution so you don't need to do hacky stuffs.</p>
+<h2>LLVM IR</h2>
+<h4>LLVM IR form</h4>
+<p>An example of LLVM IR. LLVM IR is statically typed, well defined languaged. Compiler front end compiles source code into LLVM IR, and all the thing the optimizer needs to do is to optimze and code gen the IR.</p>
+<pre><code class="language-llvm"><span class="hljs-keyword">define</span> <span class="hljs-keyword">i32</span> <span class="hljs-title">@add1</span>(<span class="hljs-keyword">i32</span> <span class="hljs-symbol">%a</span>, <span class="hljs-keyword">i32</span> <span class="hljs-symbol">%b</span>) {
+entry:
+    &amp;tmp<span class="hljs-number">1</span> = <span class="hljs-keyword">add</span> <span class="hljs-keyword">i32</span> <span class="hljs-symbol">%a</span> <span class="hljs-symbol">%b</span>
+    <span class="hljs-keyword">ret</span> <span class="hljs-keyword">i32</span> <span class="hljs-symbol">%tmp1</span>
+}
+</code></pre>
+<p>LLVM IR has RISC style three address form with infinite registers plus some other high level constructs. You can do some low level operatoins like move a value from one register to another, but you don't need to follow the calling convention everytime calls a funciton.</p>
+<p>LLVM IR is defined in three isomorphic formates, namely <code>.ll</code>, <code>.bc</code> are two textual formates for source code and byte representation respectively. You can transform from on format to another with <code>llvm-as</code> and <code>llvm-dis</code>.<br>
+e</p>
+<h4>IR</h4>
+<p>IR design needs to be easy to be generated by the front end while expressive enough to provide enough information for the optimizer to perform optimization. <code>Core</code> language in GHC is another example of statically typed IR, because haskell is a lambda calculus based language, <code>Core</code> is largely how haskell looks like when it is desugared into typed lambda calculus. Same as llvm ir, a lot of optimizations are carried out on the <code>Core</code> representation before it move to the code generation stage.</p>
+<h2>Optimization</h2>
+<h4>Optimization is a bag of code transforms.</h4>
+<p>Optimization is like a umberella term for anything that improves the runtime performance, and there are tons of code optimization strategies you can choose. Most optimizations are in the form of code transformation. You analyse the IR, find patterns that match with one of your optimization, and then you run the optimization to transform the source code to something better.</p>
+<p>For example, some optimizations like <code>turn x-0 to x</code> and <code>turn x-x to 0</code> can be easily implemented: simply find expressions in the ir that have form <code>x-0</code> and turn it into x. Note it can be modeled easily with pattern matching, but because llvm is implemented with c++, it needs some specific apis to achieve the similar effect.</p>
+<h2>LLVM design decisions.</h2>
+<h4>LLVM has first class textual form.</h4>
+<p>It's worth noting that lots of IR doesn't have textual representation or have clumsy support for that (namely gcc). So really the only place you will use your IR is in the compiler. With this limitation you cannot transform the code easily, you need soem specific apis to generate IR. A well defined textual format means easier to rewire the whole compiler pipeline and adopt changes. You can generate llvm ir with some randome program on linux, pipe it into llvm optimizer, and you suddenly get an optimized target code.</p>
+<h4>LLVM been designed as collection of libraries.</h4>
+<p>As opposed to other monolithc compilers and VMs like gcc and JVM, LLVM is designed as a set of libraries that each specifc functionalities can be requested individually.</p>
+<p>For instance, llvm optimizer provides several different optimizations</p>

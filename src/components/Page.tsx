@@ -12,6 +12,7 @@ import {Container, Badge} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
 import {useWindowSize} from '../state/hooks';
+import {About} from './About';
 
 export function ArticlePage() {
   const {id} = useParams();
@@ -31,6 +32,11 @@ export const OthersChronoListPage: React.FC<{}> = () =>
 export const TagListPage: React.FC<{}> = () => {
   const {tag} = useParams();
   return <AddPageTitle pageTitle={`Tag: ${tag as string}`} page={<TagList />} />;
+}
+
+export function AboutMePage() {
+  return (
+    <About />)
 }
 
 export function TagsPage() {

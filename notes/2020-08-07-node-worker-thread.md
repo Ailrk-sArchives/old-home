@@ -6,7 +6,7 @@
 ;;
 # Worker threads in node
 
-## Pig picture
+## Big picture
 Worker threads are actually isolated v8 instance. Each worker thread will have its own event loop. The main difference from multiprocessing is you can have shared memory with buffer array, but for process you can only use IPC.
 
 Worker threads runs worker scripts, which can be both another file (passed as filename) or source code in text.

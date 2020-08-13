@@ -9,13 +9,13 @@ import {useWindowSize} from '../state/hooks';
 
 const wideSideBarStyle = css({
   top: 0,
+  right: 0,
   position: "fixed",
   background: "WhiteSmoke",
   zIndex: 1000,
   paddingTop: "30px",
-  paddingLeft: "20px",
   height: "100%",
-  width: "100%",
+  width: "20%",
 });
 
 const collapsedSidebarStyle = css({
@@ -40,6 +40,7 @@ export function Sidebar(props: {
       <Tab name={"tags"} link={"/tags"} />
       <Tab name={"notes"} link={"/notes"} />
       <Tab name={"others"} link={"/others"} />
+      <Tab name={"about me"} link={"/about"} />
     </Container>
   );
 }
