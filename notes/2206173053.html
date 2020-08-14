@@ -33,3 +33,254 @@ pure interface to the external<br>
 use rank 2 type to ensure encapsulation of the state.</p>
 <pre><code class="language-haskell"><span class="hljs-title">runST</span> :: <span class="hljs-keyword">forall</span> a. (<span class="hljs-keyword">forall</span> s. <span class="hljs-type">ST</span> s a) -&gt; a
 </code></pre>
+<h2>Haskell Lib overview</h2>
+<p>Need a general overview rather than trail and errors</p>
+<h4>Classification</h4>
+<h5>Prelude</h5>
+<p>Prelude is the default lib that automatically get imported.</p>
+<h5>Standard library</h5>
+<p>Defined in the language standard, but you must import to use them</p>
+<h5>Hackage library</h5>
+<p>Npm style package system.</p>
+<h4>Some common functions</h4>
+<h5>Maybe</h5>
+<pre><code class="language-haskell"><span class="hljs-title">isJust</span> :: <span class="hljs-type">Maybe</span> a -&gt; <span class="hljs-type">Bool</span>
+<span class="hljs-title">isJust</span> (<span class="hljs-type">Just</span> _) = <span class="hljs-type">True</span>
+<span class="hljs-title">isJust</span> <span class="hljs-type">Nothing</span> = <span class="hljs-type">Fals</span>
+
+<span class="hljs-title">isNothing</span> ::  <span class="hljs-type">May</span> a -&gt; <span class="hljs-type">Bool</span>
+<span class="hljs-title">isNothing</span> = not . isJust
+
+<span class="hljs-comment">-- map (a -&gt; b) into May a, if get nothing return default b.</span>
+<span class="hljs-title">maybe</span> :: b -&gt; (a -&gt; b) -&gt; <span class="hljs-type">Maybe</span> a -&gt; b
+<span class="hljs-title">maybe</span> _ f (<span class="hljs-type">Just</span> x) = f x
+<span class="hljs-title">maybe</span> z _ <span class="hljs-type">Nothing</span> = z
+
+<span class="hljs-title">fromMaybe</span> :: a -&gt; <span class="hljs-type">Maybe</span> a -&gt; a
+<span class="hljs-title">fromMaybe</span> z = maybe z id
+
+<span class="hljs-type">ListToMaybe</span> :: [a] -&gt; <span class="hljs-type">Maybe</span> a
+<span class="hljs-type">ListToMaybe</span> [] = <span class="hljs-type">Nothing</span>
+<span class="hljs-type">ListToMaybe</span> (x:_) = <span class="hljs-type">Just</span> x
+
+<span class="hljs-type">MaybeToList</span> :: <span class="hljs-type">Maybe</span> a -&gt; [a]
+<span class="hljs-type">MaybeToList</span> <span class="hljs-type">Nothing</span> -&gt; []
+<span class="hljs-type">MaybeToList</span> (<span class="hljs-type">Just</span> x) -&gt; [x]
+
+<span class="hljs-title">catMaybes</span> :: [<span class="hljs-type">Maybe</span> a] -&gt; [a]
+<span class="hljs-title">catMaybes</span> ms = [ x | <span class="hljs-type">Just</span> x &lt;- ms ]
+
+<span class="hljs-title">mapMaybe</span> :: (a -&gt; <span class="hljs-type">Maybe</span> b) -&gt; [a] -&gt; [b]
+<span class="hljs-title">mapMaybe</span> f xs = catMaybes (f &lt;$&gt; xs)
+
+<span class="hljs-title">mapMaybe</span> :: (a -&gt; <span class="hljs-type">Maybe</span> b) -&gt; [a] -&gt; [b]
+<span class="hljs-title">mapMaybe</span> _ [] = []
+<span class="hljs-title">mapMaybe</span> f (x:xs) =
+    <span class="hljs-keyword">case</span> f x <span class="hljs-keyword">of</span>
+        <span class="hljs-type">Just</span> x -&gt; y : mapMaybe f xs
+        <span class="hljs-type">Nothing</span> -&gt; mapMaybe f xs
+
+<span class="hljs-title">sequence</span> :: [<span class="hljs-type">Maybe</span> a] -&gt; <span class="hljs-type">Maybe</span> [a]
+<span class="hljs-title">sequence</span> [] = <span class="hljs-type">Just</span> []
+<span class="hljs-title">sequencen</span> (<span class="hljs-type">Nothing</span>:xs) = <span class="hljs-type">Nothing</span>
+<span class="hljs-title">sequence</span> (<span class="hljs-type">Just</span> x:xs) = <span class="hljs-keyword">case</span> sequence xs <span class="hljs-keyword">of</span>
+    <span class="hljs-type">Just</span> xs' -&gt; <span class="hljs-type">Just</span> (x:xs')
+    _ -&gt; <span class="hljs-type">Nothing</span>
+</code></pre>
+<h4>IO (<a href="http://System.IO">System.IO</a>)</h4>
+<pre><code class="language-haskell"><span class="hljs-comment">-- Some basic file IOs.</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">IOMode</span> = <span class="hljs-type">ReadMode</span> | <span class="hljs-type">WriteMode</span> | <span class="hljs-type">AppendMode</span> | <span class="hljs-type">ReadWriteMode</span></span>
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">FilePath</span> = <span class="hljs-type">String</span></span>
+
+<span class="hljs-title">openFile</span> :: <span class="hljs-type">FilePath</span> -&gt; <span class="hljs-type">IOMode</span> -&gt; <span class="hljs-type">IO</span> <span class="hljs-type">Handle</span>
+<span class="hljs-title">hClose</span> :: <span class="hljs-type">Handle</span> -&gt; <span class="hljs-type">IO</span> ()
+
+<span class="hljs-title">hIsEOF</span> :: <span class="hljs-type">Handle</span> -&gt; <span class="hljs-type">IO</span> <span class="hljs-type">Bool</span>
+
+<span class="hljs-title">hGetChar</span> :: <span class="hljs-type">Handle</span> -&gt; <span class="hljs-type">IO</span> <span class="hljs-type">Char</span>
+<span class="hljs-title">hGetLine</span> :: <span class="hljs-type">Handle</span> -&gt; <span class="hljs-type">IO</span> <span class="hljs-type">String</span>
+<span class="hljs-title">hGetContents</span> :: <span class="hljs-type">Handle</span> -&gt; <span class="hljs-type">IO</span> <span class="hljs-type">String</span>
+
+<span class="hljs-title">getChar</span> :: <span class="hljs-type">IO</span> <span class="hljs-type">Char</span>
+<span class="hljs-title">getLine</span> :: <span class="hljs-type">IO</span> <span class="hljs-type">String</span>
+<span class="hljs-title">getContents</span> :: <span class="hljs-type">IO</span> <span class="hljs-type">String</span>
+
+<span class="hljs-title">hPutChar</span> :: <span class="hljs-type">Handle</span> -&gt; <span class="hljs-type">Char</span> -&gt; <span class="hljs-type">IO</span> ()
+<span class="hljs-title">hPutStr</span> :: <span class="hljs-type">Handle</span> -&gt; <span class="hljs-type">String</span> -&gt; <span class="hljs-type">IO</span> ()
+<span class="hljs-title">hPutStrLn</span> :: <span class="hljs-type">Handle</span> -&gt; <span class="hljs-type">String</span> -&gt; <span class="hljs-type">IO</span> ()
+
+<span class="hljs-title">putChar</span> :: <span class="hljs-type">Char</span> -&gt; <span class="hljs-type">IO</span> ()
+<span class="hljs-title">putStr</span> :: <span class="hljs-type">String</span> -&gt; <span class="hljs-type">IO</span> ()
+<span class="hljs-title">putStrLn</span> :: <span class="hljs-type">String</span> -&gt; <span class="hljs-type">IO</span> ()
+
+<span class="hljs-title">readFile</span> :: <span class="hljs-type">FilePath</span> -&gt; <span class="hljs-type">IO</span> <span class="hljs-type">String</span>
+<span class="hljs-title">writeFile</span> :: <span class="hljs-type">FilePath</span> -&gt; <span class="hljs-type">String</span> -&gt; <span class="hljs-type">IO</span> ()
+</code></pre>
+<h5>bracket (Control.Exception)</h5>
+<p><code>bracket</code> helps perform actions safely.</p>
+<pre><code class="language-haskell"><span class="hljs-title">bracket</span> :: <span class="hljs-type">IO</span> a -&gt; (a -&gt; <span class="hljs-type">IO</span> b) -&gt; (a -&gt; <span class="hljs-type">IO</span> c) -&gt; <span class="hljs-type">IO</span> c
+
+<span class="hljs-comment">-- Like a context manager, even when `hPutChar` fails the</span>
+<span class="hljs-comment">-- file will still be closed.</span>
+<span class="hljs-title">writeChar</span> :: <span class="hljs-type">FilePath</span> -&gt; <span class="hljs-type">Char</span> -&gt; <span class="hljs-type">IO</span> ()
+<span class="hljs-title">writeChar</span> fp c =
+    bracket
+        (openFile p <span class="hljs-type">WriteMode</span>)
+        hClose
+        (\h -&gt; hPutChar h c)
+</code></pre>
+<h4>Random</h4>
+<p>Because haskell is purely functional, it returns a new random number generator with <code>next</code>rather than use some hidden side effect to mutate the state of the generator.  The generator is still pure function, so if you call <code>next</code> with the same generator three times, it will generate the same output. To get different output you need to rewire the new geneartor to the next step.</p>
+<pre><code class="language-haskell"><span class="hljs-comment">-- newStdGen get `StdGen` Pseudorandom number generator</span>
+<span class="hljs-comment">-- state.</span>
+<span class="hljs-title">foo</span> = <span class="hljs-keyword">do</span>
+    gen &lt;- newStdGen
+    <span class="hljs-keyword">let</span> ns = randoms get :: [<span class="hljs-type">Int</span>]
+    print $ take <span class="hljs-number">10</span> ns
+
+<span class="hljs-comment">-- make `StdGeen` with a given seed.</span>
+<span class="hljs-title">randomList</span> :: (<span class="hljs-type">Random</span> a) =&gt; <span class="hljs-type">Int</span> -&gt; [a]
+<span class="hljs-title">randomList</span> seed = randoms (mkStdGen seed)
+
+<span class="hljs-title">randomList1</span> :: <span class="hljs-type">IO</span> ()
+<span class="hljs-title">randomList</span> =
+    <span class="hljs-keyword">do</span> gen &lt;- newStdGen
+    interact $ unlines . unsort gen . lines
+   <span class="hljs-keyword">where</span>
+       unsort :: (<span class="hljs-type">RandomGen</span> g) =&gt; g -&gt; [x] -&gt; [x]
+       unsort g es = map snd . sortBy (comparig fst) $ zip rs es
+           <span class="hljs-keyword">where</span> rs = randoms g :: [<span class="hljs-type">Ingeter</span>]
+
+</code></pre>
+<h5>Some definition from <code>System.Random</code></h5>
+<p><code>Random a</code> provides an ergonomic interface to generate random numbers without worrying about the generator state.</p>
+<pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">StdGen</span> = ...</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-type">RandomGen</span> g <span class="hljs-keyword">where</span></span>
+    genRange :: g -&gt; (<span class="hljs-type">Int</span>, <span class="hljs-type">Int</span>)
+    next :: g -&gt; (<span class="hljs-type">Int</span>, g)
+    split :: g -&gt; (g, g)
+<span class="hljs-class"><span class="hljs-keyword">instance</span> <span class="hljs-type">RandomGen</span> <span class="hljs-type">StdGen</span> <span class="hljs-keyword">where</span></span> ...
+<span class="hljs-class"><span class="hljs-keyword">instance</span> <span class="hljs-type">Read</span> <span class="hljs-type">StdGen</span> <span class="hljs-keyword">where</span></span> ...
+<span class="hljs-class"><span class="hljs-keyword">instance</span> <span class="hljs-type">Show</span> <span class="hljs-type">StdGen</span> <span class="hljs-keyword">where</span></span> ...
+<span class="hljs-comment">-- StdGen is the only instance of RandomGen</span>
+<span class="hljs-class">
+<span class="hljs-keyword">class</span> <span class="hljs-type">Random</span> a <span class="hljs-keyword">where</span></span>
+    randomR :: <span class="hljs-type">RandomGen</span> g =&gt; (a, a) -&gt; g -&gt; (a, g)
+    random :: <span class="hljs-type">RandomGen</span> g =&gt; g -&gt; (a, g)
+
+    randomRs :: <span class="hljs-type">RandomGen</span> g =&gt; (a, a) -&gt; g -&gt; [a]
+    randoms :: <span class="hljs-type">RandomGen</span> g =&gt; g -&gt; [a]
+
+    randomIO :: (a, a) -&gt; <span class="hljs-type">IO</span> a
+    randoms :: <span class="hljs-type">IO</span> a
+</code></pre>
+<h5>Global randome generator</h5>
+<p>To avoid write the clumsy code above even for some quick dirty jobs, there are functions to work with global randome number generators.</p>
+<pre><code class="language-haskell"><span class="hljs-title">newStdGen</span> :: <span class="hljs-type">IO</span> <span class="hljs-type">StdGen</span>
+<span class="hljs-title">setStdGen</span> :: <span class="hljs-type">StdGen</span> -&gt; <span class="hljs-type">IO</span> ()
+<span class="hljs-title">getStdGen</span> :: <span class="hljs-type">IO</span> <span class="hljs-type">StdGen</span>
+<span class="hljs-title">getStdRandom</span> :: (<span class="hljs-type">StdGen</span> -&gt; (a, <span class="hljs-type">StdGen</span>)) -&gt; <span class="hljs-type">IO</span> a
+
+<span class="hljs-title">doo</span> :: <span class="hljs-type">IO</span> <span class="hljs-type">Int</span>
+<span class="hljs-title">doo</span> = <span class="hljs-keyword">do</span>
+    r1 &lt;- getStdGen
+    <span class="hljs-keyword">let</span> (x, r2) = randomR (<span class="hljs-number">0</span>, <span class="hljs-number">999</span>) r1
+    setStdGen r2
+    return x
+</code></pre>
+<h4>Data structure primer</h4>
+<h5>List trade offs</h5>
+<p>Despite not being the best data structure for most tasks, list works well with haskell's lazy, purely functional setting. Laziness allows you to use list as a stream, and value get evaluated by needs. In things like nodejs or java you have some stream classes to deal with sequential data, but in haskell the laziness implies those the functinality already.</p>
+<h5>lookup Data.Map</h5>
+<p>There is a <code>lookup :: Eq k =&gt; k -&gt; [(k, v)] -&gt; Maybe v</code> in the prelude, but it is not very efficient. Because there is no requirement for the list to be ordered, you even cannot use binary search. So essentially the function becomes a linear search. Instead, use <code>Data.Map</code> from <code>containers</code> package. It's a binary tree implementation.</p>
+<pre><code class="language-haskell"><span class="hljs-keyword">import</span> <span class="hljs-keyword">qualified</span> Data.Map <span class="hljs-keyword">as</span> M
+
+<span class="hljs-title">emptyMap</span> = <span class="hljs-type">M</span>.empty
+<span class="hljs-title">foo</span> = <span class="hljs-type">M</span>.fromList [(<span class="hljs-number">1</span>, <span class="hljs-string">"Robert"</span>), (<span class="hljs-number">5</span>, <span class="hljs-string">"Ian"</span>)]
+<span class="hljs-title">name</span> = <span class="hljs-type">M</span>.lookup <span class="hljs-number">1</span> foo
+
+<span class="hljs-title">unionedSize</span> = <span class="hljs-type">M</span>.size $ <span class="hljs-type">M</span>.union foo $ <span class="hljs-type">M</span>.fromList [(<span class="hljs-number">11</span>, <span class="hljs-string">"Andrew"</span>)]
+</code></pre>
+<h6>Variations</h6>
+<ul>
+<li><code>Data.IntMap</code> is limited to int key but has more efficient implementation.</li>
+<li><code>Data.Set</code> provides set implementation</li>
+<li><code>unordered-containers</code> implements hashtable.</li>
+</ul>
+<h4>Data.Sequence</h4>
+<p>List is asymmetric. By that it means access the head of a list with <code>(:)</code> is more efficient than get the element at the tail. <code>\xs x -&gt; xs [x]</code>  is a bad way of adding stuff to the end of the list becuase it needs traverse the entire list to find the tail first.</p>
+<p>To be able to access the tail more efficiently, <code>Data.Sequence</code> is a better choice. List is lazy and infinite while sequence is strict and finite.</p>
+<pre><code class="language-haskell"><span class="hljs-keyword">import</span> <span class="hljs-keyword">qualified</span> Data.Sequence <span class="hljs-keyword">as</span> S
+<span class="hljs-keyword">import</span> Data.Sequence ((&lt;|), (|&gt;), (&gt;&lt;), ViewL(..), ViewR(..))
+<span class="hljs-title">let</span> foo = <span class="hljs-type">S</span>. fromList [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">9</span>]
+<span class="hljs-title">let</span> foo1 = <span class="hljs-number">0</span> &lt;| foo
+<span class="hljs-title">let</span> foo2 = foo |&gt; <span class="hljs-number">18</span>
+<span class="hljs-title">let</span> foo3 = foo &gt;&lt; foo
+<span class="hljs-comment">-- view can be used to pattern match</span>
+<span class="hljs-title">let</span> xs :&gt; x = <span class="hljs-type">S</span>.viewr foo
+<span class="hljs-title">let</span> xs' &lt;: s' = <span class="hljs-type">S</span>.viewl foo
+</code></pre>
+<h4>Raw performance with array. <code>vector</code>, <code>array</code>, <code>repa</code>.</h4>
+<p>When it comes to process large bulk of data, list and sequence are nolonger suitable anymore, we need something more like a traditional c array. Haskell provides multiple types of arrays, and here is the three most used ones:</p>
+<ul>
+<li><code>vector</code>: Not like c++ vector, in haskell you don't push pack and resize automatically.</li>
+<li><code>array</code>: Support multidimensional array, but it's harder to use.</li>
+<li><code>repa</code>: State-of-the-art multidimensional array.</li>
+</ul>
+<h4>Text Bytestring and string.</h4>
+<h5>Problem with String</h5>
+<ul>
+<li>Performance is pretty bad (List of Char cliche).</li>
+<li>For binary data <code>Char</code> based implementation makes little sense.</li>
+<li><code>Char</code> in haskell is Unicode characters, no support for other encodings.</li>
+</ul>
+<h5>Text and Bytestring</h5>
+<p><code>Text</code> and <code>ByteString</code> are monomorphic cotainers of <code>Char</code> and <code>Word8</code> respectively. The internal representation is array based and very compact. Both data structures have <code>Lazy</code> and <code>Strict</code> versions. <code>Strict</code> version is just like how you use bytestring in other languages, and <code>Lazy</code> provides streaming experience.</p>
+<h2>Some less abstract typeclasses</h2>
+<pre><code>    Eq          Show           Read
+     ↓
+    Ord        Num             Bounded
+(!IO, (->))    (Int, Integer      (Int, Char, Bool, Ordering, tuples)
+      |         Float, Double)
+      |               |
+      +------------+  +------------+
+                   ↓  ↓            ↓
+    Enum            Real      Fractional
+  ((), Bool         (Int,       (Float, Double, Comples)
+  Char, Ordering    Integer,            |
+  Int, Integer,     Float               |
+  Float, Double)    Double)             |
+     |   +------------+   ↓             ↓
+     ↓   ↓                RealFrac   Floating
+  Integral          (Float, Double)  (Float, Double, Complex)
+                              ↓      ↓
+                              RealFloat
+                              (Float, Double)
+</code></pre>
+<h4>Typeclass: Read and Show</h4>
+<pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">ReadS</span> a = <span class="hljs-type">String</span> -0&gt; [(<span class="hljs-title">a</span>, <span class="hljs-type">String</span>)]</span>
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">ShowS</span> = <span class="hljs-type">String</span> -&gt; <span class="hljs-type">String</span></span>
+<span class="hljs-class">
+<span class="hljs-keyword">class</span> <span class="hljs-type">Read</span> a <span class="hljs-keyword">where</span></span>
+    readPrec :: <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">ReadS</span> a
+    readList :: <span class="hljs-type">ReadS</span> [a]
+<span class="hljs-class">
+<span class="hljs-keyword">class</span> <span class="hljs-type">Show</span> a <span class="hljs-keyword">where</span></span>
+    showsPrec :: <span class="hljs-type">Int</span> -&gt; a -&gt; <span class="hljs-type">ShowS</span>
+    show :: a -&gt; <span class="hljs-type">String</span>
+</code></pre>
+<h4>Typeclass: Bounded</h4>
+<p>Name the upper and lower limits of a type.</p>
+<pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-type">Bounded</span> a <span class="hljs-keyword">where</span></span>
+    minBound :: a
+    maxBound :: a
+</code></pre>
+<h4>Typeclass: Enum</h4>
+<p>Defines operations on sequentially ordered types.</p>
+<pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-type">Enum</span> a <span class="hljs-keyword">where</span></span>
+    succ :: a -&gt; a
+    pred :: a -&gt; a
+    toEnum :: <span class="hljs-type">Int</span> -&gt; a
+    fromEnum :: a -&gt; <span class="hljs-type">Int</span>
+    enumFrom  :: a -&gt; [a]
+</code></pre>
