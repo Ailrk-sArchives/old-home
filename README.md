@@ -9,6 +9,5 @@ This app serves as both personal blog and note manager. Public articles are put 
 * [ ] tag search
 * [x] tag list
 * [x] sidebar
-* [ ] math equation support
 * [x] styling
 * [ ] picture query
