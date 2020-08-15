@@ -45,7 +45,7 @@ function Background(props: {img: string, height?: string}) {
       left: 0,
       right: 0,
       pointerEvents: 'none',
-      filter: "contrast(40%) blur(3px)",
+      filter: "contrast(45%)",
       height: height ?? '20em',
       width: '100%',
       position: 'absolute',

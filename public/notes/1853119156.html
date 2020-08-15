@@ -1,4 +1,4 @@
-<h2>LLVM</h2>
+<h1>LLVM</h1>
 <p>LLVM has bunch of subprojects, which make it hard to navigate for newbies like me. Normally when people address LLVM they are talking about the <a href="https://github.com/llvm/llvm-project/tree/master/llvm/lib"><code>llvm-core</code></a> library. It's the library that provides code generations and target and source independent optimizations. Many of other subprojects are around providing support for <code>clang</code>, which is not really important for writing your own compiler.</p>
 <h3>Classical compiler design</h3>
 <p><code>Frontend -&gt; Optmizer -&gt; Backend</code>, Compiler archtecture has been like this for eon.<br>
@@ -15,7 +15,7 @@ Rust ->--+                                + riscv bank end -> riscv
 </code></pre>
 <p>LLVM provides a common <code>ir</code> format that different compiler frontend can compile to. It takes <code>ir</code> and handle the rest of the compilation. <code>llvm-ir</code> is easy to target with. llvm provides thorough implementation for optimization and code-generation, and the binary get generate can be very efficient.</p>
 <p>LLVM IR provides a bridge to adapt different compiler frontends to different back ends, It's like a lsp situation, you can take the advantage of the established backend as long as they support llvm-ir.</p>
-<h4>How people use compiler archtectures of other languages?</h4>
+<h4>How people use compiler architectures of other languages?</h4>
 <p>The goal of llvm is to have a reusable compiler archtecture to deal with common tasks compiler will face. The incentive arises from the fact that most of compilers have their specific implementations for the entire pipeline, and most of them are deeply coupled between each components, which makes other compiler that wants to reuse them more difficult.</p>
 <p>One way to reuse compiler archtecture is to compile to C. The compiler can just treat c as an IR, and use gcc to generate target code. This approach is not as terrible as it seems, but it does make debugging harder and impose some limitations that you will only have with C (no tail recursion). GHC can target to C, but it has bad performance and it is generally used to port GHC to other platforms.</p>
 <p>Java bytecode is a very good target if you want to utilize all the efforts people put into <code>JVM</code> runtime, but <code>JVM</code> is highly optimized and deeply tight with java's object model, which can leads to suboptimal code for languages don't follow the same model.</p>

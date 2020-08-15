@@ -16,7 +16,7 @@
 }
 
 .Article>p {
-  font-size: 1em;
+  font-size: 1.2em;
   color: black;
   line-height: 1.8em;
 }
@@ -35,18 +35,28 @@
 }
 
 .Article li {
-  color: DimGray;
+    font-size: 1.1em;
+  color: black;
 }
 
-.Article>h4, h5, h6 {
+.Article>h4, h5, h6{
   color: LightCoral;
   font-weight: bold;
   line-height: 2em;
 }
 
+.Article> h5  {
+  font-size: 1.2em;
+}
+
+.Article> h6  {
+  font-size: 1.1em;
+}
+
 .Article pre {
   margin-top: 50px;
   margin-bottom: 50px;
+    font-size: 1.1em;
 }
 
 

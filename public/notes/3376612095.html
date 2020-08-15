@@ -1,0 +1,61 @@
+<h1>ST, Zipper, some other typeclasses.</h1>
+<h2>ST monad</h2>
+<h4>A very cool implementation of quick sort with in place mutation in haskell</h4>
+<p>Without mutation, to write a quick sort is actually easier. Like this:</p>
+<pre><code class="language-haskell"><span class="hljs-title">quickSort1</span> :: (<span class="hljs-type">Ord</span>) =&gt; [a] -&gt; [a]
+<span class="hljs-title">quickSort1</span> [] = []
+<span class="hljs-title">quickSort1</span> (x:xs) =
+    <span class="hljs-keyword">let</span> left = quickSort1 [a | a &lt;- xs, a &lt;= x]
+        right = quickSort1 [a | a &lt;-xs, a &gt; x]
+     <span class="hljs-keyword">in</span> left ++ [x] ++ right
+</code></pre>
+<p>This version looks very neat, just doesn't perform very well. Because everything is immutable, so the runtime will create a new list in each iteration. Although the gc process is not too bad for immutable data, it is still not idea compare with a in place mutation.</p>
+<p>With <code>STRef</code> and <code>ST s a</code> monad we can have inplace mutation while providing a pure interface. This allows us to implement algorithms that are more efficient with mutation.</p>
+<h5>Implementation</h5>
+<p><code>STRef</code> and <code>STArray</code> are basical notion of dealing with mutation in haskell, and <code>ST s a</code> monad provides a monadic environment for the mutation to happen.</p>
+<h6>Swap</h6>
+<p>The swap logic can just be written in the say way as you would write in an imperative language.</p>
+<pre><code class="language-haskell"><span class="hljs-title">swap</span> :: <span class="hljs-type">STArray</span> s <span class="hljs-type">Int</span> a -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">ST</span> s ()
+<span class="hljs-title">swap</span> arr i j = <span class="hljs-keyword">do</span>
+    a &lt;- readArray arr i
+    b &lt;- readArray arr j
+    writeArray arr i b
+    writeArray arr j a
+</code></pre>
+<h6>Partition loop</h6>
+<pre><code class="language-haskell"><span class="hljs-title">partitionLoop</span> ::
+    (<span class="hljs-type">Ord</span> a) =&gt; <span class="hljs-type">STArray</span> s <span class="hljs-type">Int</span> a -&gt; a -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">StateT</span> <span class="hljs-type">Int</span> (<span class="hljs-type">St</span> s) ()
+<span class="hljs-title">partitionLoop</span> arr pivot i = <span class="hljs-keyword">do</span>
+    pivotIdx &lt;- get
+    this &lt;- lift $ readArray arr i
+    when (this &lt; pivot) $ <span class="hljs-keyword">do</span>
+        lift $ swap arr i pivotIdx
+        put (pivotIdx + <span class="hljs-number">1</span>)
+</code></pre>
+<h6>Partition</h6>
+<pre><code class="language-haskell"><span class="hljs-title">partition</span> :: (<span class="hljs-type">Ord</span> a) =&gt; <span class="hljs-type">STArray</span> s <span class="hljs-type">Int</span> a -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">ST</span> s <span class="hljs-type">Int</span>
+<span class="hljs-title">partition</span> arr start end = <span class="hljs-keyword">do</span>
+    pivot &lt;- readArray arr start
+    <span class="hljs-keyword">let</span> pivotIdx0 = start + <span class="hljs-number">1</span>
+    finalPivotIndx &lt;-
+        execStateT
+            (<span class="hljs-type">MapM</span> (partitionLoop arr pivot) [(start + <span class="hljs-number">1</span>) .. (end - <span class="hljs-number">1</span>)])
+            pivotIdx0
+    swap arr start (finalPivotIndx - <span class="hljs-number">1</span>)
+    return $ finalPivotIndx - <span class="hljs-number">1</span>
+</code></pre>
+<h5>A helper</h5>
+<pre><code class="language-haskell"><span class="hljs-title">helper</span> :: (<span class="hljs-type">Ord</span> a) =&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">STArray</span> s <span class="hljs-type">Int</span> a -&gt; <span class="hljs-type">St</span> s ()
+<span class="hljs-title">helper</span> start end stArray = when (start + <span class="hljs-number">1</span> &lt; end) $ <span class="hljs-keyword">do</span>
+    pivotIdx &lt;- partition stArray start end
+    helper start pivotIdx stArray
+    helper (pivotIdx + <span class="hljs-number">1</span>) end stArray
+</code></pre>
+<h5>Assemble everything</h5>
+<pre><code class="language-haskell"><span class="hljs-title">qsort</span> :: (<span class="hljs-type">Ord</span> a) =&gt; <span class="hljs-type">Array</span> <span class="hljs-type">Int</span> a -&gt; <span class="hljs-type">Array</span> <span class="hljs-type">Int</span> a
+<span class="hljs-title">qsort</span> arr = runSTArray $ <span class="hljs-keyword">do</span>
+    stArray &lt;- thaw arr
+    <span class="hljs-keyword">let</span> (min, max) = bounds arr
+    helper min (max + <span class="hljs-number">1</span>) stArray
+    return stArray
+</code></pre>
