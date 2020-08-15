@@ -1,18 +1,20 @@
 <h1>ST, Zipper, some other typeclasses.</h1>
 <h2>ST monad</h2>
+<p><code>STRef</code> is a more generic form of <code>IORef</code> that allows you to have mutable reference. <code>ST s a</code> is a <code>state</code> like monadic interface helps you to use <code>STRef</code>. <code>runST :: (forall s. ST s a) -&gt; a</code> is the function to execute a <code>ST</code> computation, and it use <code>rank 2 type</code> to enforce the mutable reference is always to each <code>runST</code>, so that the side effect can only happen inside the <code>runST</code>, and externally behave like a pure function.</p>
 <h4>A very cool implementation of quick sort with in place mutation in haskell</h4>
 <p>Without mutation, to write a quick sort is actually easier. Like this:</p>
 <pre><code class="language-haskell"><span class="hljs-title">quickSort1</span> :: (<span class="hljs-type">Ord</span>) =&gt; [a] -&gt; [a]
 <span class="hljs-title">quickSort1</span> [] = []
-<span class="hljs-title">quickSort1</span> (x:xs) =
-    <span class="hljs-keyword">let</span> left = quickSort1 [a | a &lt;- xs, a &lt;= x]
-        right = quickSort1 [a | a &lt;-xs, a &gt; x]
-     <span class="hljs-keyword">in</span> left ++ [x] ++ right
+<span class="hljs-title">quickSort1</span> (x:xs) = left ++ [x] ++ right
+  <span class="hljs-keyword">where</span>
+    left = quickSort1 $ filter (&lt;=x) xs
+    right = quickSort1 $ filter (&gt;x) xs
 </code></pre>
 <p>This version looks very neat, just doesn't perform very well. Because everything is immutable, so the runtime will create a new list in each iteration. Although the gc process is not too bad for immutable data, it is still not idea compare with a in place mutation.</p>
 <p>With <code>STRef</code> and <code>ST s a</code> monad we can have inplace mutation while providing a pure interface. This allows us to implement algorithms that are more efficient with mutation.</p>
 <h5>Implementation</h5>
-<p><code>STRef</code> and <code>STArray</code> are basical notion of dealing with mutation in haskell, and <code>ST s a</code> monad provides a monadic environment for the mutation to happen.</p>
+<p><code>STRef</code> and <code>STArray</code> are basical notion of dealing with mutation in haskell, and <code>ST s a</code> monad provides a monadic environment for the mutation to happen.<br>
+Expr</p>
 <h6>Swap</h6>
 <p>The swap logic can just be written in the say way as you would write in an imperative language.</p>
 <pre><code class="language-haskell"><span class="hljs-title">swap</span> :: <span class="hljs-type">STArray</span> s <span class="hljs-type">Int</span> a -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">ST</span> s ()
@@ -22,10 +24,11 @@
     writeArray arr i b
     writeArray arr j a
 </code></pre>
-<h6>Partition loop</h6>
-<pre><code class="language-haskell"><span class="hljs-title">partitionLoop</span> ::
-    (<span class="hljs-type">Ord</span> a) =&gt; <span class="hljs-type">STArray</span> s <span class="hljs-type">Int</span> a -&gt; a -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">StateT</span> <span class="hljs-type">Int</span> (<span class="hljs-type">St</span> s) ()
-<span class="hljs-title">partitionLoop</span> arr pivot i = <span class="hljs-keyword">do</span>
+<h6>Do one partition</h6>
+<p><code>lift $ readArray arr i</code> make an action with type <code>StateT Int (St s) a</code>, which can be shoved into the next monadic function. The same thing happens in <code>lift $ swap arr i pivotIdx</code>. See how <code>ST s</code> is used like <code>IO</code>, the <code>s</code> part in the type is actually a phantom type to constrain the underline scope of <code>STRef</code>.</p>
+<pre><code class="language-haskell"><span class="hljs-title">partition'</span> ::
+    (<span class="hljs-type">Ord</span> a) =&gt; <span class="hljs-type">STArray</span> s <span class="hljs-type">Int</span> a -&gt; a -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">StateT</span> <span class="hljs-type">Int</span> (<span class="hljs-type">ST</span> s) ()
+<span class="hljs-title">partition'</span> arr pivot i = <span class="hljs-keyword">do</span>
     pivotIdx &lt;- get
     this &lt;- lift $ readArray arr i
     when (this &lt; pivot) $ <span class="hljs-keyword">do</span>
@@ -33,25 +36,32 @@
         put (pivotIdx + <span class="hljs-number">1</span>)
 </code></pre>
 <h6>Partition</h6>
+<p>Set piovt like.</p>
+<p>Note <code>execStateT :: (Monad m) =&gt; StateT s m a -&gt; s -&gt; m s</code> execute the state and get the <code>s</code> back. <code>pivotIdx0</code> is the inital state we provide.</p>
+<p>Note <code>mapM :: (Monad m) =&gt; (a -&gt; m b) -&gt; t a -&gt; m t b</code> collect the result automatically, it works like <code>sequence . fmap</code> act on monadic function.</p>
 <pre><code class="language-haskell"><span class="hljs-title">partition</span> :: (<span class="hljs-type">Ord</span> a) =&gt; <span class="hljs-type">STArray</span> s <span class="hljs-type">Int</span> a -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">ST</span> s <span class="hljs-type">Int</span>
 <span class="hljs-title">partition</span> arr start end = <span class="hljs-keyword">do</span>
     pivot &lt;- readArray arr start
     <span class="hljs-keyword">let</span> pivotIdx0 = start + <span class="hljs-number">1</span>
     finalPivotIndx &lt;-
         execStateT
-            (<span class="hljs-type">MapM</span> (partitionLoop arr pivot) [(start + <span class="hljs-number">1</span>) .. (end - <span class="hljs-number">1</span>)])
+            (<span class="hljs-type">MapM</span> (partition' arr pivot) [(start + <span class="hljs-number">1</span>) .. (end - <span class="hljs-number">1</span>)])
             pivotIdx0
     swap arr start (finalPivotIndx - <span class="hljs-number">1</span>)
     return $ finalPivotIndx - <span class="hljs-number">1</span>
 </code></pre>
-<h5>A helper</h5>
+<h6>A helper</h6>
+<p>Perform the recursive partition. Wrap this logic in another function allows us to encapsulate the mutation, and provides a pure interface.</p>
 <pre><code class="language-haskell"><span class="hljs-title">helper</span> :: (<span class="hljs-type">Ord</span> a) =&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">STArray</span> s <span class="hljs-type">Int</span> a -&gt; <span class="hljs-type">St</span> s ()
 <span class="hljs-title">helper</span> start end stArray = when (start + <span class="hljs-number">1</span> &lt; end) $ <span class="hljs-keyword">do</span>
     pivotIdx &lt;- partition stArray start end
     helper start pivotIdx stArray
     helper (pivotIdx + <span class="hljs-number">1</span>) end stArray
 </code></pre>
-<h5>Assemble everything</h5>
+<h6>Assemble everything</h6>
+<p><code>runSTArray</code> perform the action of a <code>ST</code> monad, and return  an immutable <code>Array</code>.</p>
+<p>Note <code>thaw</code> here still copy the array, to do a implace thaw you can use <code>unsafeThaw</code></p>
+<p>Note <code>bounds</code> give the range of the array.</p>
 <pre><code class="language-haskell"><span class="hljs-title">qsort</span> :: (<span class="hljs-type">Ord</span> a) =&gt; <span class="hljs-type">Array</span> <span class="hljs-type">Int</span> a -&gt; <span class="hljs-type">Array</span> <span class="hljs-type">Int</span> a
 <span class="hljs-title">qsort</span> arr = runSTArray $ <span class="hljs-keyword">do</span>
     stArray &lt;- thaw arr

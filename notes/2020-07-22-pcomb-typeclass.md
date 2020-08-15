@@ -3,6 +3,7 @@
 -- date 2020-07-22
 -- source https://stackoverflow.com/questions/29861388/when-is-it-useful-to-define-multiple-lifetimes-in-a-struct
           https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html
+          https://www.seas.upenn.edu/~cis194/fall16/lectures/09-more-applicative.html
 ;;
 # Parser combinator in Haskell (in repo Notes/haskell..pinciple../parser )
 ##### 1. Parser

@@ -41,6 +41,16 @@
 <p><code>liftM :: Monad m =&gt; (a -&gt; b) -&gt; m a -&gt; m b</code> is the monad version of <code>fmap</code>. (<code>liftM</code> exist because monads are not automatically functors in haskell).</p>
 <h4>MonadTrans and lift</h4>
 <p>The key util for using monad transformer is <code>lift :: (MonadTrans t, Monad m) =&gt; m a -&gt; t m a</code>, it lifts the <code>m a</code> into the monad transformer <code>t</code>. <code>m a</code> is an action, so it can do all different stuffs. For instance <code>putStrLn &quot;haha&quot; :: IO ()</code> can be the <code>m a</code> part, and <code>do $ lift putStrLn</code> in <code>MaybeT</code> context will lift <code>Maybe</code> into the <code>IO</code> monad, and get <code>MaybeT $ IO (Maybe ())</code>, which is how we define the <code>MaybeT</code>.</p>
+<p>The function is called <code>lift</code>, but actually it get the inner value by shove into the transformer type.</p>
+<pre><code class="language-haskell"><span class="hljs-title">foo</span> :: <span class="hljs-type">StateT</span> s <span class="hljs-type">IO</span> <span class="hljs-type">String</span>
+<span class="hljs-title">foo</span> = <span class="hljs-keyword">do</span>
+  s &lt;- lift $ getLine
+  return s
+</code></pre>
+<p><code>getLine :: IO String</code> turned into <code>StateT s IO String</code>, so the value <code>String</code> can be shoved in.</p>
+<p>Note <code>StateT s IO String = { runStateT :: s -&gt; IO (String, s)}</code></p>
+<p>Note <code>MaybeT IO String = { runMaybeT :: IO (Maybe String) }</code></p>
+<p>Conventinally the last value of a monad the the value.</p>
 <h4>Define some other transformers</h4>
 <pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">ListT</span> m a :: { <span class="hljs-title">runListT</span> :: <span class="hljs-title">m</span> [<span class="hljs-title">a</span>] }</span>
 <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">ExceptT</span> e m a :: { <span class="hljs-title">runExceptT</span> :: <span class="hljs-title">m</span> (<span class="hljs-type">Either</span> <span class="hljs-title">e</span> <span class="hljs-title">a</span>) }</span>
