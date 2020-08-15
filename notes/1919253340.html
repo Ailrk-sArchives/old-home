@@ -34,7 +34,7 @@
 <p>This is a high level overview of the reactor pattern, the actual node implementation is more complicated than this. In ndoe there are multiple event queues and there are more event types than IO event alone.</p>
 <h4>Event Demultiplexer</h4>
 <p>Asynchrnous IO funcitionalities are provided via system call: in linux it uses <code>epoll</code> (system call for IO event notification). However, many IO are not directly supported. For instance, <code>epoll</code> only support asynchronous network IO but not file IO.</p>
-<h5>Hareware asynchronous IO and thread pool.</h5>
+<h5>Hardware asynchronous IO and thread pool.</h5>
 <p><a href="http://www.dre.vanderbilt.edu/~schmidt/PDF/reactor-siemens.pdf">This paper</a> assumes all IO operations are provided by <code>select</code> linux system call, but it is not the case in node. Node need to perform more types of IO operations than those supported by <code>select</code> alone. For those that are not directly supported by the hardware, node needs a thread pool to handle the IO in parallel in order to avoid blocking. After the thread finished the IO operation it will notify the event demultiplexer, and the returned value (<code>handle</code> in the paper) will be dispatched with its corresponding callback and be pushed into the event queue.</p>
 <h5>Another way to look at it</h5>
 <p>Node will use hardware IO as much as possible, but when it is not supported it will use the thread pool.</p>

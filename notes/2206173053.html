@@ -8,8 +8,7 @@
 <h5>parametric polymorpism</h5>
 <p>Referes to when a type of a value contains one or more unconstrained type variable. Unconstraied because if it is constrained, it lose gene generality and become ad hoc polymorpism. The type parameters then can be substituted by concrete types to form a concrete type.<br>
 If you think of a parametric polymorphic function first as a regular function that takes values as parameters, and besides that it takes concrete types too, then it can be regard as a <code>type to value mapping</code>.</p>
-<h2>Type system</h2>
-<h5>Rank N type</h5>
+<h2>Rank N type</h2>
 <p>Rank N type is used to express polymorphic function as first class value. With higher ranked type you can pass a polymorphic function and constraint the type parameter in only one parameter. N means how deeply the type parameter is nested.</p>
 <pre><code class="language-haskell"><span class="hljs-comment">-- example rank 1 and rank n.</span>
 <span class="hljs-title">rank1</span> :: <span class="hljs-keyword">forall</span> n. <span class="hljs-type">Num</span> n =&gt; (n -&gt; n) -&gt; (<span class="hljs-type">Int</span>, <span class="hljs-type">Int</span>)
@@ -20,18 +19,33 @@ If you think of a parametric polymorphic function first as a regular function th
 <p>For <code>rank1</code>, we first choose n then provide the function, so in this case the function <code>f</code> only works for the type n passed in.<br>
 For <code>rank2</code>, we provide function before we know the concrete type of n. This implies the function must be polymorphic over n, so <code>f</code> works for any type n as long as it has Num constraint.<br>
 You can apply f to both <code>Int</code> and <code>Double</code> in the <code>rank2</code> example because f is polymorphic (f has type <code>Num n =&gt; n -&gt; n</code> after it is passed in), but for <code>rank1</code> you can only apply one type because once n is inferred, f can only become one type (once f is applied to Int in the first argument, it can only be a function of type <code>Int -&gt; Int</code>).</p>
-<h5>Type operator</h5>
+<p>Higher rank types are from <code>system F</code>, or second order lambda calculus. Haskell is based on <code>Hindley-Milner</code> type system, which is a restricted version of <code>system F</code>. You don't have rank n type out of the box, to use them you need to use <code>{-# LANG RankNTypes #-}</code>. Type inference for <code>system F</code> is undecidable, so more type anotations are required when writing a program.</p>
+<h2>Type operator</h2>
 <p>Function in type level that map a type to another type. People call it <code>type operator</code>, not type level funtion!</p>
-<h5>Higher kinded type</h5>
+<h2>Higher kinded type</h2>
 <p>Type operator itself can be parameterized by other type operators. A concrete type is just a conrete thing, denoted as <code>*</code>. <code>* -&gt; *</code> implies this type requires another<br>
 type as its &quot;kind parameter&quot; to make a concrete type.<br>
 Type operator is <code>mapping from type to type</code>. Higher kinded type generalized this dea and type operator first class in type level.</p>
 <h2>ST Monad</h2>
+<h5>STRef</h5>
+<p>Some interfaces for using <code>STRef</code>, a way of getting mutable reference in haskell. <code>STRef</code> is more generic version of <code>IORef</code>.</p>
+<pre><code class="language-haskell"><span class="hljs-title">newSTRef</span> :: a -&gt; <span class="hljs-type">ST</span> s (<span class="hljs-type">STRef</span> s a)
+<span class="hljs-title">readSTRef</span> :: <span class="hljs-type">STRef</span> s a -&gt; <span class="hljs-type">ST</span> s a
+<span class="hljs-title">writeSTRef</span> :: <span class="hljs-type">STRef</span> s a -&gt; a -&gt; <span class="hljs-type">ST</span> s ()
+</code></pre>
 <h5>ST monad and Rank N type.</h5>
-<p>In place updatable state<br>
-pure interface to the external<br>
-use rank 2 type to ensure encapsulation of the state.</p>
 <pre><code class="language-haskell"><span class="hljs-title">runST</span> :: <span class="hljs-keyword">forall</span> a. (<span class="hljs-keyword">forall</span> s. <span class="hljs-type">ST</span> s a) -&gt; a
+<span class="hljs-title">v</span> = runST (newSTRef <span class="hljs-string">"abc"</span>)
+</code></pre>
+<p>The <code>runST</code> will set up the initial state, run the computation, discard the state, and return the final result. Despite the stateful computation, <code>runST</code> has a pure interface for callers. To achieve this, mutable reference should be local to each <code>runST</code>.</p>
+<h5>What make sense what not?</h5>
+<p>This is ok</p>
+<pre><code class="language-haskell"><span class="hljs-title">let</span> v = runST (newVar <span class="hljs-type">True</span>)
+ <span class="hljs-keyword">in</span> runST (readVar v)
+</code></pre>
+<p>This code doesn't make sense</p>
+<pre><code class="language-haskell"><span class="hljs-title">v</span> = runST (newSTRef <span class="hljs-string">"abc"</span>)
+<span class="hljs-title">foo</span> = runST (readSTRef v)
 </code></pre>
 <h2>Haskell Lib overview</h2>
 <p>Need a general overview rather than trail and errors</p>
