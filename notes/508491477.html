@@ -1,14 +1,66 @@
 <h1>Note: some type theory 2020-07-19</h1>
-<h5>1. Type theory?</h5>
+<h2>Type theory 100</h2>
 <p>A formalism for program construction.</p>
-<h5>2. Constructive mathematics?</h5>
+<h4>Constructive mathematics</h4>
 <p>Type theory was initially aim of being a clarification of constructive math. Some mathematicians believe all proofs need to be able to be constructed from some primitive elements that we know they exists. (proof by contradiction is not a thing for constructivism). Constructive proof and program are related by Curry Howard correspondence.</p>
-<h5>3. Propositions as sets?</h5>
+<h4>Propositions as sets</h4>
 <p>By Curry Howard correspondence. Set can be regarded as a proposition, whose elements represent the proofs of the proposition. If a proposition is false it means the &quot;set&quot; is empty. Btw: the &quot;set&quot; can also be viewd as problem description intuitively.</p>
-<h5>4. Rule for making judgment</h5>
+<h4>Rule for making judgment</h4>
 <ol>
 <li>A is a set</li>
 <li>A1 and A2 are equal sets</li>
 <li>a is a element in the set A</li>
 <li>a1 and a2 are equal elements in the set A</li>
 </ol>
+<h2>Type rule</h2>
+<p>Inference rule that describes how a type system assigns a type to a syntactic construction.</p>
+<h5>Notation</h5>
+<h6><code>⌈</code>: type environment (type context)</h6>
+<p>Represent the association between varfiable names and data types.</p>
+<p>Judgement &quot;e has type T in context ⌈&quot; is written as <code>⌈ ⊢ e : T</code></p>
+<h6>Sequents and inference rules</h6>
+<pre><code>⌈₁ ⊢ e₁ : T₁  ... ⌈ₙ ⊢ eₙ : Tₙ    -- sequent (premises that must be fulfilled)
+----------------------------
+      ⌈ ⊢ e : T                   -- conclusion
+</code></pre>
+<p>An example for a real function</p>
+<pre><code>⌈ ⊢ e₁ : real  ... ⌈ ⊢ e₂ : real
+----------------------------
+      ⌈ ⊢ e₁ + e₂ : real
+</code></pre>
+<p>A type rule might have no premises with the omitted being omitted.</p>
+<p>The deduction rules follows natural deduction.</p>
+<h2>STLC</h2>
+<pre><code>  Type ::=
+          Type -> Type
+          Bool
+  term ::=
+          var
+          λvar: Type . term        -- annotated lambda
+          term term                -- aplication
+          true
+          false
+          if term then term else term -- boolean elimination
+
+  ------------- (T-var)
+  ⌈, x:T ⊢ x:T
+
+    ⌈, x : S ⊢ e : T
+  ----------------------- (T-Lam-Ann)
+  ⌈ ⊢ λx : S . e : S → T
+
+  ⌈ ⊢ f : S → T     ⌈ ⊢ x :S
+  -------------------------- (T-App)
+      ⌈ ⊢ f x : T
+
+  -------------------- (T-True)
+    ⌈ ⊢ true: Bool
+
+  -------------------- (T-False)
+    ⌈ ⊢ false : Bool
+
+    ⌈ ⊢ b : Bool   ⌈ ⊢ x : T   ⌈ ⊢ y : T
+  --------------------------------------- (T-If)
+    ⌈ ⊢ if b then x else y : T
+
+</code></pre>
