@@ -1,65 +1,8 @@
-import {Markdown, chronoList, articlesDB, notesDB, othersDB, allDB} from '../state/markdowns';
-import {Container, Col, Badge} from 'react-bootstrap';
+import {Markdown, allDB, chronoLists} from '../state/markdowns';
+import {Container} from 'react-bootstrap';
 import React from 'react';
-import {css} from 'glamor';
-import {textTheme, linkStyle} from '../styles/styleElements';
-import {Link, useParams} from 'react-router-dom';
-import {HoverLink, toBoldH2} from './Misc';
-import {useWindowSize} from '../state/hooks';
-
-const itemRowStyle = css(textTheme, {
-  marginLeft: "2em",
-  paddingBottom: "1em",
-  marginBottom: "1em",
-});
-
-const collapsedItemRowStyle = css(textTheme, {
-  fontSize: "0.8em",
-  paddingBottom: "30px",
-  marginBottom: "50px",
-})
-
-function ItemRow(props: {
-  markdown: Markdown
-}) {
-  const {markdown} = props;
-  const {header} = markdown;
-  const {id, title, tag, time} = header;
-  const {width} = useWindowSize();
-
-  return (
-    <Container {...(width > 600 ? itemRowStyle : collapsedItemRowStyle)}>
-      <Col>
-        <h3 style={{fontSize: "1.5em"}}>
-          <HoverLink text={`${title}`}
-            link={`${process.env.PUBLIC_URL}/#/article/${id}`}
-            ogColor={"DimGrey"}
-            onHoverColor={"LightCoral"}
-            element={toBoldH2} />
-        </h3>
-      </Col>
-      <Col style={{fontSize: "0.8em", paddingLeft: "20px", color: "Gainsboro", fontWeight: "bold"}} >
-        {time.toJSON().replace(/-/gi, '.').split('T')[0]}
-      </Col>
-      <Col {...css({paddingLeft: "20px"})}>
-        <h4>
-          {
-            tag?.map(t => (
-              <span key={t}>
-                <Badge variant="light">
-                  <Link to={`/tag/${t}`} style={{...linkStyle, color: "LightCoral"}}>
-                    {t}
-                  </Link>
-                </Badge>
-                    &nbsp;
-              </span>
-            ))
-          }
-        </h4>
-      </Col>
-    </Container>
-  );
-}
+import {useParams} from 'react-router-dom';
+import {ItemRow} from './ItemRow';
 
 export function List(props: {
   markdowns: Array<Markdown>,
@@ -76,20 +19,21 @@ export function List(props: {
   );
 }
 
+// Monomophization of list.
 export function ArticleChronoList() {
-  return <List markdowns={chronoList(articlesDB)} />
+  return <List markdowns={chronoLists.articleChronoList} />
 }
 
 export function NotesChronoList() {
-  return <List markdowns={chronoList(notesDB)} />
+  return <List markdowns={chronoLists.noteChronoList} />
 }
 
 export function OthersChronoList() {
-  return <List markdowns={chronoList(othersDB)} />
+  return <List markdowns={chronoLists.otherChronoList} />
 }
 
 export function ReportChronoList() {
-  return <List markdowns={chronoList(othersDB)} />
+  return <List markdowns={chronoLists.noteChronoList} />
 }
 
 export function TagList() {

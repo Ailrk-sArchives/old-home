@@ -8,7 +8,8 @@ import {unique, flat} from '../untils/list-ops';
 
 export const articlesDB: MarkdownDB = markdowndb({
   markdownDir: 'articles',
-  mode: 'runtime',
+  mode: 'static',
+  publicURL: "/home",
   logLevel: "silence",
 });
 
@@ -40,6 +41,12 @@ export function chronoList(md: MarkdownDB): Array<Markdown> {
       .filter(ml => ml !== undefined) as Array<Array<Markdown>>);
   return unique(flatten, (m) => m.header.id);
 }
+
+export const chronoLists = {
+  otherChronoList: chronoList(othersDB),
+  noteChronoList: chronoList(notesDB),
+  articleChronoList: chronoList(articlesDB),
+};
 
 export type {
   Markdown,

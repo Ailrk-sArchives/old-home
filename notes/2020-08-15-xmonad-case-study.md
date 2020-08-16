@@ -29,4 +29,3 @@ The value of xmonad is it manage state in a purely functional way. There is prob
 
 ## Window manager
 Xmonad is a tiling window manger. A tiling window manager can be modeled as a set of virtual workspaces. On each workspaces there is a stack of windows. On each workspaces there will be one winodow that currently on focus. A window is on current workspace and currently on focus will be the one that takes user input.
-

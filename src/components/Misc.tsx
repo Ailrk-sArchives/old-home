@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, CSSProperties} from 'react';
 import {linkStyle} from '../styles/styleElements';
 
 export function HoverLink(props: {
@@ -31,3 +31,15 @@ export function toBoldH2(text: string) {
 }
 
 
+export function Bar(props: {style?: CSSProperties}) {
+  const style: CSSProperties = {
+    height: "2em",
+    width: "80%",
+    ...props?.style,
+    display: "block",
+    background: "grey",
+  };
+  return (
+    <div style={style} />
+  );
+}

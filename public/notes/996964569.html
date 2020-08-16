@@ -50,7 +50,7 @@
 <p><code>getLine :: IO String</code> turned into <code>StateT s IO String</code>, so the value <code>String</code> can be shoved in.</p>
 <p>Note <code>StateT s IO String = { runStateT :: s -&gt; IO (String, s)}</code></p>
 <p>Note <code>MaybeT IO String = { runMaybeT :: IO (Maybe String) }</code></p>
-<p>Conventinally the last value of a monad the the value.</p>
+<p>Conventinally the last value of a monad the the value</p>
 <h4>Define some other transformers</h4>
 <pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">ListT</span> m a :: { <span class="hljs-title">runListT</span> :: <span class="hljs-title">m</span> [<span class="hljs-title">a</span>] }</span>
 <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">ExceptT</span> e m a :: { <span class="hljs-title">runExceptT</span> :: <span class="hljs-title">m</span> (<span class="hljs-type">Either</span> <span class="hljs-title">e</span> <span class="hljs-title">a</span>) }</span>
