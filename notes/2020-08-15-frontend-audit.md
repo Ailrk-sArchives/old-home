@@ -1,5 +1,5 @@
 -- tag note perf front-end lazyness
--- title Functional reactive programming primer
+-- title Front-end performance auditing
 -- date 2020-08-14
 -- source https://developers.google.com/web/fundamentals/performance/http2
           https://developers.google.com/web/fundamentals/performance/rendering/avoid-large-complex-layouts-and-layout-thrashing
@@ -19,6 +19,18 @@ React has it's specific perf tool, instead of giving a generic perf data from en
 
 #### Audit
 Google lighthouse tool, It gives some heuristic based website quality check of the overall performance of the website, and the report generated includes some advice you can follow along. Advices are in form of `don't put too many data in on transfer`, it's pretty straight forward.
+
+## What I did
+#### preload list.
+The perf tool told me the loading time for the list page is very high, it's because the article list is sorted everytime it is loaded. Because the list is immutable, you don't really need to worry about the list get changed. So I preload all the list ahead of time, and now the list page performs much better.
+
+Now the list is preloaded ahead of the time, and the rest of the app will access the
+
+#### True  lazyness
+Reimplemented the lazy evaluation part of `mardowndb.macro`. Previous design was wrong in a ridiculous way, I made a new package `promise-by-need` to get lazyness, not it is guaranteed lazy.
+
+#### Layout problem
+Currently all the articles will be shown on one screen and put a lot pressure on layout. Layout is the most computational intensive activity after scripting, and if the layout is too complicated layout the page glitches. I planned to make paging to resovle some of the problem, but it requires a change on `markdowndb.macro` to sync with paged requests. It's on the todo list now.
 
 ## What I learnt
 
@@ -43,18 +55,9 @@ Cache TTL can be set from the server HTTP response header. Like `Cache-Control: 
 #### Avoid chaining critical requests
 If too many requests jammed at the same time, the performance of course will be affected. But sometimes it's necessary to have that many requests to make the app work. If it's not possible to optimize the data itself, a way to make things better is to make the app process more lengthy, so it can have more opportunity to fetch data in between. Loading critical data at the beginning of the app also helps avoid jamming.
 
-## What I did
-The perf tool told me the loading time for list page is very high, it's because previously the artile list is sorted forevery single route. I changed that, and thing runs a bit faster.
+#### Reduce task length.
+It've been discussed multiple times on event loop notes. If there is a CPU bounded task occupies the stack, either try to split it into smaller chunks or use worker threads.
 
-But the real problem of feeling laggy is because the
-
-#### True  lazyness
-My `markdowndb.macro` macro tries to build a interface that can query static file in a lazy fasion. The initial load will only load headers of the file, and the content will be loaded whenever a `get` method is called on the interface. But after testing it is not really lazily evaluated, all html files are downloaded right in front of of the load.
-
-My "thunk" is just `() -> fetcht(url)`, and whenever the app calls `get`, it will invoke the functinon.
-
-
-#### Layout problem
 
 ## Conclusion
 A perf really give a lot of insights of the program. It helps you find problem that you might never notice by just looking at the code.
