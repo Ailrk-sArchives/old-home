@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {HashRouter, Switch, Route} from 'react-router-dom';
 import {Header, CollapsedHeader} from './Header';
 import {About} from './About';
@@ -18,11 +18,12 @@ import 'highlightjs/styles/github.css';
 function App() {
 
   const {width} = useWindowSize();
+  const header =  width > 1000 ? <Header /> : <CollapsedHeader />;
 
   return (
     <HashRouter>
       {
-        width > 1000 ? <Header /> : <CollapsedHeader />
+        header
       }
       <Switch>
         <Route exact path="/article/:id" component={ArticlePage} />

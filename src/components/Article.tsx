@@ -4,14 +4,8 @@ import {StyleAttribute, css} from 'glamor';
 import {Markdown} from '../state/markdowns';
 import {textTheme} from '../styles/styleElements';
 import {HoverLink} from './Misc';
+import {useWindowSize} from '../state/hooks';
 import '../styles/Article.css';
-
-const defaultArticleStyle = css(textTheme, {
-  paddingLeft: "60px",
-  paddingTop: "30px",
-  marginBottom: "100px",
-  overflow: "hidden",
-});
 
 // article compoenent. It insert parsed markown JSX element
 // into card container.
@@ -23,6 +17,15 @@ export function Article(props: {
   const {markdown, style} = props;
   const [article, setArticle] = useState<string>("");
   const componentIsMounted = useRef(true);
+  const {width} = useWindowSize();
+  const defaultArticleStyle = css(textTheme, {
+    paddingLeft: width > 1000 ? "60px" : "20px",
+    paddingTop: width > 1000 ? "30px" : "0px",
+    fontSize: width > 1000 ? "1em" : "0.7em",
+    marginBottom: "100px",
+    overflow: "hidden",
+  });
+
 
   // avoid asyc complete after component is unmounted.
   useEffect(() => {
@@ -47,7 +50,7 @@ export function Article(props: {
   }, []);
 
   return (
-    <Container {...style ?? defaultArticleStyle}>
+    <Container {...style ?? defaultArticleStyle} >
       <div {...css({
         width: "90%",
         wordBreak: "break-word",

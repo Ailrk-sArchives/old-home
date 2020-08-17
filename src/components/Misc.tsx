@@ -30,7 +30,6 @@ export function toBoldH2(text: string) {
     </h2>);
 }
 
-
 export function Bar(props: {style?: CSSProperties}) {
   const style: CSSProperties = {
     height: "2em",

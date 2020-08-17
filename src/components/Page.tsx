@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {CSSProperties} from 'react';
 import {Article} from './Article';
 import {
   ArticleChronoList,
@@ -17,7 +17,7 @@ import {About} from './About';
 export function ArticlePage() {
   const {id} = useParams();
   const markdown = allDB.get(Number.parseInt(id as string));
-  return <Article markdown={markdown} />;
+  return (<Article markdown={markdown} />);
 }
 
 export const ArticleChronoListPage: React.FC<{}> = () =>

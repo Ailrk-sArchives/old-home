@@ -45,7 +45,7 @@ function Background(props: {img: string, height?: string}) {
       left: 0,
       right: 0,
       pointerEvents: 'none',
-      filter: "contrast(45%)",
+      filter: "contrast(30%)",
       height: height ?? '20em',
       width: '100%',
       position: 'absolute',
@@ -94,7 +94,7 @@ export function Header() {
           <Col >
             <Link to={'/'} style={{
               ...linkStyle,
-              color: "WhiteSmoke",
+              color: "white",
             }}>
               <Title />
             </Link>
@@ -130,16 +130,16 @@ function Avatar() {
         <Row>
           <HoverLink text={"Jimmy Yao's blog"}
             link={"https://ailrk.github.io/home"}
-            ogColor={"WhiteSmoke"}
+            ogColor={"white"}
             onHoverColor={"LightCoral"} />
         </Row>
         <Row>
           <HoverLink text={"Github: https://github.com/ailrk"}
             link={"https://github.com/ailrk"}
-            ogColor={"WhiteSmoke"}
+            ogColor={"white"}
             onHoverColor={"LightCoral"} />
         </Row>
-        <Row {...css({color: "WhiteSmoke"})}>
+        <Row {...css({color: "white"})}>
           <b> Email: jimmy123good@hotmail.com </b>
         </Row>
       </Col>

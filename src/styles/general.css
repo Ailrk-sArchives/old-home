@@ -1,0 +1,9 @@
+.ml-colapsed {
+  left: 0;
+  padding-left: 0.05em !important;
+}
+
+.mr-colapsed {
+  right: 0;
+  margin-right: 0.5em !important;
+}
