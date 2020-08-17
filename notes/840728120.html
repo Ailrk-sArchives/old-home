@@ -9,12 +9,13 @@
 <h4>Audit</h4>
 <p>Google lighthouse tool, It gives some heuristic based website quality check of the overall performance of the website, and the report generated includes some advice you can follow along. Advices are in form of <code>don't put too many data in on transfer</code>, it's pretty straight forward.</p>
 <h2>What I did</h2>
-<p>The perf tool told me the loading time for list page is very high, it's because previously the artile list is sorted forevery single route. I changed that, and thing runs a bit faster.</p>
-<p>But the real problem of feeling laggy is because the</p>
+<h4>preload list.</h4>
+<p>The perf tool told me the loading time for the list page is very high, it's because the article list is sorted everytime it is loaded. Because the list is immutable, you don't really need to worry about the list get changed. So I preload all the list ahead of time, and now the list page performs much better.</p>
+<p>Now the list is preloaded ahead of the time, and the rest of the app will access the</p>
 <h4>True  lazyness</h4>
-<p>My <code>markdowndb.macro</code> macro tries to build a interface that can query static file in a lazy fasion. The initial load will only load headers of the file, and the content will be loaded whenever a <code>get</code> method is called on the interface. But after testing it is not really lazily evaluated, all html files are downloaded right in front of of the load.</p>
-<p>My &quot;thunk&quot; is just <code>() -&gt; fetcht(url)</code>, and whenever the app calls <code>get</code>, it will invoke the functinon.</p>
+<p>Reimplemented the lazy evaluation part of <code>mardowndb.macro</code>. Previous design was wrong in a ridiculous way, I made a new package <code>promise-by-need</code> to get lazyness, not it is guaranteed lazy.</p>
 <h4>Layout problem</h4>
+<p>Currently all the articles will be shown on one screen and put a lot pressure on layout. Layout is the most computational intensive activity after scripting, and if the layout is too complicated layout the page glitches. I planned to make paging to resovle some of the problem, but it requires a change on <code>markdowndb.macro</code> to sync with paged requests. It's on the todo list now.</p>
 <h2>What I learnt</h2>
 <h4>RAIL</h4>
 <p>User cenetric performance model. Bascially a bunch of heuristics that helps you to talk about the performance.</p>
@@ -30,6 +31,7 @@
 <p>Cache TTL can be set from the server HTTP response header. Like <code>Cache-Control: max-age=300000</code>. How long to set is totally depends on the data type. If it's immutable data, then it's ok to set to a long time. For volatile data it might have a shorter cache TTL or <code>no-chace</code>.</p>
 <h4>Avoid chaining critical requests</h4>
 <p>If too many requests jammed at the same time, the performance of course will be affected. But sometimes it's necessary to have that many requests to make the app work. If it's not possible to optimize the data itself, a way to make things better is to make the app process more lengthy, so it can have more opportunity to fetch data in between. Loading critical data at the beginning of the app also helps avoid jamming.</p>
-<h4></h4>
+<h4>Reduce task length.</h4>
+<p>It've been discussed multiple times on event loop notes. If there is a CPU bounded task occupies the stack, either try to split it into smaller chunks or use worker threads.</p>
 <h2>Conclusion</h2>
 <p>A perf really give a lot of insights of the program. It helps you find problem that you might never notice by just looking at the code.</p>
