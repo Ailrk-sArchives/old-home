@@ -1,0 +1,27 @@
+<h1>Haskell idioms</h1>
+<p>Some commonly seen haskell idioms. I found this blog post very insteresting. There was a similar article <a href="https://github.com/mcinglis/c-style">for C</a>.</p>
+<h2>Newtype</h2>
+<h4>Description</h4>
+<p>Use <code>newtype</code> as lightweight data wrapper to represent semantically different data. For example, <code>String</code> vs <code>Password</code> vs <code>Username</code>. Wrapping data with newtype allows you to implement more typeclass wihtout affect the data get wrapped. Besides, you can also derive typeclass the wrapped data already defined.</p>
+<p>Compiler will use <code>newtype</code> types for type checking only, and the wrapper will be erased in the final binary, so it's a haskell zero cost abstraction.</p>
+<h4>Example</h4>
+<p>Newtype accept only one parameter for it's data constructor.</p>
+<pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">newtype</span> <span class="hljs-type">PasswordHash</span> = <span class="hljs-type">PasswordHash</span> <span class="hljs-type">ByteString</span></span>
+<span class="hljs-class"><span class="hljs-keyword">newtype</span> <span class="hljs-type">Password</span> = <span class="hljs-type">Password</span> {
+    <span class="hljs-title">unPassword</span> :: <span class="hljs-type">ByteString</span>
+}</span>
+<span class="hljs-title">validate</span> :: <span class="hljs-type">Password</span> -&gt; <span class="hljs-type">PasswordHash</span> -&gt; <span class="hljs-type">Bool</span>
+<span class="hljs-title">validate</span> = bool
+</code></pre>
+<p>Because <code>password</code> and <code>passwordHash</code> are <code>newtype</code>, compiler is aware of them as different types. On another hand, if you simply give them a alias by using <code>type</code>, error message will treate all of them as <code>ByteString</code>, not necessarily pretty.</p>
+<h2>Smart constructor</h2>
+<h4>Description</h4>
+<p>Haskell idiom for constructing values.</p>
+<h4>Example</h4>
+<h2>Evidence</h2>
+<h2>Make illegal states unrepresentable</h2>
+<h2>Phantom type parameters</h2>
+<h2>MonadFail Sugar</h2>
+<h2>Polymorphization</h2>
+<h2>Bidirectional parsing</h2>
+<h2>Recursive go</h2>
