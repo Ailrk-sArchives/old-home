@@ -45,4 +45,6 @@ psd
 thumb
 sketh
 
+*.log
 # End of https://www.toptal.com/developers/gitignore/api/reactc
+#

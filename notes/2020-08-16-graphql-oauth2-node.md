@@ -1,4 +1,4 @@
--- tag note haskell xmonad zipper data-structure CORS
+-- tag note CORS GraphQL node OAuth2
 -- title GraphQL, oauth2, node, all web stuffs.
 -- date 2020-08-16
 -- source https://graphql.org/learn/thinking-in-graphs/
@@ -30,7 +30,6 @@ And when the graphsQL server is running, query works like this:
 ```
 { me { name } } ->  { "me": { "name": "Luke Skywalker"}}
 ```
-
 
 #### How to use
 The whole design is like a weirdly typed quasi quotes for describing json. You have some short hand to work with the tree easier, by largely it's just a mega tempalte string. I can imagine support this in typescript directly via bable transform.
