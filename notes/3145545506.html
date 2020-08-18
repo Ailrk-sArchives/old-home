@@ -16,12 +16,114 @@
 <p>Because <code>password</code> and <code>passwordHash</code> are <code>newtype</code>, compiler is aware of them as different types. On another hand, if you simply give them a alias by using <code>type</code>, error message will treate all of them as <code>ByteString</code>, not necessarily pretty.</p>
 <h2>Smart constructor</h2>
 <h4>Description</h4>
-<p>Haskell idiom for constructing values.</p>
+<p>Haskell idiom for constructing values. It's useful when you want to construct big data types or to make illegal data unrepresentable. It's like a constructor in oop language, you can add more checking during data construction.</p>
 <h4>Example</h4>
+<p>So whenver you want to have a password you do it by calling <code>mkPassword</code>, and you know if a password construction will fail since they always come within a Maybe monad.</p>
+<pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">newtype</span> <span class="hljs-type">Password</span> = = <span class="hljs-type">Password</span> {
+    <span class="hljs-title">unPassword</span> :: <span class="hljs-type">ByteString</span>
+}</span>
+
+<span class="hljs-title">mkPassword</span> :: <span class="hljs-type">ByteString</span> -&gt; <span class="hljs-type">Maybe</span> <span class="hljs-type">Password</span>
+<span class="hljs-title">mkPassword</span> pwd
+    | <span class="hljs-type">ByteStrng</span>.null pwd = <span class="hljs-type">Nothing</span>
+    | otherwise = <span class="hljs-type">Just</span> $ <span class="hljs-type">Password</span> pwd
+
+<span class="hljs-comment">-- also allow native constructor, but with a different alias.</span>
+<span class="hljs-title">unSafePassword</span> :: <span class="hljs-type">ByteStrng</span> -&gt; <span class="hljs-type">Password</span>
+<span class="hljs-title">unSafePassword</span> = <span class="hljs-type">Password</span>
+</code></pre>
 <h2>Evidence</h2>
+<h4>Description</h4>
+<p>We prefer using  pattern maching to defer branches rather than using if else then and boolean expressions. In each arm of a pattern matching the type is further refined, which gives you better type safty. While if you're using boolean check like <code>isNothing</code>, you still can call the wrong function in the wrong branch; in else and then clause you lose the information of the validation performed eailer.</p>
+<h4>Example</h4>
+<pre><code class="language-haskell"><span class="hljs-comment">-- this is called boolean boolean blindness.</span>
+<span class="hljs-title">addBad</span> :: (a -&gt; <span class="hljs-type">Maybe</span> <span class="hljs-type">Int</span>) -&gt; (a -&gt; <span class="hljs-type">Maybe</span>) -&gt; a -&gt; <span class="hljs-type">Maybe</span> <span class="hljs-type">Int</span>
+<span class="hljs-title">addBad</span> f g x =
+    <span class="hljs-keyword">if</span> isNothing (f x) || isNothing (g x)
+    <span class="hljs-keyword">then</span> <span class="hljs-type">Nothing</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-type">Just</span> (fromJust (f x) + fromJust (g x))
+
+<span class="hljs-comment">-- write this instead</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">UserAuth</span>   <span class="hljs-comment">-- opaque data type</span></span>
+<span class="hljs-title">validateHash</span> :: <span class="hljs-type">Password</span> -&gt; <span class="hljs-type">PasswordHash</span> -&gt; <span class="hljs-type">Maybe</span> <span class="hljs-type">UserAuth</span>
+
+<span class="hljs-title">getUserPage</span> :: <span class="hljs-type">UserAuth</span> -&gt; <span class="hljs-type">User</span> -&gt; <span class="hljs-type">IO</span> <span class="hljs-type">Page</span>
+<span class="hljs-title">getUserPage</span> = ...
+
+<span class="hljs-title">loginUser</span> :: <span class="hljs-type">User</span> -&gt; <span class="hljs-type">Password</span> -&gt; <span class="hljs-type">PasswordHash</span> -&gt; <span class="hljs-type">IO</span> ()
+<span class="hljs-title">loginUser</span> user pwd pwdHash = <span class="hljs-keyword">case</span> validateHash pwd pwdHash <span class="hljs-keyword">of</span>
+    <span class="hljs-type">Nothing</span> -&gt; accessDenined user
+    <span class="hljs-type">Just</span> auth -&gt; getUserPage auth user
+</code></pre>
 <h2>Make illegal states unrepresentable</h2>
+<h4>Description</h4>
+<p>Try to describe functions and types in a manner that it's illegal to use it illegally. It's much easier to do in haskell than in other languages since adt and pattern matching helps us to describe the correct shape of the program more explicitly.</p>
+<h4>Example</h4>
+<p>Here is some counter examples and how to fix them.</p>
+<p>Change the parameter types to make illegal states unrepresentable!</p>
+<pre><code class="language-haskell"><span class="hljs-comment">-- Bad</span>
+<span class="hljs-comment">-- Since the two parameters must exist together, pass them as separte</span>
+<span class="hljs-comment">-- parameters demand more case to handle.</span>
+<span class="hljs-title">twoOptionalsBad</span> :: <span class="hljs-type">Maybe</span> a -&gt; <span class="hljs-type">Maybe</span> b -&gt; <span class="hljs-type">IO</span> ()
+<span class="hljs-title">twoOptionalsBad</span> :: (<span class="hljs-type">Just</span> a) (<span class="hljs-type">Just</span> b) = ...
+<span class="hljs-title">twoOptionalsBad</span> :: <span class="hljs-type">Nothing</span> <span class="hljs-type">Nothing</span> = ...
+<span class="hljs-title">twoOptionalsBad</span> :: _ _ = error <span class="hljs-string">"I don't know that to do"</span>
+
+<span class="hljs-comment">-- Do this instead</span>
+<span class="hljs-title">twoOptionals</span> :: <span class="hljs-type">Maybe</span> (a, b) -&gt; <span class="hljs-type">IO</span> ()
+<span class="hljs-title">twoOptionals</span> (<span class="hljs-type">Just</span> (a, b)) = ...
+<span class="hljs-title">twoOptionals</span> <span class="hljs-type">Nothhing</span> = ...
+</code></pre>
+<p>Define more constructor to allow more pattern mattching, so that the illegal state is unrepresentable!</p>
+<pre><code class="language-haskell"><span class="hljs-comment">-- Bad</span>
+<span class="hljs-comment">-- Pattern matching doesn't capture the logic in this case.</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Settings</span> =</span>
+    <span class="hljs-type">Settings</span> (<span class="hljs-type">Maybe</span> <span class="hljs-type">BackendSetting</span>) (<span class="hljs-type">Maybe</span> <span class="hljs-type">FrontendSetting</span>)
+
+<span class="hljs-title">runApp</span> :: <span class="hljs-type">Settings</span> -&gt; <span class="hljs-type">IO</span> ()
+<span class="hljs-title">runApp</span> <span class="hljs-type">Settings</span>{..} = <span class="hljs-keyword">case</span> (b, f) <span class="hljs-keyword">of</span>
+    (<span class="hljs-type">Just</span> b, <span class="hljs-type">Just</span> f) -&gt; config b &gt;&gt; config f &gt;&gt; run
+    (<span class="hljs-type">Just</span> b, <span class="hljs-type">Nothhing</span>) -&gt; config b &gt;&gt; run
+    (<span class="hljs-type">Nothhing</span>, <span class="hljs-type">Just</span> f) -&gt; config f &gt;&gt; run
+    (<span class="hljs-type">Nothhing</span>, <span class="hljs-type">Nothhing</span>) -&gt; throw <span class="hljs-string">"Threw up"</span>
+
+<span class="hljs-comment">-- Good</span>
+<span class="hljs-comment">-- Types matched by pattern maching conveying semantic meanings.</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Settings</span></span>
+    = <span class="hljs-type">Backend</span> <span class="hljs-type">BackendSetting</span>
+    | <span class="hljs-type">Frontend</span> <span class="hljs-type">FrontendSetting</span>
+    | <span class="hljs-type">Both</span> <span class="hljs-type">BackendSetting</span> <span class="hljs-type">FrontendSetting</span>
+
+<span class="hljs-title">runApp</span> :: <span class="hljs-type">Settings</span> -&gt; <span class="hljs-type">IO</span> ()
+<span class="hljs-title">runApp</span> (<span class="hljs-type">Backend</span> back) = config back &gt;&gt; run
+<span class="hljs-title">runApp</span> (<span class="hljs-type">Frontend</span> front) = config front &gt;&gt; run
+<span class="hljs-title">runApp</span> (<span class="hljs-type">Both</span> back front) = config back &gt;&gt; config front &gt;&gt; run
+</code></pre>
 <h2>Phantom type parameters</h2>
+<h4>Description</h4>
+<p>Introducing extra type variables to provide additional type level information available during compile time. Adding phantome types can give compiler more information about what you're trying to describe and catch more error for you. Besides that, it also helps avoid duplication of many similar data types.</p>
+<h4>Example</h4>
+<pre><code>-- a has no instance on the right hand side, but it is
+-- parameterized and is able to represent multiple different Ids
+-- without a separate definition for every one of them.
+newtype Id a = Id
+isCommentByUser :: Id User -> Id Comment -> Bool
+</code></pre>
+<p>In the example above, the value helf by <code>Id</code> is always integer, by at the type level we are able to tell if they are Id for user or Id for comments. A famous example of using phantom type is <code>s</code> in <code>ST s a</code> monad. <code>runST :: (forall s. ST s a) -&gt; a</code> use higher ranked type to constraint the scope of <code>s</code> at the type level, even though you can't really access the value of <code>s</code> in the term level.</p>
+<pre><code>-- An improvement of the password mentioned above. Not you can
+-- specify it's a passowrd for User or for whatever at the type
+-- level.
+newtype Password a = Password {
+    unPassword :: ByteString
+}
+newtype PasswordHash a = PasswordHash {
+    unPasswordHash :: ByteString
+}
+</code></pre>
 <h2>MonadFail Sugar</h2>
+<h4>Description</h4>
+<p>Save you from nested pattern matching.</p>
+<h4>Example</h4>
 <h2>Polymorphization</h2>
 <h2>Bidirectional parsing</h2>
 <h2>Recursive go</h2>
