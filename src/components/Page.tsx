@@ -1,9 +1,5 @@
-import React, {CSSProperties} from 'react';
-import {Article} from './Article';
+import React from 'react';
 import {
-  ArticleChronoList,
-  NotesChronoList,
-  OthersChronoList,
   TagList,
 } from './List';
 import {allDB} from '../state/markdowns';
@@ -11,23 +7,8 @@ import {useParams} from 'react-router-dom';
 import {Container, Badge} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
-import {useWindowSize} from '../state/hooks';
 import {About} from './About';
-
-export function ArticlePage() {
-  const {id} = useParams();
-  const markdown = allDB.get(Number.parseInt(id as string));
-  return (<Article markdown={markdown} />);
-}
-
-export const ArticleChronoListPage: React.FC<{}> = () =>
-  <AddPageTitle pageTitle={"Articles"} page={<ArticleChronoList />} />;
-
-export const NoteChronoListPage: React.FC<{}> = () =>
-  <AddPageTitle pageTitle={"Notes"} page={<NotesChronoList />} />;
-
-export const OthersChronoListPage: React.FC<{}> = () =>
-  <AddPageTitle pageTitle={"Notes"} page={<OthersChronoList />} />;
+import {AddPageTitle} from './Misc';
 
 export const TagListPage: React.FC<{}> = () => {
   const {tag} = useParams();
@@ -65,23 +46,4 @@ export function TagsPage() {
         }
       </div>
     </Container>);
-}
-
-function AddPageTitle(props: {pageTitle: string, page: JSX.Element}) {
-  const {pageTitle, page} = props;
-  const {width} = useWindowSize();
-  return (
-    <Container>
-      <h2 style={{
-        color: "DimGray",
-        fontWeight: "bold",
-        fontSize: '1.5em',
-        marginBottom: '2em',
-        marginLeft: (width > 600 ? '3em' : '1.8em'),
-      }}>{`${pageTitle}`}</h2>
-      {
-        page
-      }
-    </Container>
-  );
 }

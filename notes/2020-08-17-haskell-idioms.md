@@ -46,4 +46,3 @@ Haskell idiom for constructing values.
 ## Bidirectional parsing
 
 ## Recursive go
-

@@ -347,6 +347,14 @@ Historically browers has this `same origin policy`, you cannot access resources 
 
 Cross-origin resouce sharing. A mechanism to restrict types of resources can be request from a web page from another domain outside the domain where the first request is served. Some resources like images, css, scripts, videos and able to be requested in a CORS way, but things like ajax request is forbidden.
 
+On the browser side `CORS` is enforced with `XMLHttpRequest` and `Fetch Api`.
+
+#### Access control
+You don't want your site be accessed by arbitrary people, `CORS` allows you to share some of your data and control the access on the others.
+
+#### Preflight request.
+HTTP request methods that might cause side effect on the server are mandated to send a `OPTIONS` preflight request, and the real request can only be send after the preflight is approved by the server.
+
 #### Request Headers
 - `Origin`
 - `Access-Control-Request-Method` specify methods used for cross site access

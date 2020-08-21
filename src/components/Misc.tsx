@@ -1,5 +1,8 @@
 import React, {useState, CSSProperties} from 'react';
+import {Container} from 'react-bootstrap';
 import {linkStyle} from '../styles/styleElements';
+import {useWindowSize} from '../state/hooks';
+import Loader from 'react-loader-spinner';
 
 export function HoverLink(props: {
   text: string,
@@ -42,3 +45,26 @@ export function Bar(props: {style?: CSSProperties}) {
     <div style={style} />
   );
 }
+
+export function AddPageTitle(props: {pageTitle: string, page: JSX.Element}) {
+  const {pageTitle, page} = props;
+  const {width} = useWindowSize();
+  return (
+    <Container>
+      <h2 style={{
+        color: "DimGray",
+        fontWeight: "bold",
+        fontSize: '1.5em',
+        marginBottom: '2em',
+        marginLeft: (width > 600 ? '3em' : '1.8em'),
+      }}>{`${pageTitle}`}</h2>
+      {
+        page
+      }
+    </Container>
+  );
+}
+
+export function LoaderSpinner() {
+  return <Loader type="TailSpin" color="LightCoral" height={100} width={100} />
+    }

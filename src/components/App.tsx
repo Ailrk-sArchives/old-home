@@ -1,24 +1,26 @@
-import React from 'react';
+import React, {Suspense, lazy} from 'react';
 import {HashRouter, Switch, Route} from 'react-router-dom';
 import {Header, CollapsedHeader} from './Header';
 import {About} from './About';
 import {useWindowSize} from '../state/hooks';
+import {LoaderSpinner} from './Misc';
 import {
-  ArticlePage,
   AboutMePage,
-  ArticleChronoListPage,
-  NoteChronoListPage,
-  OthersChronoListPage,
   TagListPage,
   TagsPage,
 } from './Page';
 
 import 'highlightjs/styles/github.css';
 
+const ArticlePage: any = lazy(() => import("./lazyPage/ArticlePage"));
+const ArticleChronoListPage: any = lazy(() => import("./lazyPage/ArticleChronoListPage"));
+const NoteChronoListPage: any = lazy(() => import("./lazyPage/NoteChronoListPage"));
+const OthersChronoListPage: any = lazy(() => import("./lazyPage/OthersChronoListPage"));
+
 function App() {
 
   const {width} = useWindowSize();
-  const header =  width > 1000 ? <Header /> : <CollapsedHeader />;
+  const header = width > 1000 ? <Header /> : <CollapsedHeader />;
 
   return (
     <HashRouter>
@@ -26,14 +28,16 @@ function App() {
         header
       }
       <Switch>
-        <Route exact path="/article/:id" component={ArticlePage} />
-        <Route exact path="/" component={ArticleChronoListPage} />
-        <Route exact path="/about" component={About} />
-        <Route exact path="/tag/:tag" component={TagListPage} />
-        <Route exact path="/tags" component={TagsPage} />
-        <Route exact path="/notes" component={NoteChronoListPage} />
-        <Route exact path="/others" component={OthersChronoListPage} />
-        <Route exact path="/about" component={AboutMePage} />
+        <Suspense fallback={LoaderSpinner}>
+          <Route exact path="/article/:id" component={ArticlePage} />
+          <Route exact path="/" component={ArticleChronoListPage} />
+          <Route exact path="/about" component={About} />
+          <Route exact path="/tag/:tag" component={TagListPage} />
+          <Route exact path="/tags" component={TagsPage} />
+          <Route exact path="/notes" component={NoteChronoListPage} />
+          <Route exact path="/others" component={OthersChronoListPage} />
+          <Route exact path="/about" component={AboutMePage} />
+        </Suspense>
       </Switch>
     </HashRouter>
   );
