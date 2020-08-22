@@ -281,6 +281,11 @@ Human: {
 <h2>CORS</h2>
 <p>Historically browers has this <code>same origin policy</code>, you cannot access resources that is not hosted by your own server. CORS is a mechanism to relax this restriction.</p>
 <p>Cross-origin resouce sharing. A mechanism to restrict types of resources can be request from a web page from another domain outside the domain where the first request is served. Some resources like images, css, scripts, videos and able to be requested in a CORS way, but things like ajax request is forbidden.</p>
+<p>On the browser side <code>CORS</code> is enforced with <code>XMLHttpRequest</code> and <code>Fetch Api</code>.</p>
+<h4>Access control</h4>
+<p>You don't want your site be accessed by arbitrary people, <code>CORS</code> allows you to share some of your data and control the access on the others.</p>
+<h4>Preflight request.</h4>
+<p>HTTP request methods that might cause side effect on the server are mandated to send a <code>OPTIONS</code> preflight request, and the real request can only be send after the preflight is approved by the server.</p>
 <h4>Request Headers</h4>
 <ul>
 <li><code>Origin</code></li>
