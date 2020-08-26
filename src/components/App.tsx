@@ -1,7 +1,6 @@
 import React, {Suspense, lazy} from 'react';
 import {HashRouter, Switch, Route} from 'react-router-dom';
 import {Header, CollapsedHeader} from './Header';
-import {About} from './About';
 import {useWindowSize} from '../state/hooks';
 import {LoaderSpinner} from './Misc';
 import {
@@ -11,6 +10,7 @@ import {
 } from './Page';
 
 import 'highlightjs/styles/github.css';
+
 
 const ArticlePage: any = lazy(() => import("./lazyPage/ArticlePage"));
 const ArticleChronoListPage: any = lazy(() => import("./lazyPage/ArticleChronoListPage"));
@@ -31,13 +31,13 @@ function App() {
         <Suspense fallback={LoaderSpinner}>
           <Route exact path="/article/:id" component={ArticlePage} />
           <Route exact path="/" component={ArticleChronoListPage} />
-          <Route exact path="/about" component={About} />
+          <Route exact path="/about" component={AboutMePage} />
           <Route exact path="/tag/:tag" component={TagListPage} />
           <Route exact path="/tags" component={TagsPage} />
           <Route exact path="/notes" component={NoteChronoListPage} />
           <Route exact path="/others" component={OthersChronoListPage} />
-          <Route exact path="/about" component={AboutMePage} />
         </Suspense>
+        <Route exact path="/about" component={AboutMePage} />
       </Switch>
     </HashRouter>
   );

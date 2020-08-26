@@ -6,9 +6,7 @@ import {HoverLink} from './Misc';
 export function About() {
   return (
     <Container>
-      <div style={{
-        color: "LightCoral",
-      }}>
+      <div style={{color: "LightCoral", }}>
         <h1> About me </h1>
       </div>
       <hr />

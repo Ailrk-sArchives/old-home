@@ -15,10 +15,7 @@ export const TagListPage: React.FC<{}> = () => {
   return <AddPageTitle pageTitle={`Tag: ${tag as string}`} page={<TagList />} />;
 }
 
-export function AboutMePage() {
-  return (
-    <About />)
-}
+export const AboutMePage = About;
 
 export function TagsPage() {
   const tags = Array.from(allDB.keys("tag")!);

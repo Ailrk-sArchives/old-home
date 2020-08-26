@@ -1,0 +1,29 @@
+<h1>Some js</h1>
+<p>Not like c++, knowing what pacakge to use is also part of the node expierence...</p>
+<h2>Visitor on tree node and mutation.</h2>
+<p>I was trying to flatten a tree, I can use dfs traverse the tree, passing a visitor callback to collect nodes into a list; or I can use bfs and a stack to push nodes layer by layer. Which one to use? (I choose dfs because it's fast to implement. but it cause some other problems I will mention below).</p>
+<h2>Reduce and swiss army knife.</h2>
+<p>Reduce can fit any purpose you want, not only reduce the list to an value. The accumulator can be think as a state implicitly passed through the entire traversal of the list, you can hold any arbitrary information to inform the later elements what happened before them. For instance, you can partition a list:</p>
+<pre><code class="language-typescript">[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>].reduce(<span class="hljs-function">(<span class="hljs-params">[evens, odds], v</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (v % <span class="hljs-number">2</span> === <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> [[...evens, v], odds];
+    <span class="hljs-keyword">return</span> [evens, [...odds, v]];
+}, [[], []]);
+</code></pre>
+<h2>JSON and cycle reference.</h2>
+<p>JSON by default is very simple and doesn't handle circular reference. To convert an objecet with circular refernce into json file there is a well known package <code>circle.js</code> comes with function <code>decycle</code> and <code>retrocycle</code>. Essentially the package convert all circualr reference into JSONPath format, and reconstruct the circular reference to restore the original structual.</p>
+<h2>.env</h2>
+<p>.env can helps a lot when the program runs on different environments and you need to mannually set up everything. Commonly package is <code>dotenv</code>. <code>dotenv</code> give you three functions <code>config</code>, <code>parse</code>, and <code>load</code>. <code>config</code> is the one you want to use if you just want to use <code>.env</code> as global const. Other functions are helpful if you want to read <code>.env</code> in text form, or maybe you are the one generating <code>.env</code> for other programs.</p>
+<h2>Debug</h2>
+<p>node --inspect  is always an option. One catch with jest, by default jest run stuffs asynchronously. To make breakpoint work you need to set <code>--runInBand</code>, which I think is a terrible name and there are plenty of much better alternative for it (. How node --inspect work is actually quit cool, it set up a server to talk with debugger front end. A typical way is to run test in inspect mode and use chrome as the debugger front end. <code>node --inspect node_module/.bin/jest &lt;folder&gt; --runInBand</code>.</p>
+<h2>Sad story today</h2>
+<p>I have a bfs algorithm works on a folder tree. It's a recursive implementation so there is a marker tag with each tree node to indicate the algorithm visited it before. It works for some cases, but completely skip others. Turns out once I set those visited marked I never turn them off, so any tree that is get visited twice will never really traverse anything. It's super stupid but super implicit and took me so long to debug.</p>
+<p>The problem is to set those marker off, you also need to traverse the tree. So maybe you can use two tags instead of one, so each time after traverse traverse again to turn the fist tag off. This will double the time complexity and jsut doesn't sound right.</p>
+<p>Another possible way is to create a list of references refer to each tag, and once traverse is done traverse the list to flip the tag. It's actually the same since you also double the space and time.</p>
+<p>All maybe just use bfs, if the goal is just to visit the entire tree this should not be a big problem.</p>
+<p>Besides that I can't think of a way to avoid the state all together.</p>
+<h6>PS</h6>
+<p>I thought about set the tag back if the algorithm find out the node is already visited, but that will explode the time complexity since a node has the potential to be visited multiple time.</p>
+<h6>PS</h6>
+<p>Finally I decided to go with the two tags solution. Easier to manage and fit my current code well (relatively).</p>
+<p>You need to make sure your traverse algorithm is the only thing that can change this two bits and they always change in pair. So give any time snapshot a node should have a tag and a unset tag that is the opposite of the tag.</p>
