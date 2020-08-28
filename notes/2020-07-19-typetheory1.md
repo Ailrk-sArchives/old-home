@@ -4,7 +4,7 @@
 -- source Programming-in-Matin-Lof's-Type-Theory
           https://www.youtube.com/watch?v=45rZ1dYkgbY
 ;;
-# Note: some type theory #1
+# Note: some type theory 2020-07-19
 ## Type theory 100
 A formalism for program construction.
 

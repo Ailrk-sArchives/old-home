@@ -1,4 +1,4 @@
--- tag note haskell data-structures zipper ST
+-- tag note haskell data-structure zipper ST
 -- title Some more haskell notes. ST zipper
 -- date 2020-08-14
 -- source https://en.wikibooks.org/wiki/Haskell/Zippers
