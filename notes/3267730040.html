@@ -1,0 +1,62 @@
+<h1>GHC Extensions</h1>
+<h4>Sweet GHC extensions (sugars)</h4>
+<h5>{-# LANGUAGE LambdaCase #-}</h5>
+<p>Pattern match on the parameter of a lambda function directly. It saves you from nameing the parameter.</p>
+<pre><code class="language-haskell"><span class="hljs-title">f</span> x :: <span class="hljs-type">Maybe</span> a -&gt; <span class="hljs-type">Maybe</span> a
+<span class="hljs-title">f</span> = \<span class="hljs-keyword">case</span>
+    <span class="hljs-type">Just</span> a -&gt; <span class="hljs-type">Just</span> a
+    <span class="hljs-type">Nothing</span> -&gt; <span class="hljs-type">Nothing</span>
+</code></pre>
+<h5>{-# LANGUAGE OverloadedStrings #-}</h5>
+<p>Polymorphic string over <code>Text</code> and <code>ByteString</code>.</p>
+<p>Bascially allows you to have a function <code>f :: ByteString -&gt; Int</code>, and call it like <code>f &quot;good&quot;</code>. This is natural for numbers because number literals are by default polymorphic. However it doesn't comes by default for String.</p>
+<h5>{-# LANGUAGE RecordWildCards #-}</h5>
+<p>Allowing to use wildcard in record construction and pattern matching. This extension implies <code>DisambiguateRecordFields</code>. <code>..</code> can be used in a record like <code>f (C {a = 1, b, ..}) = b + c + d</code> where a will be updated to a and other part in the record will be the same.</p>
+<p>The record wildcard expension will refer to the nearest enclosing variables that has the same name as some record field.</p>
+<pre><code class="language-haskell"><span class="hljs-comment">-- spread</span>
+<span class="hljs-type">C</span> {a = <span class="hljs-number">1</span>, ..} = e
+<span class="hljs-comment">-- in expression</span>
+<span class="hljs-title">let</span> {a = <span class="hljs-number">1</span>; b = <span class="hljs-number">2</span>; c = <span class="hljs-number">3</span>; d = <span class="hljs-number">4</span>} <span class="hljs-keyword">in</span> <span class="hljs-type">C</span> {..}
+<span class="hljs-comment">-- the same as</span>
+<span class="hljs-title">let</span> {a = <span class="hljs-number">1</span>; b = <span class="hljs-number">2</span>; c = <span class="hljs-number">3</span>; d = <span class="hljs-number">4</span>} <span class="hljs-keyword">in</span> <span class="hljs-type">C</span> {a=a, b=b, c=c, d=d};
+</code></pre>
+<h5>{-# LANGUAGE TupleSections #-}</h5>
+<p>Translate a tuple like <code>(, &quot;I&quot;, , , &quot;Love, ,1335&quot;)</code> to <code>\a b c d -&gt; (a, &quot;I&quot;, b, c, &quot;Love, d, 1335&quot;)</code>. You have all kinds of extensions to provide nicer syntax for a very specific use case...</p>
+<h5>{-# LANGUAGE MultiWayIf #-}</h5>
+<p>Allow a guard-like if expression</p>
+<pre><code class="language-haskell"><span class="hljs-title">if</span> | guard1 -&gt; expr1
+   | ...
+   | guardN -&gt; exprN
+</code></pre>
+<p>This is actually equivalent to</p>
+<pre><code class="language-haskell"><span class="hljs-title">case</span> () <span class="hljs-keyword">of</span>
+    _ | guard1 -&gt; expr1
+     ...
+    _ | guardN -&gt; exprN
+</code></pre>
+<h4>GHC extension for class and instances declaration</h4>
+<h6>{-# LANGUAGE FunctionalDependencies #-}</h6>
+<h5>{-# LANGUAGE FlexibleContexts #-}</h5>
+<p>Normally the assertions in the context of the instance declaration must be of the form <code>C a</code>.</p>
+<p>With <code>flexible contexts</code>  this rule is relaxed to that an instance declaration can have</p>
+<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE FlexibleContexts #-}</span>
+
+</code></pre>
+<h4>GHC Extensions for deriving</h4>
+<p>Whether a type can derive a typeclass is somewhat unintuitive. The rule of thumbs, haskell take the most conservative dicision. If there is ambiguity about the deriving it will not be able to derive.</p>
+<pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">T0</span> f a = <span class="hljs-type">MkT0</span> a <span class="hljs-keyword">deriving</span> <span class="hljs-type">Eq</span></span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">T1</span> f a = <span class="hljs-type">MkT1</span> (<span class="hljs-title">f</span> <span class="hljs-title">a</span>) <span class="hljs-keyword">deriving</span> <span class="hljs-type">Eq</span></span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">T2</span> f a = <span class="hljs-type">MkT2</span> (<span class="hljs-title">f</span> (<span class="hljs-title">f</span> <span class="hljs-title">a</span>)) <span class="hljs-keyword">deriving</span> <span class="hljs-type">Eq</span></span>
+</code></pre>
+<p>First two cases are able to be derived directly. However, the third one can lead to unterminated instances, so by default Haskell rejects it.</p>
+<h5>{-# LANGUAGE StandaloneDeriving #-}</h5>
+<pre><code>{-# StandaloneDeriving #-}
+data Foo a = Bar a | Baz String deriving instance Eq a => Eq (Foo a)
+</code></pre>
+<p>This extension allows you to derive a typeclass based on a specific typeclass instance.</p>
+<h5>{-# GeneralizedNewtypeDeriving #-}</h5>
+<h5>{-# LANGUAGE DerivingStrategies #-}</h5>
+<h4>Type extensions</h4>
+<h5>{-# LANGUAGE GADTs #-}</h5>
+<h4>{-# LANGUAGE TypeFamilies #-}</h4>
+<h4>{-# LANGUAGE RankNTypes#-}</h4>
