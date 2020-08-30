@@ -109,9 +109,7 @@
 
 <span class="hljs-class"><span class="hljs-keyword">newtype</span> <span class="hljs-type">Password</span> a = <span class="hljs-type">Password</span> { <span class="hljs-title">unPassword</span> :: <span class="hljs-type">ByteString</span> }</span>
 <span class="hljs-class"><span class="hljs-keyword">newtype</span> <span class="hljs-type">PasswordHash</span> a =</span>
-    <span class="hljs-type">PasswordHash</span> {
-        unPasswordHash :: <span class="hljs-type">ByteString</span>
-        }
+    <span class="hljs-type">PasswordHash</span> { unPasswordHash :: <span class="hljs-type">ByteString</span> }
 
 <span class="hljs-comment">-- You can express the passwordHash is for the same type of</span>
 <span class="hljs-comment">-- password</span>
@@ -212,7 +210,6 @@
 <p>This example shows how to make a already very generic function even more generic.</p>
 <pre><code class="language-haskell"><span class="hljs-comment">-- ok</span>
 <span class="hljs-title">partition</span> :: (a -&gt; <span class="hljs-type">Bool</span>) -&gt; [a] -&gt; ([a], [a])
-
 <span class="hljs-comment">-- better</span>
 <span class="hljs-title">partition</span> :: (a -&gt; <span class="hljs-type">Either</span> b c) -&gt; [a] -&gt; ([b], [c])
 </code></pre>
@@ -228,14 +225,12 @@
 <pre><code class="language-haskell"><span class="hljs-comment">-- inverseMap from `relude package`</span>
 <span class="hljs-title">inverseMap</span> :: <span class="hljs-keyword">forall</span> e s. (<span class="hljs-type">Bounded</span> e, <span class="hljs-type">Enum</span> e, <span class="hljs-type">Ord</span> s)
     =&gt; (e -&gt; s) -&gt; s -&gt; <span class="hljs-type">Maybe</span> e
-
 <span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Color</span> = <span class="hljs-type">Green</span> | <span class="hljs-type">Yellow</span> | <span class="hljs-type">Blue</span></span>
 <span class="hljs-title">showColor</span> :: <span class="hljs-type">Color</span> -&gt; <span class="hljs-type">Text</span>
 <span class="hljs-title">showColor</span> = \<span class="hljs-keyword">case</span>
     <span class="hljs-type">Green</span> -&gt; <span class="hljs-string">"Green"</span>
     <span class="hljs-type">Yellow</span> -&gt; <span class="hljs-string">"Yellow"</span>
     <span class="hljs-type">Blue</span> -&gt; <span class="hljs-string">"Blue"</span>
-
 <span class="hljs-comment">-- bidirectional parsing with one function</span>
 <span class="hljs-title">parseColor</span> :: <span class="hljs-type">Text</span> -&gt; <span class="hljs-type">Maybe</span> <span class="hljs-type">Color</span>
 <span class="hljs-title">parseColor</span> = inverseMap showColor
@@ -244,25 +239,66 @@
 <pre><code class="language-haskell"><span class="hljs-comment">-- provides a finder grained control over how instance maybe derived.</span>
 <span class="hljs-meta">{-# LANGUAGE DerivingStrategies #-}</span>
 
+<span class="hljs-comment">-- match on multiple patterns on parameter of lambda</span>
 <span class="hljs-meta">{-# LANGUAGE LambdaCase #-}</span>
+
+<span class="hljs-comment">-- Overload string literal to any `isString`</span>
 <span class="hljs-meta">{-# LANGUAGE OverloadedStrings #-}</span>
+
+<span class="hljs-comment">-- Basically spreading operator.</span>
 <span class="hljs-meta">{-# LANGUAGE RecordWildCards #-}</span>
 <span class="hljs-type">Module</span> <span class="hljs-type">Bi</span> <span class="hljs-keyword">where</span>
-
 <span class="hljs-keyword">import</span> Data.Text (<span class="hljs-type">Text</span>)
 <span class="hljs-keyword">import</span> Relude.Extra.Enum (<span class="hljs-title">inverseMap</span>)
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Color</span> = <span class="hljs-type">Red</span> | <span class="hljs-type">Green</span> | <span class="hljs-type">Yellow</span></span>
+    <span class="hljs-keyword">deriving</span> stock (<span class="hljs-type">Show</span>, <span class="hljs-type">Enum</span>, <span class="hljs-type">Bounded</span>)
+<span class="hljs-title">showColor</span> :: <span class="hljs-type">Color</span> -&gt; <span class="hljs-type">Text</span>
+<span class="hljs-title">showColor</span> = \<span class="hljs-keyword">case</span>
+    <span class="hljs-type">Red</span> -&gt; <span class="hljs-string">"red"</span>
+    <span class="hljs-type">Green</span> -&gt; <span class="hljs-string">"green"</span>
+    <span class="hljs-type">Yellow</span> -&gt; <span class="hljs-string">"yellow"</span>
+    <span class="hljs-type">Blue</span> -&gt; <span class="hljs-string">"blue"</span>
 
-<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Color</span> = <span class="hljs-type">Red</span> | <span class="hljs-type">Gren</span> | <span class="hljs-type">Yellow</span> <span class="hljs-keyword">deriving</span> (<span class="hljs-type">Show</span>, <span class="hljs-type">Enum</span>, <span class="hljs-type">Bounded</span>)</span>
+<span class="hljs-title">parseColor</span> :: <span class="hljs-type">Text</span> -&gt; <span class="hljs-type">Maybe</span> <span class="hljs-type">Color</span>
+<span class="hljs-title">parseColor</span> = inverseMap showColor
 
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">FruitName</span> = <span class="hljs-type">Apple</span> | <span class="hljs-type">Orange</span> | <span class="hljs-type">Lemon</span> | <span class="hljs-type">Blueberry</span></span>
+    <span class="hljs-keyword">deriving</span> stock (<span class="hljs-type">Show</span>, <span class="hljs-type">Enum</span>, <span class="hljs-type">Bounded</span>)
+
+<span class="hljs-title">showFruitName</span> :: <span class="hljs-type">FruitName</span> -&gt; <span class="hljs-type">Text</span>
+<span class="hljs-title">showFruitName</span> = \<span class="hljs-keyword">case</span>
+    <span class="hljs-type">Apple</span> -&gt; <span class="hljs-string">"apple"</span>
+    <span class="hljs-type">Orange</span> -&gt; <span class="hljs-string">"orange"</span>
+    <span class="hljs-type">Lemon</span> -&gt; <span class="hljs-string">"lemon"</span>
+    <span class="hljs-type">Blueberry</span> -&gt; <span class="hljs-string">"blueberry"</span>
+
+<span class="hljs-title">parseFruitName</span> :: <span class="hljs-type">Text</span> -&gt; <span class="hljs-type">Maybe</span> <span class="hljs-type">FruitName</span>
+<span class="hljs-title">parseFruitName</span> = inverseMap showFruitName
+
+<span class="hljs-comment">-- strictly evaluated</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Fruit</span> = <span class="hljs-type">Fruit</span> {
+    <span class="hljs-title">fruitColor</span> :: !<span class="hljs-type">Color</span>
+    <span class="hljs-title">fruitName</span> :: !<span class="hljs-type">FruitName</span>
+} <span class="hljs-keyword">deriving</span> stock (<span class="hljs-type">Show</span>)</span>
+
+<span class="hljs-title">parseFruit</span> :: <span class="hljs-type">Text</span> -&gt; <span class="hljs-type">Maybe</span> <span class="hljs-type">Fruit</span>
+<span class="hljs-title">parseFruit</span> t = <span class="hljs-keyword">do</span>
+    <span class="hljs-comment">-- pattern matching which fail case handled by MonadFail</span>
+    [color, name] &lt;- <span class="hljs-type">Just</span> $ <span class="hljs-type">Text</span>.words t
+    fruitColor &lt;- parseColor color
+    fruitName &lt;- parseFruitName name
+    pure <span class="hljs-type">Fruit</span>{..}  <span class="hljs-comment">-- From RecordWildCards extensions</span>
+                    <span class="hljs-comment">-- fit fruitName and fruitColor directly.</span>
 </code></pre>
 <h2>Recursive go</h2>
 <h4>Description</h4>
+<p>Moving recursion over data types into another function. By doing so you can have the recursion function pass some parameters down as extra information without expose this detail to the caller of the interface.</p>
 <h4>Example</h4>
-<h2>GHC Extensions</h2>
-<h4>Sweet GHC extensions (sugars)</h4>
-<h4>GHC Extensions about deriving</h4>
-<p><code>{-# GeneralizedNewtypeDeriving #-}</code></p>
-<p><code>{-# LANGUAGE DerivingStrategies #-}</code></p>
-<h4>GADT</h4>
-<h4>TypeFamilies</h4>
-<h4>RankNTypes</h4>
+<pre><code class="language-haskell"><span class="hljs-comment">-- accumulator i is not exposed to the external world.</span>
+<span class="hljs-title">atGo</span> :: [a] -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Maybe</span> a
+<span class="hljs-title">l</span> `atGo` n = go <span class="hljs-number">0</span> l
+    <span class="hljs-keyword">where</span>
+        go :: <span class="hljs-type">Int</span> -&gt; [a] -&gt; <span class="hljs-type">Maybe</span> a
+        go _ [] = <span class="hljs-type">Nothing</span>
+        go i (x:xs) = <span class="hljs-keyword">if</span> i == n <span class="hljs-keyword">then</span> <span class="hljs-type">Just</span> x <span class="hljs-keyword">else</span> go (i + <span class="hljs-number">1</span>) xs
+</code></pre>

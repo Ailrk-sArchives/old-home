@@ -1,4 +1,4 @@
--- tag note haskell boolean-blindess evidence idioms ghc-extension
+-- tag note haskell boolean-blindess evidence idioms
 -- title Haskell Idioms
 -- date 2020-08-17
 -- source https://kowainik.github.io/posts/haskell-mini-patterns

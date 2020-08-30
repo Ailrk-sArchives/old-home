@@ -91,7 +91,7 @@ export function Header() {
       <Background img={Beach} />
       <Container>
         <Row {...headerStyle} xs={8}>
-          <Col >
+          <Col>
             <Link to={'/'} style={{
               ...linkStyle,
               color: "white",

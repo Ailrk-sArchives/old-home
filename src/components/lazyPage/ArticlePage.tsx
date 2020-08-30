@@ -8,5 +8,3 @@ export default function ArticlePage() {
   const markdown = allDB.get(Number.parseInt(id as string));
   return (<Article markdown={markdown} />);
 }
-
-
