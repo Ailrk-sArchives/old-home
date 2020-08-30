@@ -1,4 +1,4 @@
--- tag note haskell ghc-extension safe-haskell rewrite-rules typeclass type-system
+-- tag note haskell ghc-extension safe-haskell rewrite-rules typeclass type-system ffi
 -- title Some GHC extensions
 -- date 2020-08-27
 -- source https://downloads.haskell.org/~ghc/7.4.1/docs/html/users_guide/deriving.html
@@ -6,7 +6,6 @@
           https://www.microsoft.com/en-us/research/wp-content/uploads/1997/01/multi.pdf
 ;;
 # GHC Extensions.
-
 
 ## Sweet GHC extensions (sugars)
 ##### {-# LANGUAGE LambdaCase #-}
@@ -109,7 +108,8 @@ runMe :: RIO ()
 runMe = ...
 ```
 
-This is only possible with safe hasekll. Without IO:
+This is only possible with safe hasekll. The result:
+
 1. The author can access IO and write arbitrary IO actions anyway.
 2. Besides that, the untrusted plugin author have no access to the `UnsafeIO` constructor; if you use template haskell you will still be able to access it, even it is not export at all.
 3. There will be no restriction on what packages the plugin author can import. In that case the plugin author can just pick arbitrary library with some IO operation exposed and exploit that.
@@ -154,13 +154,112 @@ If a module is marked as unsafe, it cannot by imported by safe code.
 ##### {-# LANGUAGE TrustWorthy #-}
 It gives a module the permission of Safe module in terms of importing and exporting, but it doesn't actually apply any real restriction to functionalities been used. In safe haskell it's like those cowboy move you can put if you're confident about what you're doing.
 
-## GHC extension for ffi
+## GHC extension for foreign function interface
+Call foreign functions in haskell. FFI is enabled by default, so strictly speaking it's not an extension. You can control ableness with `ForeignFunctionInterface` flag.
+
+#### Call safety
+Safe ffi calls must allow foreign calls to safely call into hasekll code, this means that the gc must be able to run while foreign calls are in progress.
+
+If you pass a foreign heap objecet reference to haskell without any constraints, the gc will be able to move the reference arround the heap. A safe ffi requries your reference is `pinned`, so the gc can no longer move it arbitrarily.
+
+I an `unsafe` call the foreign reference passed in doesn't required to be pinned, but after ghc 8.4 gc will never happen during a unsafe foreign call, so at least the heap itself won't move during the execution of the foreign call.
+
+#### UnliftedFFITypes
+Some basic foreign types `Int#`, `Word#`, `Char#`, `Float#`, `Double#`, `Addr#`, `StablePtr# a`.
+
+Some boxed types can be used in foreign import with some restrictions.
+
+###### Types can be used as argument of `foreign import unsafe`
+`Array#`, `SmallArray#`, `ArrayArray#`, `ByteArray#`, `MutableArray#`, `MutableSmallArray#`, `MutableArrayArray#`, `MutableByteArray#`
+
+###### Types can be used as argument of `foreign import safe`
+__Pinned__ `ByteArray#`, `MutableByteArray`.
+
+###### Mutation
+It's safe to mutate `MutableByteArray` in both `safe` and `unsafe` foreign import.
+
+#### Example.
+Simple example. It sums the first three bytes without using anything from the `Rts.h` .
+```c
+uint_8_t  add_triplet(uint_8_t* arr) {
+    return (arr[0] + arr[1] + arr[2]);
+}
+```
+
+```haskell
+foregin import ccall unsafe "add_triplet"
+    addTriplet :: MutableArray# RealWorld -> IO Word 8
+```
+
+Sometimes your foreign language needs to know the rts closure type. In the following example the `StgArrayBytes` is a rts construct.
+
+```c
+#include <Rts.h>
+int sum_first(StgArrayBytes **bufs) {
+    StgArrayBytes **bufs = (StgArrayBytes**)bufsTmp;
+    int res = 0;
+    for (StgWord ix = 0; ix < arr->ptrs; ix++) {
+    res = res + ((int*)(bufs[ix]->payload)[0]);
+    }
+    return res;
+}
+```
+
+```haskell
+--
+foregin import ccall unsafe "sum_first"
+    sumFirst :: ArrayArray# -> IO CInt
+```
+
+
+#### Wrap around IO monad.
+
+```haskell
+newtype MIO a = MIO (IO a)
+```
+
+It's ok to replace IO type with your customized IO newtype wrapper in a foreign import. GHC will recognize the wrapper IO and accept it as an IO monad.
+
+This is acceptable even if there is no IO monad explicitly specified in the type signature.
+```haskell
+foreign import "dynamic"
+    baz :: (Int -> MIO Int) -> CInt -> MIO Int
+```
+
+`MIO` limits IO actions can be performed by, prevents you from calling arbitrary IO actions.
+
+#### Explicit forall
+You can quantify type variables in foregin import with explicit forall.
+```haskell
+{-# LANGUAGE ExplicitForAll #-}
+foreign import ccall "mmap" cMmap :: forall a. CSize -> IO (Ptr a)
+```
+
+#### Memory allocation
+FforFI library provides some functions to allocate memory explicitly. There are some differences between these meneory allocation methods.
+
+###### `alloca`
+Shor-term allocation. Internally it uses `MutableByteArray#`, so the allcation and deallocation are fast. It's faster then C's heap malloc/free, but slower than C's heap allocation. Because it has the lowest overheat, it's the best choice for most of the time. Ppl normally use it to marshaling data to and from FFI functions.
+
+###### `mallocForeignPtr`
+Long-term allocation that requires garbage collection. Internally using `MutableByteArray#`, so it's very similar to `alloca` but the memory is pointed by a `ForeignPtr`.
+
+###### `Foreign.malloc / Foreign.free`
+Simply a wrapper over c's `malloc/free`. It's much slower than other methods, so use it as the last resort.
+
+###### `Foreign.Marshal.Pool`
+A pool implemented with `malloc/free`.
+
+
+#### Pinned Byte Array
+If a byte array is pinned it cannot be moved by the garbage collector. The byte array has a stable address that can be safely requested with `byteArrayContents#`.
+
+You can get a pinned byte array by allocating it with `newPinnedByteArray#`. Besides that, if the byte array is large (as large as 80% of a 4kb block) or if ithas been copied into a compact region, rts will pin it automatically.
 
 
 ## GHC extension for class and instances declaration
 
 #### Inferred contexts
-a
 
 When typeclass was first introduced it was considered an experimental feature of haskell, so initally it was added in a conservative manner. As time passed people realize there are a lot of space to extend the funtionality of typeclass, and these enhancements comes as language extension. The [paper](https://www.microsoft.com/en-us/research/wp-content/uploads/1997/01/multi.pdf) has a collections of examples for the rationale of different extensions.
 
@@ -254,31 +353,6 @@ This extension allows you to derive a typeclass based on a specific typeclass in
 ##### {-# GeneralizedNewtypeDeriving #-}
 
 ##### {-# LANGUAGE DerivingStrategies #-}
-
-### GHC Type extensions
-##### {-# LANGUAGE GADTs #-}
-
-#### {-# LANGUAGE TypeFamilies #-}
-
-```haskell
-{-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE TypeFamilies #-}
-
-class A a b where
-    type SumType a b
-    plus a -> b -> SumType a b
-
-instance Add Integer Integer where
-    type SumType Integer Integer = Integer
-    plus x y = x + y
-```
-
-#### {-# LANGUAGE RankNTypes#-}
-
-
-## GHC Rewrite Rules
-
-####
 
 ## Conclusion
 
