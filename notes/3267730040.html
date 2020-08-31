@@ -172,8 +172,8 @@
 <p>If a byte array is pinned it cannot be moved by the garbage collector. The byte array has a stable address that can be safely requested with <code>byteArrayContents#</code>.</p>
 <p>You can get a pinned byte array by allocating it with <code>newPinnedByteArray#</code>. Besides that, if the byte array is large (as large as 80% of a 4kb block) or if ithas been copied into a compact region, rts will pin it automatically.</p>
 <h2>GHC extension for class and instances declaration</h2>
-<h4>Inferred contexts</h4>
 <p>When typeclass was first introduced it was considered an experimental feature of haskell, so initally it was added in a conservative manner. As time passed people realize there are a lot of space to extend the funtionality of typeclass, and these enhancements comes as language extension. The <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/1997/01/multi.pdf">paper</a> has a collections of examples for the rationale of different extensions.</p>
+<h4>Inferred contexts</h4>
 <h5>{-# LANGUAGE MultiParamTypeClasses #-}</h5>
 <p>Literaly allows multiple parameters when declaring type classes. Some typeclass is define not only on one type, but on a tuple of types. By default haskell cannopt express this tupled type class. The most famous example is to define <code>StateMonad</code>.</p>
 <pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE MultiParamTypeClasses #-}</span>
@@ -194,10 +194,10 @@ In concurrent haskell, you have funtions like this:</p>
 <span class="hljs-title">putST</span> :: <span class="hljs-type">MutVar</span> s a -&gt; a -&gt; <span class="hljs-type">ST</span> s ()
 </code></pre>
 <p>There are some commonalities between these group of funtions. We cannot abstract the commonalities into a typeclass in default haskell, but with multi parameter typeclass we can write</p>
-<pre><code class="language-haskel">class Monad m -> VarMonad m v where
-    new :: a -> m (v a)
-    get :: v a -> m a
-    put :: v a -> a -> m ()
+<pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-type">Monad</span> m -&gt; <span class="hljs-type">VarMonad</span> m v <span class="hljs-keyword">where</span></span>
+    new :: a -&gt; m (v a)
+    get :: v a -&gt; m a
+    put :: v a -&gt; a -&gt; m ()
 </code></pre>
 <p>On extra benefit is that you can also add typeclass constraints for each parameters separately for any specific instance, which is not possible without multi parameter typeclass.</p>
 <h5>{-# LANGUAGE FunctionalDependencies #-}</h5>
@@ -223,6 +223,7 @@ In concurrent haskell, you have funtions like this:</p>
 <pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE FlexibleContexts #-}</span>
 
 </code></pre>
+<h5>{-# LANGUAGE InstanceSigs #-}</h5>
 <h2>GHC Extensions for deriving</h2>
 <p>Whether a type can derive a typeclass is somewhat unintuitive. The rule of thumbs, haskell take the most conservative dicision. If there is ambiguity about the deriving it will not be able to derive.</p>
 <pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">T0</span> f a = <span class="hljs-type">MkT0</span> a <span class="hljs-keyword">deriving</span> <span class="hljs-type">Eq</span></span>
@@ -237,5 +238,6 @@ data Foo a = Bar a | Baz String deriving instance Eq a => Eq (Foo a)
 <p>This extension allows you to derive a typeclass based on a specific typeclass instance.</p>
 <h5>{-# GeneralizedNewtypeDeriving #-}</h5>
 <h5>{-# LANGUAGE DerivingStrategies #-}</h5>
+<h5>{-# LANGUAGE DerivingVia #-}</h5>
 <h2>Conclusion</h2>
 <p>To some extension GHC extension is haskell itself, so besides those core feataures like higher order function, higher kinded types, most of new developments are delivered in the form of language extensions. So far most materials I read merely introduce extensions, or just briefly mention stuffs like <code>OverloadedStrings</code>. After you finish those books and look into some real code bases, you get devastated by 20 languages extensions and bunch of imports in every files. I fill there is a descrepency between haskell teaching materials and how people really use haskell to write program.</p>
