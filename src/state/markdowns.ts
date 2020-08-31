@@ -28,10 +28,18 @@ export const othersDB: MarkdownDB = markdowndb({
   logLevel: "silence",
 });
 
+export const papersDB: MarkdownDB = markdowndb({
+  markdownDir: "papers",
+  mode: "static",
+  publicURL: "/home",
+  logLevel: "silence",
+});
+
 export const allDB: MarkdownDB = new AllDB([
   articlesDB,
   notesDB,
   othersDB,
+  papersDB
 ]);
 
 export function chronoList(md: MarkdownDB): Array<Markdown> {

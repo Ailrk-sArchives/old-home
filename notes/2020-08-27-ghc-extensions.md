@@ -259,9 +259,9 @@ You can get a pinned byte array by allocating it with `newPinnedByteArray#`. Bes
 
 ## GHC extension for class and instances declaration
 
-#### Inferred contexts
-
 When typeclass was first introduced it was considered an experimental feature of haskell, so initally it was added in a conservative manner. As time passed people realize there are a lot of space to extend the funtionality of typeclass, and these enhancements comes as language extension. The [paper](https://www.microsoft.com/en-us/research/wp-content/uploads/1997/01/multi.pdf) has a collections of examples for the rationale of different extensions.
+
+#### Inferred contexts
 
 ##### {-# LANGUAGE MultiParamTypeClasses #-}
 Literaly allows multiple parameters when declaring type classes. Some typeclass is define not only on one type, but on a tuple of types. By default haskell cannopt express this tupled type class. The most famous example is to define `StateMonad`.
@@ -292,7 +292,7 @@ putST :: MutVar s a -> a -> ST s ()
 
 There are some commonalities between these group of funtions. We cannot abstract the commonalities into a typeclass in default haskell, but with multi parameter typeclass we can write
 
-```haskel
+```haskell
 class Monad m -> VarMonad m v where
     new :: a -> m (v a)
     get :: v a -> m a
@@ -331,6 +331,9 @@ With `flexible contexts`  this rule is relaxed to that an instance declaration c
 
 ```
 
+##### {-# LANGUAGE InstanceSigs #-}
+
+
 
 ## GHC Extensions for deriving
 Whether a type can derive a typeclass is somewhat unintuitive. The rule of thumbs, haskell take the most conservative dicision. If there is ambiguity about the deriving it will not be able to derive.
@@ -353,6 +356,9 @@ This extension allows you to derive a typeclass based on a specific typeclass in
 ##### {-# GeneralizedNewtypeDeriving #-}
 
 ##### {-# LANGUAGE DerivingStrategies #-}
+
+##### {-# LANGUAGE DerivingVia #-}
+
 
 ## Conclusion
 

@@ -4,6 +4,7 @@ import {
 } from './List';
 import {allDB} from '../state/markdowns';
 import {useParams} from 'react-router-dom';
+import {Paper} from './Paper';
 import {Container, Badge} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
@@ -14,6 +15,8 @@ export const TagListPage: React.FC<{}> = () => {
   const {tag} = useParams();
   return <AddPageTitle pageTitle={`Tag: ${tag as string}`} page={<TagList />} />;
 }
+
+export const PaperPage = Paper;
 
 export const AboutMePage = About;
 

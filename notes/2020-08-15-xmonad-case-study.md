@@ -5,7 +5,7 @@
           https://github.com/xmonad/xmonad
           https://wiki.haskell.org/Xmonad/Guided_tour_of_the_xmonad_source
 ;;
-# A little xmonas case study
+# A little xmonads case study
 Everybody seems to like xmonad so much, but I always feel like it's because other than xmonad there are not many popular haskell applications to talk about. Even for xmonad, tiling window manager is already kind of a niche program itself.
 
 The value of xmonad is it manage state in a purely functional way. There is probably nothing more stateful than window moving on the screen, and Xmonad proved haskell can do it very well.
