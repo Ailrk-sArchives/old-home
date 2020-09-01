@@ -175,9 +175,9 @@ type Program = [Instr]
 -- Readable program, writable output, and a stack state.
 type VM a = ReaderT Program (WriterT Output (State Stack)) a
 
--- See how many code you can derive
--- Comp is just a newtype wrapper on top of VM. But you can derive
+-- Comp is just a newtype wrapper on top of VM. You can derive
 -- typeclass for it.
+-- See how many code you can derive
 newtype Comp a = Comp { unComp :: VM a }
   deriving (Functor, Applicative, Monad,
             MonadReader Program,
@@ -185,26 +185,38 @@ newtype Comp a = Comp { unComp :: VM a }
             MonadState Stack)
 data Instr = Push Int | Pop | Puts
 
+-- With mtl derived, you don't need lift all the time to
+-- use monad on different layers.
 evalInstr :: Instr -> Comp ()
 evalInstr instr = \case
-  Pop -> modify tail
+  Pop -> modify tail  -- using the `State Stack`
   Push -> modify (n:)
   Puts -> do
     tos <_ gets head
-    tell [tos]
+    tell [tos]        -- using the `WriterT Output`
 
+-- Just another example of using the transformer.
 eval :: Comp ()
 eval = do
-  instr <- ask
+  instr <- ask  -- using ReaderT
   case instr of
     [] -> return ()
-    (i:is) -> evalInstr i >> local (const is) eval
+    (i:is) -> evalInstr i >> local (const is) eval -- using ReaderT again
 
+-- What it does:
+-- * flip evalState parameter, so we can setup the initial stack [].
+-- * note eval :: Comp (). It is our comp in term level.
+--   unComp get the underlying value out from the new type.
+-- * note runReaderT :: (r -> m a) -> ReaderT r m a
+-- * note execWriterT :: WriterT w m a -> m w
+-- You unwrap the monad transformer with the same order of how transformers
+-- are stacked together.
 execVM :: Program -> Output
 execVM = flip evalState [] . execWriterT . runReaderT (unComp eval)
 
+-- Define the program
 program :: Program
-program - [
+program = [
   Push 42,
   Push 27,
   Pop,
@@ -212,8 +224,51 @@ program - [
   Pop
 ]
 
+-- * note mapM_ :: (Foldable t, Monad m) => (a -> m b) -> t a -> m ()
+--   It's the function used to execute effect over a Fodable
 main :: IO ()
 main = mapM_ print $ execVM program
+```
+
+#### Monad morphisms with mmorph
+You can `lift :: Moand m => m a -> t m a` to lift an action into the transformer, but also there are cases that you want to transform your existed monad transformers to new transformers; such transformation can be done with the help of `mmorph` library.
+
+```haskell
+-- map a function from a base monad to a function over a transformed monad.
+hoist :: Monad m => (forall a. m a -> n a) -> t m b -> t n b
+
+-- generalize an Identity monad into another monad.
+-- For instance, we already know that State s a = StateT s Identity a.
+-- With generalize we can turn StateT s Identity a to StateT s m a.
+generalize :: Monad m => Identity a -> m a
+```
+
+Example of usage
+
+```haskell
+import Control.Monad.State
+import Control.Monad.Morph
+
+-- define a state as StateT [Int] Identity a
+type Eval a = State [Int] a
+
+runEval :: [Int] -> Eval a -> a
+runEval = flip evalState
+
+pop :: Eval Int
+pop = gets head >>= \top -> modify tail >> return top
+
+push :: Int -> Eval ()
+push x = modify (x:)
+
+ev1 :: Eval Int
+ev1 = push 3 >> push 4 >> pop >> pop
+
+-- hoist and generalize help you bring the State monad into
+-- a state monad transformer with IO stacked on top.
+ev2 :: StateT [Int] IO ()
+ev2 = hoist generalize ev1 >>= \result ->
+  liftIO $ putStrLn $ "Result: " ++ show result
 ```
 
 #### Draw back of mtl
