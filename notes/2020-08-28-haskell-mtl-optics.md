@@ -1,7 +1,8 @@
--- tag note haskell lense optics mtl concurrency comonad
--- title Some GHC extensions
+-- tag note haskell lenses optics mtl free-monad algebraic-effect
+-- title Some mtl lenses free monad, algebraic effect and so on
 -- date 2020-08-28
 -- source https://www.youtube.com/watch?v=GZPup5Iuaqw
+          http://www.haskellforall.com/2012/06/you-could-have-invented-free-monads.html
 ;;
 # Haskell. mtl, some lense, some concurrency
 
@@ -297,9 +298,4 @@ exceptState m s = runState (runExceptT m) s
 
 ## Lenses
 
-## Concurrent Haskell
-
-#### Concurrency in haskell overview
-
-#### Software transactional memory (STM)
 
