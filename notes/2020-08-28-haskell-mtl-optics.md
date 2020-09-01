@@ -154,9 +154,11 @@ This solve the multiple lift problems a of multiple transformers. mtl is by far 
 
 
 #### New type deriving
-Common technique being used with `mtl`. We already know new type is a very good way to let compiler help us differentiate two same types with different semantic meanings. But this is only one way of using it.
+Common technique being used with `mtl`. We already know new type is a very good way to let compiler help us differentiate two same types with different semantic meanings. There are other ways to use new types.
 
-An example of a virtual machine.
+With newtype deriving and `mtl` we can produce flattened transformer types without needing to do endless lift and return.
+
+An example of a stack machine.
 
 ```haskell
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
@@ -177,8 +179,10 @@ type VM a = ReaderT Program (WriterT Output (State Stack)) a
 -- Comp is just a newtype wrapper on top of VM. But you can derive
 -- typeclass for it.
 newtype Comp a = Comp { unComp :: VM a }
-  deriving (Functor, Applicative, Monad, MonadReader Program,
-            MonadWriter Output, MonadState Stack)
+  deriving (Functor, Applicative, Monad,
+            MonadReader Program,
+            MonadWriter Output,
+            MonadState Stack)
 data Instr = Push Int | Pop | Puts
 
 evalInstr :: Instr -> Comp ()
@@ -210,9 +214,23 @@ program - [
 
 main :: IO ()
 main = mapM_ print $ execVM program
-
 ```
 
+#### Draw back of mtl
+
+There are lots of problems with `mtl`.
+
+###### n² instance problem / instance boilerplate problem.
+To add a new custom transformer into a existing `mtl` transformer stack we need to derive a large amount of instances that do nothing but mostly lift.
+
+###### Monad transformer composition is not commutative.
+```haskell
+stateExcept :: StateT s (Except e) a -> s -> Either e (a, s)
+stateExcept m s = runExcept (runStateT m s)
+
+exceptState :: ExceptT e (State s) a -> s -> (Either e a, s)
+exceptState m s = runState (runExceptT m) s
+```
 
 ## Free Monad
 
