@@ -321,19 +321,6 @@ instance Add Integer Integer Double where
   plus x y = fromIntegral x + fromIntegral y
 ```
 
-##### {-# LANGUAGE FlexibleContexts #-}
-Normally the assertions in the context of the instance declaration must be of the form `C a`.
-
-With `flexible contexts`  this rule is relaxed to that an instance declaration can have
-
-```haskell
-{-# LANGUAGE FlexibleContexts #-}
-
-```
-
-##### {-# LANGUAGE InstanceSigs #-}
-
-
 
 ## GHC Extensions for deriving
 Whether a type can derive a typeclass is somewhat unintuitive. The rule of thumbs, haskell take the most conservative dicision. If there is ambiguity about the deriving it will not be able to derive.
@@ -352,12 +339,6 @@ First two cases are able to be derived directly. However, the third one can lead
 data Foo a = Bar a | Baz String deriving instance Eq a => Eq (Foo a)
 ```
 This extension allows you to derive a typeclass based on a specific typeclass instance.
-
-##### {-# GeneralizedNewtypeDeriving #-}
-
-##### {-# LANGUAGE DerivingStrategies #-}
-
-##### {-# LANGUAGE DerivingVia #-}
 
 
 ## Conclusion

@@ -1,4 +1,4 @@
--- tag note haskell ghc-extension GADTs liquid-haskell metaprogramming
+-- tag note haskell ghc-extension GADTs
 -- title Some haskell types, GHC rewrite rules
 -- date 2020-08-30
 -- source https://en.wikibooks.org/wiki/Haskell/Existentially_quantified_types
@@ -112,22 +112,3 @@ instance Add Integer Integer where
 {-# LANGUAGE ScopedTypeVariables #-}
 
 ```
-
-## GHC Rewrite Rules
-
-#### Monomorphism restriction
-```haskell
-{-# LANGUAGE NoMonoMorphismRestriction #-}
-```
-
-## Meta programming
-
-#### Quasi Quotes
-
-#### Template Haskell
-
-## Liquid Haskell
-
-#### Refinement Types
-
-#### Liquid haskell some examples
