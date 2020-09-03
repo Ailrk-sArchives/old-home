@@ -1,10 +1,10 @@
--- tag note haskell lenses optics mtl free-monad algebraic-effect
--- title Some mtl lenses free monad, algebraic effect and so on
+-- tag note haskell mtl
+-- title Some mtl and lens
 -- date 2020-08-28
 -- source https://www.youtube.com/watch?v=GZPup5Iuaqw
           http://www.haskellforall.com/2012/06/you-could-have-invented-free-monads.html
 ;;
-# Haskell. mtl, some lense, some concurrency
+# Haskell. mtl, some lens, some concurrency
 
 ## MTL
 A library helps to use monad transformer easier.
@@ -174,7 +174,10 @@ type Program = [Instr]
 
 -- What it is saying is that VM is a combination of
 -- Readable program, writable output, and a stack state.
-type VM a = ReaderT Program (WriterT Output (State Stack)) a
+type VM a
+    = ReaderT Program
+    ( WriterT Output
+    ( State Stack)) a
 
 -- Comp is just a newtype wrapper on top of VM. You can derive
 -- typeclass for it.
@@ -222,8 +225,7 @@ program = [
   Push 27,
   Pop,
   Puts,
-  Pop
-]
+  Pop ]
 
 -- * note mapM_ :: (Foldable t, Monad m) => (a -> m b) -> t a -> m ()
 --   It's the function used to execute effect over a Fodable
@@ -287,15 +289,4 @@ stateExcept m s = runExcept (runStateT m s)
 exceptState :: ExceptT e (State s) a -> s -> (Either e a, s)
 exceptState m s = runState (runExceptT m) s
 ```
-
-## Free Monad
-
-#### Polysemy
-
-## Algebraic effect
-
-#### Fused Effect
-
-## Lenses
-
 

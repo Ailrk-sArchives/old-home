@@ -12,6 +12,7 @@ commutativity : `a * b = b * a`
 
 ## Group
 A set G with * a binary operation defined on G s.t
+∀ f, g ∈ G, `f * g ∈ G` (closure)
 * is associative
 ∀ g in G, ∃ e ∈ G s.t, `g * e = e * g = g` (identity element)
 ∀ all g in G, ∃ h s.t `g * h = h * g = e` (has inverse)

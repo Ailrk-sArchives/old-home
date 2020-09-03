@@ -1,9 +1,18 @@
 -- tag paper
--- title Papers I read
+-- title Papers
 -- date 2020-08-27
 -- source me
 ;;
 # Papers
+
+###[Applicative programming with effects](http://www.staff.city.ac.uk/~ross/papers/Applicative.pdf)
+##### Authors:
+Simon Peyton Jones, Mark Jones
+Conor Mcbride, Ross Paterson
+##### Abstract
+Some intuitions and examples of using applicative as a weaker monad.
+
+___
 
 ### [Type classes: an exploration of design space](https://www.microsoft.com/en-us/research/wp-content/uploads/1997/01/multi.pdf)
 ##### Authors:

@@ -1,7 +1,9 @@
--- tag note haskell
+-- tag note haskell fixpoint
 -- title Some haskell
 -- date 2020-08-31
 -- source http://dev.stephendiehl.com/hask/#side-effects
+          https://hackage.haskell.org/package/unification-fd-0.10.0.1/docs/Data-Functor-Fixedpoint.html#:~:text=Fix%20f%20is%20a%20fix,for%20all%20the%20yfoo%20functions.
+          http://www.staff.city.ac.uk/~ross/papers/Applicative.pdf
 ;;
 # Some haskell
 
@@ -166,3 +168,14 @@ execWriter :: Writer w a -> w
 ```
 
 Note the implementation is lazy, so maybe at the end of the day you only have bunch of unevaluated thunks and not write anything. There is a strict version of writer monad in `Control.Monad.Writer.Strict`.
+
+## Applicative functor
+
+I don't really understand applicative beyond `<*>` can apply a function in a context to an applicative, and a `<$>` follows `<*>` is a very useful idiom. Turns out there are much deeper implications.
+
+
+#### Monoids are phantom applicative functors
+
+
+#### Compare with monad.
+

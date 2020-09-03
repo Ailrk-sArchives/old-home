@@ -1,0 +1,121 @@
+<h1>Some haskell</h1>
+<h2>Bottom ⊥</h2>
+<p>A single value that inhabits all types. If bottom is evaluated, there is something wrong with the expression.</p>
+<h4>Some example of getting bottom evaluated.</h4>
+<h5>undefined / error</h5>
+<p>Simplest way of getting bottom. <code>undefined</code> helps you to do type check without writing the implementation, and <code>error</code> just make a runtime error.</p>
+<pre><code class="language-haskell"><span class="hljs-title">f</span> :: a -&gt; <span class="hljs-type">IO</span> a
+<span class="hljs-title">f</span> = undefined
+</code></pre>
+<pre><code class="language-haskell"><span class="hljs-title">g</span> :: <span class="hljs-type">Maybe</span> a
+<span class="hljs-title">g</span> = error <span class="hljs-string">"not possible"</span>
+</code></pre>
+<h5>Infinite loop</h5>
+<p>If an expression never hault, it will never evaluate to a actual value.</p>
+<pre><code class="language-haskell"><span class="hljs-title">f</span> :: a
+<span class="hljs-title">f</span> = <span class="hljs-keyword">let</span> x = x <span class="hljs-keyword">in</span> x
+</code></pre>
+<h5>unexthaustive pattern</h5>
+<p>Imagine this partial pattern matching:</p>
+<pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">F</span> = <span class="hljs-type">A</span> | <span class="hljs-type">B</span></span>
+<span class="hljs-title">case</span> x <span class="hljs-keyword">of</span>
+  <span class="hljs-type">A</span> -&gt; ()
+</code></pre>
+<p>When GHC compile it, it will automatically complete all patterns, and return bottom for unspecified patterns.</p>
+<pre><code class="language-haskell"><span class="hljs-title">case</span> x <span class="hljs-keyword">of</span>
+  <span class="hljs-type">A</span> -&gt; ()
+  <span class="hljs-type">B</span> -&gt; patError <span class="hljs-string">"soem error messages blabla"</span>
+</code></pre>
+<h4>Avoid bottoms</h4>
+<p>Easiest way is to wrap stuffs into <code>Maybe</code>. Replace partial case with Nothing.</p>
+<h2>Monomorphism restriction</h2>
+<p>If an expression is lacking type signature, the type checker will fill the free type variables with the most specific type.</p>
+<pre><code class="language-hasekll">-- f1 :: (Show x) => x -> String
+f1 x = show x
+
+-- f2 :: () -> String
+f2 = \x -> show x
+
+-- same as f1
+f3 :: (Show a) => x -> String
+f3 = \x -> show x
+
+-- same as f2 () -> String
+f4 = show
+</code></pre>
+<p>When a type is monomorphized is rather arbitrary. Why monomorphism restriction is enforced by default is explained in <code>HaskellReport2010</code>; in short, without monomorphism restriction there will be some ambiguous types.</p>
+<p>To disable this behavior you can use <code>{-# NoMonomorphismRestriction #-}</code></p>
+<h2>Type holes</h2>
+<p>Similar experience with agda, but with type only. you can put an underscore whenever you are not sure what to put there, and the compiler will infer a type for you.</p>
+<pre><code class="language-haskell"><span class="hljs-comment">-- GHC will tell you:  _ :: [a]</span>
+<span class="hljs-title">head'</span> = head _
+
+<span class="hljs-comment">-- GHC will tell you: _ :: t -&gt; t1 -&gt; t</span>
+<span class="hljs-title">const'</span> :: _
+<span class="hljs-title">const'</span> x y = x
+</code></pre>
+<p>If you are super lazy you can enable <code>{-# PartialTypeSignature #-}</code>, and leave holes everywhere. GHC will only warn you about type holdes but replace holes with type it inferred.</p>
+<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE PartialTypeSignature #-}</span>
+
+<span class="hljs-title">succ'</span> :: _ =&gt; a -&gt; a
+<span class="hljs-title">succ'</span> x = x + <span class="hljs-number">1</span>
+</code></pre>
+<h2>Reader Monad</h2>
+<p>To access shared immutable state within a monadic context.</p>
+<pre><code class="language-haskell"><span class="hljs-comment">-- basically it's just a newtype wrapper for function :: r -&gt; a</span>
+<span class="hljs-class"><span class="hljs-keyword">newtype</span> <span class="hljs-type">Reader</span> r a = <span class="hljs-type">Reader</span> { <span class="hljs-title">runReader</span> :: <span class="hljs-title">r</span> -&gt; <span class="hljs-title">a</span> }</span>
+
+<span class="hljs-comment">-- ask &gt;&gt;= \x -&gt; ... where x is the environment r</span>
+<span class="hljs-title">ask</span> :: <span class="hljs-type">Reader</span> r r
+
+<span class="hljs-title">asks</span> :: (r -&gt; a) -&gt; <span class="hljs-type">Reader</span> r a
+
+<span class="hljs-title">local</span> :: (r -&gt; r) -&gt; <span class="hljs-type">Reader</span> r a -&gt; <span class="hljs-type">Reader</span> r a
+</code></pre>
+<p>An example of using reader monad.</p>
+<pre><code class="language-haskell"><span class="hljs-keyword">import</span> Control.Monad.Reader
+
+<span class="hljs-comment">-- The environment you provides</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Context</span> = <span class="hljs-type">Context</span> {
+  <span class="hljs-title">foo</span> :: <span class="hljs-type">String</span>
+  <span class="hljs-title">bar</span> :: <span class="hljs-type">Int</span>
+} <span class="hljs-keyword">deriving</span> (<span class="hljs-type">Show</span>)</span>
+
+<span class="hljs-comment">-- read the environment with an accessor</span>
+<span class="hljs-title">compute1</span> :: <span class="hljs-type">Reader</span> <span class="hljs-type">Context</span> (<span class="hljs-type">Maybe</span> <span class="hljs-type">String</span>)
+<span class="hljs-title">compute1</span> = <span class="hljs-keyword">do</span>
+  n &lt;- asks bar
+  x &lt;- asks foo
+  <span class="hljs-keyword">if</span> n &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> return (<span class="hljs-type">Just</span> x) <span class="hljs-keyword">else</span> return <span class="hljs-type">Nothing</span>
+
+<span class="hljs-comment">-- The same as above but with ask</span>
+<span class="hljs-title">compute2</span> :: <span class="hljs-type">Reader</span> <span class="hljs-type">Context</span> (<span class="hljs-type">Maybe</span> <span class="hljs-type">String</span>)
+<span class="hljs-title">compute2</span> = <span class="hljs-keyword">do</span>
+  c &lt;- ask
+  <span class="hljs-keyword">let</span> n = foo c
+  <span class="hljs-keyword">let</span> x = bar c
+  <span class="hljs-keyword">if</span> n &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> return (<span class="hljs-type">Just</span> x) <span class="hljs-keyword">else</span> <span class="hljs-type">Nothing</span>
+
+<span class="hljs-comment">-- just some desugar</span>
+<span class="hljs-title">compute3</span> :: <span class="hljs-type">Reader</span> <span class="hljs-type">Context</span> (<span class="hljs-type">Maybe</span> <span class="hljs-type">String</span>)
+<span class="hljs-title">compute3</span> =
+  asks bar &gt;&gt;= \n -&gt;
+    asks foo &gt;&gt;= \x -&gt;
+      <span class="hljs-keyword">if</span> n &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> return (<span class="hljs-type">Just</span> x) <span class="hljs-keyword">else</span> <span class="hljs-type">Nothing</span>
+
+<span class="hljs-title">ex1</span> :: <span class="hljs-type">Maybe</span> <span class="hljs-type">String</span>
+<span class="hljs-title">ex1</span> = runReader compute1 $ <span class="hljs-type">MyContext</span> <span class="hljs-string">"haskell"</span> <span class="hljs-number">0</span>
+</code></pre>
+<p>There are lots of monads are like Reader which is essentially a function. The basic idea is you compose these functions together and describe what gonna happen if the &quot;environment&quot; is passed in. The real environment is passed at last will the invocation of <code>run...</code>.</p>
+<h2>Writer Monad</h2>
+<p>To emit a lazy stream of values from a monadic context. It's really just a 2-tuple, first element is the value to write and second is the context.</p>
+<pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">newtype</span> <span class="hljs-type">Writer</span> w a = <span class="hljs-type">Writer</span> { <span class="hljs-title">runWriter</span> :: (<span class="hljs-title">a</span>, <span class="hljs-title">w</span>) }</span>
+
+<span class="hljs-comment">-- It literately just return a new tuple with the context you pass in.</span>
+<span class="hljs-title">tell</span> :: w -&gt; <span class="hljs-type">Writer</span> w ()
+<span class="hljs-title">tell</span> w = <span class="hljs-type">Writer</span> ((), w)
+
+<span class="hljs-comment">-- Similarly it literately get the context out.</span>
+<span class="hljs-title">execWriter</span> :: <span class="hljs-type">Writer</span> w a -&gt; w
+</code></pre>
+<p>Note the implementation is lazy, so maybe at the end of the day you only have bunch of unevaluated thunks and not write anything. There is a strict version of writer monad in <code>Control.Monad.Writer.Strict</code>.</p>
