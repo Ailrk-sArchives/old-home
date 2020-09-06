@@ -1,6 +1,6 @@
 -- tag note haskell xmonad zipper data-structure
 -- title A little xmonad case study
--- date 2020-08-14
+-- date 2020-09-05
 -- source https://en.wikibooks.org/wiki/Haskell/Zippers
           https://github.com/xmonad/xmonad
           https://wiki.haskell.org/Xmonad/Guided_tour_of_the_xmonad_source

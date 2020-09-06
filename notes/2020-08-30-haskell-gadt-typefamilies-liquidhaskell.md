@@ -1,6 +1,6 @@
 -- tag note haskell ghc-extension GADTs
 -- title Some haskell types, GHC rewrite rules
--- date 2020-08-30
+-- date 2020-09-02
 -- source https://en.wikibooks.org/wiki/Haskell/Existentially_quantified_types
           https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/glasgow_exts.html#generalised-algebraic-data-types-gadts
 ;;

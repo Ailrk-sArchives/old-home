@@ -178,4 +178,3 @@ I don't really understand applicative beyond `<*>` can apply a function in a con
 
 
 #### Compare with monad.
-

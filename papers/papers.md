@@ -14,6 +14,14 @@ Some intuitions and examples of using applicative as a weaker monad.
 
 ___
 
+###[Deriving Via](https://www.kosmikus.org/DerivingVia/deriving-via-paper.pdf)
+##### Authors:
+Baldur Blöndal, Andres Löh, Ryan Scott
+##### Abstract
+Some explaination of derving via extension.
+
+___
+
 ### [Type classes: an exploration of design space](https://www.microsoft.com/en-us/research/wp-content/uploads/1997/01/multi.pdf)
 ##### Authors:
 Simon Peyton Jones, Mark Jones
@@ -21,7 +29,6 @@ Simon Peyton Jones, Mark Jones
 Discussions on extensions on hasekll 98 typeclass. Contains a collection of examples to explain the motivation behind each enhancement of typeclass.
 
 ---
-
 
 ### [An Introduction to Liquid Haskell](https://arxiv.org/pdf/1701.03320.pdf)
 ##### Authors:
