@@ -322,25 +322,6 @@ instance Add Integer Integer Double where
 ```
 
 
-## GHC Extensions for deriving
-Whether a type can derive a typeclass is somewhat unintuitive. The rule of thumbs, haskell take the most conservative dicision. If there is ambiguity about the deriving it will not be able to derive.
-
-```haskell
-data T0 f a = MkT0 a deriving Eq
-data T1 f a = MkT1 (f a) deriving Eq
-data T2 f a = MkT2 (f (f a)) deriving Eq
-```
-
-First two cases are able to be derived directly. However, the third one can lead to unterminated instances, so by default Haskell rejects it.
-
-##### {-# LANGUAGE StandaloneDeriving #-}
-```
-{-# StandaloneDeriving #-}
-data Foo a = Bar a | Baz String deriving instance Eq a => Eq (Foo a)
-```
-This extension allows you to derive a typeclass based on a specific typeclass instance.
-
-
 ## Conclusion
 
 To some extension GHC extension is haskell itself, so besides those core feataures like higher order function, higher kinded types, most of new developments are delivered in the form of language extensions. So far most materials I read merely introduce extensions, or just briefly mention stuffs like `OverloadedStrings`. After you finish those books and look into some real code bases, you get devastated by 20 languages extensions and bunch of imports in every files. I fill there is a descrepency between haskell teaching materials and how people really use haskell to write program.

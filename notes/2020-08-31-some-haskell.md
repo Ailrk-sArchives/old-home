@@ -1,4 +1,4 @@
--- tag note haskell fixpoint
+-- tag note haskell
 -- title Some haskell
 -- date 2020-08-31
 -- source http://dev.stephendiehl.com/hask/#side-effects
@@ -168,13 +168,3 @@ execWriter :: Writer w a -> w
 ```
 
 Note the implementation is lazy, so maybe at the end of the day you only have bunch of unevaluated thunks and not write anything. There is a strict version of writer monad in `Control.Monad.Writer.Strict`.
-
-## Applicative functor
-
-I don't really understand applicative beyond `<*>` can apply a function in a context to an applicative, and a `<$>` follows `<*>` is a very useful idiom. Turns out there are much deeper implications.
-
-
-#### Monoids are phantom applicative functors
-
-
-#### Compare with monad.
