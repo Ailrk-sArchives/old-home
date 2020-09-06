@@ -1,0 +1,31 @@
+<h1>React app performance</h1>
+<p>My website has some serious layout thrashing while loading the note list, and I am trying to fix it.</p>
+<h2>Changing DOM too fast</h2>
+<p>Two common problems can be caused by creating complex components:</p>
+<h4>Triggering layout too often.</h4>
+<p>When you change css properties <a href="https://csstriggers.com/">these</a> here, the browser will need to rerender the screen to keep the UI up to date. Browser update includes <code>Layout</code>, <code>Paing</code>, and <code>Composite</code>, different css properties will required different updates. For instance, change padding requires all three updates, that is, the browser first need to recalculate the layout of the dom element, repaint it back to screen, and composite the page together again. If this happen too often the rendering will feel very laggy.</p>
+<h4>Layout thrashing</h4>
+<p>This is caused by unnecessary DOM reflow. For exampe, reading from dom right after write to it.</p>
+<p>For example, you want to change the height of an element. To achieve that you first read the height from dom, then increment the height. This cause layout thrashing because everytime you read the element you instantly change the dom, which requires a rerender.</p>
+<h4>Solution</h4>
+<p>Use <code>window.requestAnimationFrame((time: number) =&gt; void)</code>. It's original purpose is to execute an animation callback before the next repaint. What we can do is to use it to separate read and write into two different frames.</p>
+<pre><code class="language-typescript">updateHeight(isOpen) {
+  <span class="hljs-keyword">this</span>.lastRAF &amp;&amp; cancelAnimationFrame(<span class="hljs-keyword">this</span>.lastRAF);
+  <span class="hljs-keyword">if</span> (isOpen) {
+    <span class="hljs-keyword">this</span>.lastRAF = requestAnimationFrame(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+      <span class="hljs-comment">//  Do all your read at this layer.</span>
+      <span class="hljs-keyword">const</span> height = <span class="hljs-string">`<span class="hljs-subst">${<span class="hljs-keyword">this</span>.contentEl.scrollHeight}</span>px`</span>;
+      <span class="hljs-keyword">this</span>.lastRAF = requestAnimationFrame(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+        <span class="hljs-comment">// write change in the next frame.</span>
+        <span class="hljs-keyword">this</span>.contentEl.style.height = height;
+        <span class="hljs-keyword">this</span>.lastRAF = <span class="hljs-literal">null</span>;
+      });
+    })
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">this</span>.contentEl.style.height = <span class="hljs-string">'0px'</span>;
+  }
+}
+</code></pre>
+<h2>events and callbacks</h2>
+<p>You don't want a super lengthy callback on your event queue since it will block the entire stack. Try to separate a big callback into smaller ones, or</p>
+<p>Another problem is events that happens frequently. For example, autocomplete when typing. Standard solution is to use a debounce function.</p>

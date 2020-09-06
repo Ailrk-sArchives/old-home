@@ -1,0 +1,38 @@
+<h1>GHCI</h1>
+<p>Some notes on ghci work flows.</p>
+<p>I know lisp ppl use repl very intensively, they whole common lisp community is heavily relies on emacs slime features which allows your source code to interact with repl easily. For haskell, ghci is pretty</p>
+<h2>Type check</h2>
+<p>You can sort do it better with <code>haskell-language-server</code> now, since you can simply get the type of any expression by hovering. But repl sort gives you a playground to check what will happen if someting operation act on the type. Use <code>:t &lt;expr&gt;</code> to query the type of some expression.</p>
+<h2>Get docs</h2>
+<p><code>:i &lt;anything&gt;</code> provides you some extra information of the expression (or a typeclass). <code>haskell-language-server</code> might use it to implement the goto definition feature.</p>
+<h2>Reload current files</h2>
+<p>You can reload modules currently get imported with <code>:reload</code>, so you can modify the source code and still stay on the same repl session. I don't know why other repls doesn't support this feature, in python you need autoreload support from ipython to get similar function.</p>
+<p>I guess when you are writing haskell for the most part you are using repl to test some pure functions, and that make repl easier to work with. If you have a python object get loaded in the repl which relies on some network connection, I don't know what the repl should do when the code of the object changed.</p>
+<h2><code>:edit</code></h2>
+<p>You can edit a file in any editor you want, and after you save the change the change on the file will be automatically loaded into the current repl. It's more pleasant to use than ipython, since in ipython if you change some code, you might need to do restart the entire ipython repl, or turn on autoreload. But because you have bunch of effectful codes, autoreload might not bring the change you want all the time since your code changed but the state of the program didn't.</p>
+<h2><code>debugger</code></h2>
+<p>Ghci has a builtin debugger, although it is kinda awkard to use. Basically you have <code>:break &lt;pos&gt;</code>, <code>:step</code>, <code>:list</code>, <code>:watch</code>; <code>:delete</code> to delete a breakpoint. To use each command you need to type a lot, and I find the feed back is a little confusing since it's not line based but expression based.</p>
+<p>You can also specify a command to run when a breakpoint is hit.. So to run list whenever it reaches a breakpoint you can do <code>:set stop :list</code></p>
+<p>Generally I just set a debug trace and reload the module.</p>
+<h2>With vim</h2>
+<p><code>vim-slim</code> is still the best fit for these repl stuffs, you get more flexible communication between vim and repl. You can introduce some new code by literately add the code in vim and slime paste it, or edit the file from repl and reload the change.</p>
+<h2>Conclusion</h2>
+<p>Open tmux, vim on the left and repl on the right. Now I am able to:</p>
+<ol>
+<li>
+<p>Add new code to the source code and reload the change with <code>:reload</code>.</p>
+</li>
+<li>
+<p>write some temporary driver function in vim and slime paste it, so I can test my function.</p>
+</li>
+<li>
+<p>Set debug trace and reload the module, so when I try to run the driver function I can see the output.</p>
+</li>
+<li>
+<p>When I want to step over some expressions I can set break point.</p>
+</li>
+<li>
+<p>When I want to try out a complicated type, or I don't know what's the type for some expression, I can either write a type hole in vim and let <code>haskell-language-server</code> tell me, or ask repl directly.</p>
+</li>
+</ol>
+<p>Of courses these are just some superfical usage, and more feature can only make repl easier to use.</p>
