@@ -289,4 +289,3 @@ stateExcept m s = runExcept (runStateT m s)
 exceptState :: ExceptT e (State s) a -> s -> (Either e a, s)
 exceptState m s = runState (runExceptT m) s
 ```
-

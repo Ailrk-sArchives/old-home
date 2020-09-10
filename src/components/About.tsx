@@ -1,11 +1,13 @@
 import React from 'react';
 import {Container} from 'react-bootstrap';
 import {HoverLink} from './Misc';
+import {useWindowSize} from '../state/hooks';
 
 
 export function About() {
+  const {width} = useWindowSize();
   return (
-    <Container>
+    <Container style={width > 600 ? {} : {marginLeft: 30}}>
       <div style={{color: "LightCoral", }}>
         <h1> About me </h1>
       </div>

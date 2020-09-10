@@ -4,15 +4,7 @@
 -- source https://www.youtube.com/watch?v=FC6kl_kLFEo
           https://en.wikipedia.org/wiki/SKI_combinator_calculus
 ;;
-## SKI Combinators
-
-
-#### Overview of lambda calculus
-
-#### Motivation of SKI combinator
-
-#### Formal defination
-
+# haskell Deriving and ski combinator
 
 ## GHC Extensions for deriving
 Whether a type can derive a typeclass is somewhat unintuitive. The rule of thumbs, haskell take the most conservative dicision. If there is ambiguity about the deriving it will not be able to derive.
@@ -50,3 +42,22 @@ Derive anything
 {-# LANGUAGE DeriveVia #-}
 ```
 
+## SKI Combinator
+
+All lambda calculus can be encoded with three basic combinator s k i.
+
+```haskell
+-------------------------------------------------------------
+-- Define some SKI combinators.
+-------------------------------------------------------------
+s :: (env -> a -> b) -> (env -> a) -> env -> b
+s x y z = (x z) (y z)
+
+i :: a -> a
+i a = a
+
+k :: a -> b -> a
+k = const
+```
+
+Interestingly, `S` combinator is actually an instance of applicative for reader.

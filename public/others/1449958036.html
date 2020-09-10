@@ -1,0 +1,239 @@
+<h1>Report on <code>Applicative programming with effects</code></h1>
+<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE DeriveFunctor #-}</span>
+<span class="hljs-meta">{-# LANGUAGE ExplicitForAll #-}</span>
+<span class="hljs-meta">{-# LANGUAGE GADTs #-}</span>
+<span class="hljs-meta">{-# LANGUAGE LambdaCase #-}</span>
+<span class="hljs-meta">{-# LANGUAGE PolyKinds #-}</span>
+
+<span class="hljs-comment">{-
+   2020-09-05
+   Report on Applicative programming with effects.
+   http://www.staff.city.ac.uk/~ross/papers/Applicative.pdf
+-}</span>
+
+<span class="hljs-keyword">module</span> Ap () <span class="hljs-keyword">where</span>
+
+<span class="hljs-comment">-------------------------------------------------------------</span>
+<span class="hljs-comment">-- Define some SKI combinators.</span>
+<span class="hljs-comment">-------------------------------------------------------------</span>
+<span class="hljs-title">s</span> :: (env -&gt; a -&gt; b) -&gt; (env -&gt; a) -&gt; env -&gt; b
+<span class="hljs-title">s</span> x y z = (x z) (y z)
+
+<span class="hljs-title">i</span> :: a -&gt; a
+<span class="hljs-title">i</span> a = a
+
+<span class="hljs-title">k</span> :: a -&gt; b -&gt; a
+<span class="hljs-title">k</span> = const
+
+<span class="hljs-comment">{-------------------------------------------------------
+-- Some common applicative functor with monad.
+   These are examples implemented with monad but really
+   are applicatives.
+--------------------------------------------------------}</span>
+
+<span class="hljs-comment">-- 1. seqence</span>
+<span class="hljs-title">seqIO</span> :: [<span class="hljs-type">IO</span> a] -&gt; <span class="hljs-type">IO</span> [a]
+<span class="hljs-title">seqIO</span> [] = return []
+<span class="hljs-title">seqIO</span> (x : xs) = <span class="hljs-keyword">do</span>
+  c &lt;- x
+  cs &lt;- seqIO xs
+  return $ c : cs
+
+<span class="hljs-comment">-- effect only</span>
+<span class="hljs-title">seqIO_</span> :: [<span class="hljs-type">IO</span> a] -&gt; <span class="hljs-type">IO</span> ()
+<span class="hljs-title">seqIO_</span> xs = seqIO xs &gt;&gt; return () <span class="hljs-comment">-- just discard the effect</span>
+
+<span class="hljs-comment">{-
+2. transpose
+    Primitive version
+-}</span>
+<span class="hljs-title">transpose</span> :: [[a]] -&gt; [[a]]
+<span class="hljs-title">transpose</span> [] = repeat []
+<span class="hljs-title">transpose</span> (xs : xss) = zipWith (:) xs $ transpose xss
+
+<span class="hljs-comment">-- with zapp: "zippy application"</span>
+<span class="hljs-title">repeat'</span> :: a -&gt; [a]
+<span class="hljs-title">repeat'</span> x = x : repeat x
+
+<span class="hljs-title">zapp</span> :: [a -&gt; b] -&gt; [a] -&gt; [b]
+<span class="hljs-title">zapp</span> (f : fs) (x : xs) = f x : zapp fs xs
+<span class="hljs-title">zapp</span> _ _ = []
+
+<span class="hljs-title">transpose'</span> :: [[a]] -&gt; [[a]]
+<span class="hljs-title">transpose'</span> [] = repeat' []
+<span class="hljs-title">transpose'</span> (xs : xss) = repeat' (:) `zapp` xs `zapp` transpose xss
+
+<span class="hljs-comment">{-
+3. Evaluating expression with applicative like monad.
+   Notice addition, + is carry over the environment, and in this case
+   k combinators act like const, which is similar to pure for reader.
+   s is really a &lt;*&gt;.
+-}</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Expr</span> v where</span>
+  <span class="hljs-type">Var</span> :: v -&gt; <span class="hljs-type">Expr</span> v
+  <span class="hljs-type">Val</span> :: <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Expr</span> <span class="hljs-type">Int</span>
+  <span class="hljs-type">Add</span> :: <span class="hljs-type">Expr</span> v -&gt; <span class="hljs-type">Expr</span> v -&gt; <span class="hljs-type">Expr</span> v
+
+<span class="hljs-title">eval</span> :: (<span class="hljs-type">Integral</span> v) =&gt; <span class="hljs-type">Expr</span> v -&gt; <span class="hljs-type">Expr</span> v -&gt; <span class="hljs-type">Int</span>
+<span class="hljs-title">eval</span> (<span class="hljs-type">Var</span> x) = const $ fromIntegral x
+<span class="hljs-title">eval</span> (<span class="hljs-type">Val</span> i) = k i
+<span class="hljs-title">eval</span> (<span class="hljs-type">Add</span> p q) = k (+) `s` eval p `s` eval q
+
+<span class="hljs-comment">{-------------------------------------------------------
+  -- canonical form of applicative programming
+  Computations have a fixed structure, given by the pure function and
+  a sequence of sub computations, given by effectful arguments.
+  Think it as normal function application, but carrying extra effects.
+--------------------------------------------------------}</span>
+
+<span class="hljs-title">liftA2'</span> :: <span class="hljs-type">Applicative</span> f =&gt; (a -&gt; b -&gt; c) -&gt; f a -&gt; f b -&gt; f c
+<span class="hljs-title">liftA2'</span> f a b = pure f &lt;*&gt; a &lt;*&gt; b
+
+<span class="hljs-comment">-- Make applicative a functor. Similar as above.</span>
+<span class="hljs-title">fmap'</span> :: <span class="hljs-type">Applicative</span> f =&gt; (a -&gt; b) -&gt; f a -&gt; f b
+<span class="hljs-title">f</span> `fmap'` m = pure f &lt;*&gt; m
+
+<span class="hljs-comment">-- use applicative style</span>
+<span class="hljs-comment">-- note the partially applied function itself has an instance of Applicative.</span>
+<span class="hljs-title">seqIOA</span> :: [<span class="hljs-type">IO</span> a] -&gt; <span class="hljs-type">IO</span> [a]
+<span class="hljs-title">seqIOA</span> [] = pure []
+<span class="hljs-title">seqIOA</span> (c : cs) = pure (:) &lt;*&gt; c &lt;*&gt; sequence cs
+
+<span class="hljs-title">evalA</span> :: (<span class="hljs-type">Integral</span> a) =&gt; <span class="hljs-type">Expr</span> a -&gt; <span class="hljs-type">Expr</span> a -&gt; <span class="hljs-type">Int</span>
+<span class="hljs-title">evalA</span> (<span class="hljs-type">Var</span> x) = eval (<span class="hljs-type">Var</span> x)
+<span class="hljs-title">evalA</span> (<span class="hljs-type">Val</span> i) = pure i
+<span class="hljs-title">evalA</span> (<span class="hljs-type">Add</span> p q) = pure (+) &lt;*&gt; evalA p &lt;*&gt; evalA q
+
+<span class="hljs-comment">{-------------------------------------------------------
+  -- Traverse data structure
+--------------------------------------------------------}</span>
+<span class="hljs-comment">-- 1. Applicative distributor</span>
+<span class="hljs-comment">-- Pull context from list to the out most layer. This is the</span>
+<span class="hljs-comment">-- motivation of Traversable.</span>
+<span class="hljs-comment">--</span>
+<span class="hljs-comment">-- Make the list part generic you get sequence</span>
+<span class="hljs-title">dist</span> :: <span class="hljs-type">Applicative</span> f =&gt; [f a] -&gt; f [a]
+<span class="hljs-title">dist</span> [] = pure []
+<span class="hljs-title">dist</span> (v : vs) = pure (:) &lt;*&gt; v &lt;*&gt; dist vs
+
+<span class="hljs-comment">-- dist is often used with map, which is the motivation of traverse.</span>
+<span class="hljs-title">flakyMap</span> :: <span class="hljs-type">Applicative</span> f =&gt; (a -&gt; f b) -&gt; [a] -&gt; f [b]
+<span class="hljs-title">flakyMap</span> f ss = dist (f &lt;$&gt; ss)
+
+<span class="hljs-comment">-- Generalize traversable to applicatives other than list.</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Tree</span> a = <span class="hljs-type">Leaf</span> | <span class="hljs-type">Node</span> (<span class="hljs-type">Tree</span> <span class="hljs-title">a</span>) a (<span class="hljs-type">Tree</span> <span class="hljs-title">a</span>)</span>
+<span class="hljs-class">
+<span class="hljs-keyword">instance</span> <span class="hljs-type">Functor</span> <span class="hljs-type">Tree</span> <span class="hljs-keyword">where</span></span>
+  fmap _ <span class="hljs-type">Leaf</span> = <span class="hljs-type">Leaf</span>
+  fmap f (<span class="hljs-type">Node</span> l a r) = <span class="hljs-type">Node</span> (f &lt;$&gt; l) (f a) (f &lt;$&gt; r)
+<span class="hljs-class">
+<span class="hljs-keyword">instance</span> <span class="hljs-type">Foldable</span> <span class="hljs-type">Tree</span> <span class="hljs-keyword">where</span></span>
+  foldMap _ <span class="hljs-type">Leaf</span> = mempty
+  foldMap f (<span class="hljs-type">Node</span> l a r) = (foldMap f l) &lt;&gt; f a &lt;&gt; (foldMap f r)
+<span class="hljs-class">
+<span class="hljs-keyword">instance</span> <span class="hljs-type">Traversable</span> <span class="hljs-type">Tree</span> <span class="hljs-keyword">where</span></span>
+  traverse f <span class="hljs-type">Leaf</span> = pure <span class="hljs-type">Leaf</span>
+  traverse f (<span class="hljs-type">Node</span> l x r) = <span class="hljs-type">Node</span> &lt;$&gt; (traverse f l) &lt;*&gt; (f x) &lt;*&gt; (traverse f r)
+
+<span class="hljs-comment">{-------------------------------------------------------
+  -- Monoids are phantom applicative functors
+     Every monoids induces an applicative functor
+--------------------------------------------------------}</span>
+<span class="hljs-comment">-- first we define a phantom type. Only o will exist at term level.</span>
+<span class="hljs-class"><span class="hljs-keyword">newtype</span> <span class="hljs-type">Accy</span> o a = <span class="hljs-type">Acc</span> {<span class="hljs-title">acc</span> :: <span class="hljs-title">o</span>} <span class="hljs-keyword">deriving</span> (<span class="hljs-type">Functor</span>)</span>
+
+<span class="hljs-comment">-- then we define the applicative for Accy</span>
+<span class="hljs-comment">-- Note that there is no value for type a, so really no application</span>
+<span class="hljs-comment">-- what so ever. Only thing that happens is combine the monoid part.</span>
+<span class="hljs-class"><span class="hljs-keyword">instance</span> <span class="hljs-type">Monoid</span> o =&gt; <span class="hljs-type">Applicative</span> (<span class="hljs-type">Accy</span> <span class="hljs-title">o</span>) <span class="hljs-keyword">where</span></span>
+  pure _ = <span class="hljs-type">Acc</span> mempty
+  <span class="hljs-type">Acc</span> o' &lt;*&gt; <span class="hljs-type">Acc</span> o'' = <span class="hljs-type">Acc</span> $ o' &lt;&gt; o''
+
+<span class="hljs-comment">-- Acc . f :: a -&gt; Acc o a</span>
+<span class="hljs-comment">-- traverse (Acc . f) :: t a -&gt; Acc o (t a)</span>
+<span class="hljs-comment">-- But a is really nothing, so again eventually the &lt;*&gt; just combine</span>
+<span class="hljs-comment">-- monoids o.</span>
+<span class="hljs-title">accumulate</span> :: (<span class="hljs-type">Traversable</span> t, <span class="hljs-type">Monoid</span> o) =&gt; (a -&gt; o) -&gt; t a -&gt; o
+<span class="hljs-title">accumulate</span> f = acc . traverse (<span class="hljs-type">Acc</span> . f)
+
+<span class="hljs-title">reduce</span> :: (<span class="hljs-type">Traversable</span> t, <span class="hljs-type">Monoid</span> o) =&gt; t o -&gt; o
+<span class="hljs-title">reduce</span> = accumulate id
+
+<span class="hljs-comment">-- use traversable to make some useful functions.</span>
+<span class="hljs-comment">-- (:[]) :: a -&gt; [a], and [a] is a monoid.</span>
+<span class="hljs-comment">-- So in words it traverse the entire tree, turn each element into a</span>
+<span class="hljs-comment">-- list with the element in it, and concat all lists.</span>
+<span class="hljs-title">flatten</span> :: <span class="hljs-type">Tree</span> a -&gt; [a]
+<span class="hljs-title">flatten</span> = accumulate (: [])
+
+<span class="hljs-title">concat'</span> :: [[a]] -&gt; [a]
+<span class="hljs-title">concat'</span> = reduce
+
+<span class="hljs-comment">{-------------------------------------------------------
+  -- Comparision with monad
+  -- 1.
+      ap :: Monad m =&gt; m (a -&gt; b) -&gt; m a -&gt; m b is application defined
+      on monad. We can define an applicative functor for every single
+      monad: as long as you define the ap you get applicative for free.
+  -- 2.
+      Some applicative can't be a monad. There're more appicative than
+      monad because it's more generic.
+  -- 3.
+      For a monad, (&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b allows the value
+      returned by one computation to influence the choice of another
+      (in the form of parameter, and you can use the parmeter to change
+      how the resulting monad should be).
+      On the other hand, applicative only sequencing effects and  keep
+      the computation structure unchange.
+  -- 4.
+      Applicative is closed under composition, but for monads it's not
+      necessarily true.
+      For monad, for instance, IO . Maybe is not necessarily the same as
+      IO . Maybe. Moreover, IO . Maybe might not be another monad to
+      begie with.
+      Because all monads are applicative, all monads can compose their
+      effects as composition of applicative. However, a notable difference
+      between applicative composition between applicatives and mondas is
+      that for applicatives you must perform all effects, but for monad
+      some effect might fail and abort the execution.
+--------------------------------------------------------}</span>
+<span class="hljs-comment">-- Monad bind allows the result of the first computation influence</span>
+<span class="hljs-comment">-- the resulting monad.</span>
+<span class="hljs-comment">-- In the example the result of mb determines whether mt or me is performed.</span>
+<span class="hljs-title">miffy</span> :: <span class="hljs-type">Monad</span> m =&gt; m <span class="hljs-type">Bool</span> -&gt; m a -&gt; m a -&gt; m a
+<span class="hljs-title">miffy</span> mb mt me = <span class="hljs-keyword">do</span>
+  b &lt;- mb
+  <span class="hljs-keyword">if</span> b <span class="hljs-keyword">then</span> mt <span class="hljs-keyword">else</span> me
+
+<span class="hljs-comment">-- In the case of applicative all effects will be performed. You can't choose.</span>
+<span class="hljs-title">iffy</span> :: <span class="hljs-type">Applicative</span> f =&gt; f <span class="hljs-type">Bool</span> -&gt; f a -&gt; f a -&gt; f a
+<span class="hljs-title">iffy</span> fb ft fe = pure cond &lt;*&gt; fb &lt;*&gt; ft &lt;*&gt; fe
+  <span class="hljs-keyword">where</span>
+    cond b t e = <span class="hljs-keyword">if</span> b <span class="hljs-keyword">then</span> t <span class="hljs-keyword">else</span> e
+
+<span class="hljs-comment">-- Applicative is close under composition</span>
+<span class="hljs-comment">-- Two monads might not compose to make another monad, but since all</span>
+<span class="hljs-comment">-- monads are applicatives, you at least get a composition of applicatives.</span>
+<span class="hljs-comment">-- So if you have monads you can always combine their effects.</span>
+<span class="hljs-class"><span class="hljs-keyword">newtype</span> <span class="hljs-type">Comp</span> f g a = <span class="hljs-type">Comp</span> {<span class="hljs-title">comp</span> :: (<span class="hljs-title">f</span> (<span class="hljs-title">g</span> <span class="hljs-title">a</span>))} <span class="hljs-keyword">deriving</span> (<span class="hljs-type">Functor</span>)</span>
+<span class="hljs-class">
+<span class="hljs-keyword">instance</span> (<span class="hljs-type">Applicative</span> <span class="hljs-title">f</span>, <span class="hljs-type">Applicative</span> <span class="hljs-title">g</span>) =&gt; <span class="hljs-type">Applicative</span> (<span class="hljs-type">Comp</span> <span class="hljs-title">f</span> <span class="hljs-title">g</span>) <span class="hljs-keyword">where</span></span>
+  pure x = <span class="hljs-type">Comp</span> $ (pure . pure) x
+  <span class="hljs-type">Comp</span> fs &lt;*&gt; <span class="hljs-type">Comp</span> xs = <span class="hljs-type">Comp</span> $ pure (&lt;*&gt;) &lt;*&gt; fs &lt;*&gt; xs
+
+<span class="hljs-comment">{-------------------------------------------------------
+  -- Conclusion
+     The first intution of applicative is application under effects. With
+     applicatives you can have a function apply on a sequence of effectful
+     arguments. During the process of application you combine effects
+     together.
+
+     Applicative is less powerful than Monad in the sense that it must
+     perform all effects it entails. For monad, you have the entire function
+     of (a -&gt; m b) to decide what to do with a --- the result of m a, but for
+     applicative pure f &lt;*&gt; a &lt;*&gt; b ... means you will perform effects of a,
+     b, ... sequentially, there is no control mechanism.
+--------------------------------------------------------}</span>
+
+<span class="hljs-comment">-- skipped : arrow</span>
+</code></pre>

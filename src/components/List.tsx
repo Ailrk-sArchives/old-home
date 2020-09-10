@@ -1,8 +1,9 @@
 import {Markdown, allDB, chronoLists} from '../state/markdowns';
 import {Container} from 'react-bootstrap';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 import {ItemRow} from './ItemRow';
+import {useDelayRender} from '../state/hooks';
 
 export function List(props: {
   markdowns: Array<Markdown>,
@@ -10,10 +11,11 @@ export function List(props: {
   const {markdowns} = props;
   const lists =
     markdowns.map(m => <ItemRow markdown={m} key={m.header.id} />);
+  const delay = useDelayRender();
   return (
     <Container>
       {
-        lists
+        delay ? lists : <div/>
       }
     </Container>
   );

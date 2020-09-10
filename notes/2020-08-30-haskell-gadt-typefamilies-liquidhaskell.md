@@ -78,37 +78,3 @@ silly :: Bool -> MarkedList () NotSafe
 silly False = Nil
 silly True = Cons () Nil
 ```
-
-#### TypeFamilies
-It's associated type in rust.
-
-```haskell
-{-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE TypeFamilies #-}
-
-class A a b where
-    type SumType a b
-    plus a -> b -> SumType a b
-
-instance Add Integer Integer where
-    type SumType Integer Integer = Integer
-    plus x y = x + y
-```
-
-#### Existentially quantified types
-```haskell
-{-# LANGUAGE ExistentialQuantification #-}
-
-```
-
-#### Scoped Type variables
-```haskell
-{-# LANGUAGE ScopedTypeVariables #-}
-
-```
-
-#### RankNTypes
-```haskell
-{-# LANGUAGE ScopedTypeVariables #-}
-
-```

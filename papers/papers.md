@@ -5,7 +5,7 @@
 ;;
 # Papers
 
-###[Applicative programming with effects](http://www.staff.city.ac.uk/~ross/papers/Applicative.pdf)
+### [Applicative programming with effects](http://www.staff.city.ac.uk/~ross/papers/Applicative.pdf)
 ##### Authors:
 Simon Peyton Jones, Mark Jones
 Conor Mcbride, Ross Paterson
@@ -14,7 +14,7 @@ Some intuitions and examples of using applicative as a weaker monad.
 
 ___
 
-###[Deriving Via](https://www.kosmikus.org/DerivingVia/deriving-via-paper.pdf)
+### [Deriving Via](https://www.kosmikus.org/DerivingVia/deriving-via-paper.pdf)
 ##### Authors:
 Baldur Blöndal, Andres Löh, Ryan Scott
 ##### Abstract

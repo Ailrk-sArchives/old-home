@@ -1,7 +1,7 @@
 import React, {useState, CSSProperties} from 'react';
 import {Container} from 'react-bootstrap';
 import {linkStyle} from '../styles/styleElements';
-import {useWindowSize} from '../state/hooks';
+import {useWindowSize, useDelayRender} from '../state/hooks';
 import Loader from 'react-loader-spinner';
 
 export function HoverLink(props: {
@@ -49,8 +49,9 @@ export function Bar(props: {style?: CSSProperties}) {
 export function AddPageTitle(props: {pageTitle: string, page: JSX.Element}) {
   const {pageTitle, page} = props;
   const {width} = useWindowSize();
-  return (
-    <Container>
+  let delay = useDelayRender();
+  const content = (
+    <>
       <h2 style={{
         color: "DimGray",
         fontWeight: "bold",
@@ -61,10 +62,16 @@ export function AddPageTitle(props: {pageTitle: string, page: JSX.Element}) {
       {
         page
       }
+    </>);
+  return (
+    <Container>
+      {
+        delay ? content : <div />
+      }
     </Container>
   );
 }
 
 export function LoaderSpinner() {
   return <Loader type="TailSpin" color="LightCoral" height={100} width={100} />
-    }
+}

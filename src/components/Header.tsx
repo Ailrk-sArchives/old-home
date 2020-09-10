@@ -58,7 +58,7 @@ function Background(props: {img: string, height?: string}) {
 
 export function CollapsedHeader() {
   const {width} = useWindowSize();
-  const toggleTopPadding = width > 700 ? "100px" : "30px";
+  const toggleTopPadding = width > 450 ? "100px" : "30px";
   return (
     <div style={{marginBottom: 40, color: "WhiteSmoke"}}>
 
@@ -128,24 +128,25 @@ function Avatar() {
       </Col>
       <Col {...css({paddingTop: "30px"})}>
         <Row>
-          <HoverLink text={"Jimmy Yao's blog"}
+          <HoverLink text={"⊢ Jimmy Yao's blog"}
             link={"https://ailrk.github.io/home"}
             ogColor={"white"}
-            onHoverColor={"LightCoral"} />
+            onHoverColor={"white"} />
         </Row>
         <Row>
-          <HoverLink text={"Github: https://github.com/ailrk"}
+          <HoverLink text={"⊢ Github"}
             link={"https://github.com/ailrk"}
             ogColor={"white"}
-            onHoverColor={"LightCoral"} />
+            onHoverColor={"white"} />
         </Row>
         <Row {...css({color: "white"})}>
-          <b> Email: jimmy123good@hotmail.com </b>
+          <b> ⊢ Email: jimmy123good@hotmail.com </b>
         </Row>
       </Col>
     </Row>
   );
 }
+
 function Toggle(props: {style?: CSSProperties}) {
   const {style} = props;
   const toggleStyle: CSSProperties = {

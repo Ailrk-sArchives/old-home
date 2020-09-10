@@ -264,7 +264,7 @@ When typeclass was first introduced it was considered an experimental feature of
 #### Inferred contexts
 
 ##### {-# LANGUAGE MultiParamTypeClasses #-}
-Literaly allows multiple parameters when declaring type classes. Some typeclass is define not only on one type, but on a tuple of types. By default haskell cannopt express this tupled type class. The most famous example is to define `StateMonad`.
+Allows multiple parameters when declaring type classes. Some typeclass is define not only on one type, but on a tuple of types. By default haskell cannopt express this tupled type class. The most famous example is to define `StateMonad`. Single parameter typeclass describes properties of that type, and multi-parameter typeclass describes the relationship between types.
 
 ```haskell
 {-# LANGUAGE MultiParamTypeClasses #-}

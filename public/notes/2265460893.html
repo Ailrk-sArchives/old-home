@@ -1,4 +1,4 @@
-<h1>Haskell. mtl, some lense, some concurrency</h1>
+<h1>Haskell. mtl, some lens, some concurrency</h1>
 <h2>MTL</h2>
 <p>A library helps to use monad transformer easier.</p>
 <h4>Review some monad transformer</h4>
@@ -128,7 +128,10 @@
 
 <span class="hljs-comment">-- What it is saying is that VM is a combination of</span>
 <span class="hljs-comment">-- Readable program, writable output, and a stack state.</span>
-<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">VM</span> a = <span class="hljs-type">ReaderT</span> <span class="hljs-type">Program</span> (<span class="hljs-type">WriterT</span> <span class="hljs-type">Output</span> (<span class="hljs-type">State</span> <span class="hljs-type">Stack</span>)) a</span>
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">VM</span> a</span>
+    = <span class="hljs-type">ReaderT</span> <span class="hljs-type">Program</span>
+    ( <span class="hljs-type">WriterT</span> <span class="hljs-type">Output</span>
+    ( <span class="hljs-type">State</span> <span class="hljs-type">Stack</span>)) a
 
 <span class="hljs-comment">-- Comp is just a newtype wrapper on top of VM. You can derive</span>
 <span class="hljs-comment">-- typeclass for it.</span>
@@ -176,8 +179,7 @@
   <span class="hljs-type">Push</span> <span class="hljs-number">27</span>,
   <span class="hljs-type">Pop</span>,
   <span class="hljs-type">Puts</span>,
-  <span class="hljs-type">Pop</span>
-]
+  <span class="hljs-type">Pop</span> ]
 
 <span class="hljs-comment">-- * note mapM_ :: (Foldable t, Monad m) =&gt; (a -&gt; m b) -&gt; t a -&gt; m ()</span>
 <span class="hljs-comment">--   It's the function used to execute effect over a Fodable</span>
@@ -230,8 +232,3 @@
 <span class="hljs-title">exceptState</span> :: <span class="hljs-type">ExceptT</span> e (<span class="hljs-type">State</span> s) a -&gt; s -&gt; (<span class="hljs-type">Either</span> e a, s)
 <span class="hljs-title">exceptState</span> m s = runState (runExceptT m) s
 </code></pre>
-<h2>Free Monad</h2>
-<h4>Polysemy</h4>
-<h2>Algebraic effect</h2>
-<h4>Fused Effect</h4>
-<h2>Lenses</h2>

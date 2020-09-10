@@ -1,0 +1,26 @@
+<h1>Some haskell types</h1>
+<h2>TypeFamilies</h2>
+<p>It's associated type in rust.</p>
+<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE MultiParamTypeClasses #-}</span>
+<span class="hljs-meta">{-# LANGUAGE TypeFamilies #-}</span>
+<span class="hljs-class">
+<span class="hljs-keyword">class</span> <span class="hljs-type">A</span> a b <span class="hljs-keyword">where</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">SumType</span> a b</span>
+    plus a -&gt; b -&gt; <span class="hljs-type">SumType</span> a b
+<span class="hljs-class">
+<span class="hljs-keyword">instance</span> <span class="hljs-type">Add</span> <span class="hljs-type">Integer</span> <span class="hljs-type">Integer</span> <span class="hljs-keyword">where</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">SumType</span> <span class="hljs-type">Integer</span> <span class="hljs-type">Integer</span> = <span class="hljs-type">Integer</span></span>
+    plus x y = x + y
+</code></pre>
+<h2>Existentially quantified types</h2>
+<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE ExistentialQuantification #-}</span>
+
+</code></pre>
+<h2>Scoped Type variables</h2>
+<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE ScopedTypeVariables #-}</span>
+
+</code></pre>
+<h2>RankNTypes</h2>
+<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE ScopedTypeVariables #-}</span>
+
+</code></pre>

@@ -39,7 +39,7 @@ export function Sidebar(props: {
       <Tab name={"home"} link={"/"} />
       <Tab name={"tags"} link={"/tags"} />
       <Tab name={"notes"} link={"/notes"} />
-      <Tab name={"others"} link={"/others"} />
+      <Tab name={"reports"} link={"/reports"} />
       <Tab name={"paper"} link={"/paper"} />
       <Tab name={"about me"} link={"/about"} />
     </Container>

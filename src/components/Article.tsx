@@ -4,7 +4,7 @@ import {StyleAttribute, css} from 'glamor';
 import {Markdown} from '../state/markdowns';
 import {textTheme} from '../styles/styleElements';
 import {HoverLink} from './Misc';
-import {useWindowSize} from '../state/hooks';
+import {useWindowSize, useDelayRender} from '../state/hooks';
 import '../styles/Article.css';
 
 // article compoenent. It insert parsed markown JSX element
@@ -18,6 +18,7 @@ export function Article(props: {
   const [article, setArticle] = useState<string>("");
   const componentIsMounted = useRef(true);
   const {width} = useWindowSize();
+  const delay = useDelayRender(100);
   const defaultArticleStyle = css(textTheme, {
     paddingLeft: width > 1000 ? "60px" : "20px",
     paddingTop: width > 1000 ? "30px" : "0px",
@@ -49,8 +50,8 @@ export function Article(props: {
     fetchArticle();
   }, []);
 
-  return (
-    <Container {...style ?? defaultArticleStyle} >
+  const content = (
+    <>
       <div {...css({
         width: "90%",
         wordBreak: "break-word",
@@ -61,6 +62,15 @@ export function Article(props: {
       <hr />
       <h1 style={{color: "DimGray", fontWeight: "bolder"}}>Source</h1>
       <SourceList sources={markdown?.header.source} />
+    </>
+  );
+
+
+  return (
+    <Container {...style ?? defaultArticleStyle} >
+      {
+        delay ? content : <div />
+      }
     </Container>
   );
 }
