@@ -188,6 +188,9 @@
   -- 4.
       Applicative is closed under composition, but for monads it's not
       necessarily true.
+      For monad, for instance, IO . Maybe is not necessarily the same as
+      IO . Maybe. Moreover, IO . Maybe might not be another monad to
+      begie with.
       Because all monads are applicative, all monads can compose their
       effects as composition of applicative. However, a notable difference
       between applicative composition between applicatives and mondas is

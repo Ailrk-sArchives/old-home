@@ -175,7 +175,7 @@
 <p>When typeclass was first introduced it was considered an experimental feature of haskell, so initally it was added in a conservative manner. As time passed people realize there are a lot of space to extend the funtionality of typeclass, and these enhancements comes as language extension. The <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/1997/01/multi.pdf">paper</a> has a collections of examples for the rationale of different extensions.</p>
 <h4>Inferred contexts</h4>
 <h5>{-# LANGUAGE MultiParamTypeClasses #-}</h5>
-<p>Literaly allows multiple parameters when declaring type classes. Some typeclass is define not only on one type, but on a tuple of types. By default haskell cannopt express this tupled type class. The most famous example is to define <code>StateMonad</code>.</p>
+<p>Allows multiple parameters when declaring type classes. Some typeclass is define not only on one type, but on a tuple of types. By default haskell cannopt express this tupled type class. The most famous example is to define <code>StateMonad</code>. Single parameter typeclass describes properties of that type, and multi-parameter typeclass describes the relationship between types.</p>
 <pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE MultiParamTypeClasses #-}</span>
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-type">Monad</span> m =&gt; <span class="hljs-type">StateMonad</span> m s <span class="hljs-keyword">where</span></span>
     getS :: m s

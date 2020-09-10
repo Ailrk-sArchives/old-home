@@ -97,10 +97,11 @@
 <span class="hljs-comment">; Some examples of macros</span>
 
 <span class="hljs-comment">; ** hygenic macro **</span>
-<span class="hljs-comment">; Basic idea is that your macros will not have name conlision with macros</span>
+<span class="hljs-comment">; The gloal is that your macros will not have name conlision with macros</span>
 <span class="hljs-comment">; defined by someone else even when they have the same identifier.</span>
 <span class="hljs-comment">; To achieve this, when expanding the macro racket macro expender will</span>
-<span class="hljs-comment">; "color" the syntax object with the scope they live in.</span>
+<span class="hljs-comment">; "color" the syntax object with the scope they live in. With "colors" one</span>
+<span class="hljs-comment">; can ditermine the identity of identifiers.</span>
 
 <span class="hljs-comment">; Basics ;</span>
 <span class="hljs-comment">; A ** syntax transformer ** is a function takes syntax and return syntax.</span>

@@ -1,7 +1,4 @@
-<h2>SKI Combinators</h2>
-<h4>Overview of lambda calculus</h4>
-<h4>Motivation of SKI combinator</h4>
-<h4>Formal defination</h4>
+<h1>haskell Deriving and ski combinator</h1>
 <h2>GHC Extensions for deriving</h2>
 <p>Whether a type can derive a typeclass is somewhat unintuitive. The rule of thumbs, haskell take the most conservative dicision. If there is ambiguity about the deriving it will not be able to derive.</p>
 <pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">T0</span> f a = <span class="hljs-type">MkT0</span> a <span class="hljs-keyword">deriving</span> <span class="hljs-type">Eq</span></span>
@@ -25,3 +22,18 @@
 <p>Derive anything</p>
 <pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE DeriveVia #-}</span>
 </code></pre>
+<h2>SKI Combinator</h2>
+<p>All lambda calculus can be encoded with three basic combinator s k i.</p>
+<pre><code class="language-haskell"><span class="hljs-comment">-------------------------------------------------------------</span>
+<span class="hljs-comment">-- Define some SKI combinators.</span>
+<span class="hljs-comment">-------------------------------------------------------------</span>
+<span class="hljs-title">s</span> :: (env -&gt; a -&gt; b) -&gt; (env -&gt; a) -&gt; env -&gt; b
+<span class="hljs-title">s</span> x y z = (x z) (y z)
+
+<span class="hljs-title">i</span> :: a -&gt; a
+<span class="hljs-title">i</span> a = a
+
+<span class="hljs-title">k</span> :: a -&gt; b -&gt; a
+<span class="hljs-title">k</span> = const
+</code></pre>
+<p>Interestingly, <code>S</code> combinator is actually an instance of applicative for reader.</p>

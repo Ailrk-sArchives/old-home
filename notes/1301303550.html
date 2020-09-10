@@ -1,64 +1,5 @@
 <h1>Some haskell types</h1>
-<h2>Some GHC type extensions</h2>
-<h5>Generalized Abstract Data Types</h5>
-<p>It's a way to help you explicitly write down the type of constructors.</p>
-<p>This is an example calculator using GADTs and phantom type</p>
-<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE GADTs #-}</span>
-<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Expr</span> a where</span>
-    <span class="hljs-type">I</span> :: <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Expr</span> <span class="hljs-type">Int</span>
-    <span class="hljs-type">B</span> :: <span class="hljs-type">Bool</span> -&gt; <span class="hljs-type">Expr</span> <span class="hljs-type">Bool</span>
-    <span class="hljs-type">Add</span> :: <span class="hljs-type">Expr</span> <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Expr</span> <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Expr</span> <span class="hljs-type">Int</span>
-    <span class="hljs-type">Mul</span> :: <span class="hljs-type">Expr</span> <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Expr</span> <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Expr</span> <span class="hljs-type">Int</span>
-    <span class="hljs-type">Eq</span> :: <span class="hljs-type">Eq</span> a =&gt; <span class="hljs-type">Expr</span> a -&gt; <span class="hljs-type">Expr</span> a -&gt; <span class="hljs-type">Expr</span> <span class="hljs-type">Bool</span>
-</code></pre>
-<p>This allows you to ensure <code>Add</code> can only take two Int expressions, thus avoid the problem of adding an Int to a Bool.</p>
-<p>Here is a comparision of declaring maybe types with and without GADT</p>
-<pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Maybe</span> a = <span class="hljs-type">Just</span> a | <span class="hljs-type">Nothing</span></span>
-<span class="hljs-meta">{-# LANGUAGE GADTs #-}</span>
-<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Maybe</span> a where</span>
-    <span class="hljs-type">Nothing</span> :: <span class="hljs-type">Maybe</span>
-    <span class="hljs-type">Just</span> :: a -&gt; <span class="hljs-type">Maybe</span> a
-</code></pre>
-<p>Another example for list type.</p>
-<pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">List</span> a = <span class="hljs-type">Nil</span> | <span class="hljs-type">Cons</span> a (<span class="hljs-type">List</span> <span class="hljs-title">a</span>)</span>
-<span class="hljs-meta">{-# LANGUAGE GADTs #-}</span>
-<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">List</span> a where</span>
-    <span class="hljs-type">Nil</span> :: <span class="hljs-type">List</span> a
-    <span class="hljs-type">Cons</span> :: a -&gt; <span class="hljs-type">List</span> a -&gt; <span class="hljs-type">List</span> a
-</code></pre>
-<p>Using GADTs to declare safe list. This is only possible with GADTs. If you use normal data declaration, you will have no way to specify that b in the result of Cons is a NonEmpty rather than being fully polymorphic.</p>
-<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE GADTs, EmptyDataDecls #-}</span>
-<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Empty</span></span>
-<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">NonEmpty</span></span>
-
-<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">SafeList</span> a b where</span>
-    <span class="hljs-type">Nil</span> :: <span class="hljs-type">SafeList</span> a <span class="hljs-type">Empty</span>
-    <span class="hljs-type">Cons</span> :: a -&gt; <span class="hljs-type">SafeList</span> a b -&gt; <span class="hljs-type">SafeList</span> a <span class="hljs-type">NonEmpty</span>
-
-<span class="hljs-comment">-- It doesn't accept Nil</span>
-<span class="hljs-title">safeHead</span> :: <span class="hljs-type">SafeList</span> a <span class="hljs-type">NonEmpty</span> -&gt; a
-<span class="hljs-title">safeHead</span> (<span class="hljs-type">Cons</span> x _) = x
-</code></pre>
-<p>You can also use it with kind signature</p>
-<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE GADTs, EmptyDataDecls, KindSignatures #-}</span>
-<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">NotSafe</span></span>
-<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Safe</span></span>
-
-<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">MarkedList</span> :: * -&gt; * -&gt; * where</span>
-    <span class="hljs-type">Nil</span> :: <span class="hljs-type">MarkedList</span> t <span class="hljs-type">NotSafe</span>
-    <span class="hljs-type">Cons</span> :: a -&gt; <span class="hljs-type">MarkedList</span> a b -&gt; <span class="hljs-type">MarkedList</span> a c
-
-<span class="hljs-title">safeHead</span> :: <span class="hljs-type">MarkedList</span> a <span class="hljs-type">Safe</span> -&gt; a
-<span class="hljs-title">safeHead</span> (<span class="hljs-type">Cons</span> x _) = x
-
-<span class="hljs-comment">-- since the marker will always be not safe, this</span>
-<span class="hljs-comment">-- function will never produce anything that can be consumed</span>
-<span class="hljs-comment">-- by safeHead.</span>
-<span class="hljs-title">silly</span> :: <span class="hljs-type">Bool</span> -&gt; <span class="hljs-type">MarkedList</span> () <span class="hljs-type">NotSafe</span>
-<span class="hljs-title">silly</span> <span class="hljs-type">False</span> = <span class="hljs-type">Nil</span>
-<span class="hljs-title">silly</span> <span class="hljs-type">True</span> = <span class="hljs-type">Cons</span> () <span class="hljs-type">Nil</span>
-</code></pre>
-<h4>TypeFamilies</h4>
+<h2>TypeFamilies</h2>
 <p>It's associated type in rust.</p>
 <pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE MultiParamTypeClasses #-}</span>
 <span class="hljs-meta">{-# LANGUAGE TypeFamilies #-}</span>
@@ -71,15 +12,15 @@
     <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">SumType</span> <span class="hljs-type">Integer</span> <span class="hljs-type">Integer</span> = <span class="hljs-type">Integer</span></span>
     plus x y = x + y
 </code></pre>
-<h4>Existentially quantified types</h4>
+<h2>Existentially quantified types</h2>
 <pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE ExistentialQuantification #-}</span>
 
 </code></pre>
-<h4>Scoped Type variables</h4>
+<h2>Scoped Type variables</h2>
 <pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE ScopedTypeVariables #-}</span>
 
 </code></pre>
-<h4>RankNTypes</h4>
+<h2>RankNTypes</h2>
 <pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE ScopedTypeVariables #-}</span>
 
 </code></pre>
