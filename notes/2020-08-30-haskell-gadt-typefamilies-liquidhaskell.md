@@ -40,7 +40,6 @@ data List a where
     Nil :: List a
     Cons :: a -> List a -> List a
 ```
-
 Using GADTs to declare safe list. This is only possible with GADTs. If you use normal data declaration, you will have no way to specify that b in the result of Cons is a NonEmpty rather than being fully polymorphic.
 
 ```haskell
