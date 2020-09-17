@@ -76,6 +76,8 @@ Matija Pretnar
 ##### Abstract
 Overview of algebraic effects and operational semantics.
 
+---
+
 ### [A taste of linear logic](https://homepages.inf.ed.ac.uk/wadler/papers/lineartaste/lineartaste-revised.pdf)
 ##### Authors:
 Philip Wadler
@@ -89,3 +91,21 @@ Intro of linear logic.
 John Backus
 ##### Abstract
 Some discussions on functional programming in general
+
+---
+
+### [Programming Paradigms for Dummies](https://www.info.ucl.ac.be/~pvr/VanRoyChapter.pdf)
+##### Authors
+Van Roy
+##### Abstract
+Bascially a shorter version of CTM. Very brief overview of different programming paradigms and how they fit into different languages.
+
+---
+
+### [Deforestation: Transforming programs to eliminate trees](https://link.springer.com/content/pdf/10.1007%2F3-540-19027-9_23.pdfs)
+##### Authors
+Philip Waldler
+##### Abstract
+Some discussion about list fusion with deforestation algorithm. There are lots of container libraries fuse intermidiate compution today, and they all share the similar concept as this paper describe.
+
+---

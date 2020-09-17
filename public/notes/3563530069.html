@@ -1,0 +1,113 @@
+<h1>Parsing</h1>
+<p>Among all compiling technics parsing is probably the most applicable one to every day programming, because you always want to convert some string formats into something your program can unserstand.</p>
+<p>-- history</p>
+<h2>Grammars</h2>
+<h4>Context Free Gramar</h4>
+<h6>Ambiguity</h6>
+<h4>Context Sensitive Grammar</h4>
+<h2>Parser generator</h2>
+<h4>The pain of using a parser generator</h4>
+<h2>Parser combinator</h2>
+<h2>A simple hand written recursive descent parser</h2>
+<h4>Recursive descent parser</h4>
+<h4>EBNF</h4>
+<p>Extened Backus form is used to express context free grammar. Note <code>{...}</code> means repetition, <code>(...)</code> means grouping, and <code>[...]</code> means optional.</p>
+<p>Here is a EBNF for a simple language.</p>
+<pre><code>program = block "." .
+block =
+  ["const" ident "=" number {"," ident "=" number} ";"]
+  ["var" ident {"," ident} ";"]
+  ["procedure" ident ";" block ";"] statement.
+statement =
+  ident ":=" expression
+  | "call" ident | "begin" statement {";" statement} "end"
+  | "if" condition "then" statement
+  | "while" condition "do" statement.
+condition = "odd" expression
+  | expression ("="|"#"|"<"|"<="|">"|">=")  expression.
+expression = ["+"|"-"] term {("+"|"-") term}.
+term = factor {("*"|"/") factor} .
+factor = ident | number | "(" expression ")".
+</code></pre>
+<p>Here is how it is implemented in c. It is awful lot like haskell's parser generator.</p>
+<pre><code class="language-c"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">enum</span> {id, number lparen, rparen, times, slash, plus, minus,
+  eql, neq, lss, leq, gtr, geq, callsym, beginsym, semicolon, endsym,
+  ifsym, whilesym, becomes, thensym, dosym, constsym, comma, varsym,
+  procsym, period, oddsym } Symbol;
+
+<span class="hljs-keyword">static</span> Symbol sym;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">nextsym</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">error</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> msg[])</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">eat</span><span class="hljs-params">(Symbol s)</span> </span>{
+  <span class="hljs-keyword">if</span> (sym == s) { nextsym(); <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>; }
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">expect</span> <span class="hljs-params">(Symbol s)</span> </span>{
+  <span class="hljs-keyword">if</span> (eat(s)) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+  error(<span class="hljs-string">"Expect: unexpected symbol"</span>); <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">factor</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span> </span>{
+  <span class="hljs-keyword">if</span> (eat(id)) {}
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (eat(number)) {}
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (eat(lparen)) { expression(); expect(rparen); }
+  <span class="hljs-keyword">else</span> { error(<span class="hljs-string">"factor: synax error"</span>); nextsym(); }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">term</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span> </span>{
+  factor();
+  <span class="hljs-keyword">while</span> (sym == times || sym == slash) { nextsym(); factor(); }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">expression</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span> </span>{
+  <span class="hljs-keyword">if</span> (sym == plus || sym == minus) { nextsym(); }
+  term();
+  <span class="hljs-keyword">while</span> (sym == plus || sym == minus) { nextsym(); term(); }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">condition</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span> </span>{
+  <span class="hljs-keyword">if</span> (eat(oddsym)) { expression(); }
+  <span class="hljs-keyword">else</span> {
+    expression();
+    <span class="hljs-keyword">if</span> (sym == eql || sym == neq || sym == lss || sym == leq ||
+        sym == gtr || sym == geq) { nextsym(); expression(); }
+  } <span class="hljs-keyword">else</span> { error(<span class="hljs-string">"condition: invalid operator"</span>); nextsym(); }
+}
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> COND(nextsym) {condition(); expect(nextsym); statement();}</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">statement</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span> </span>{
+  <span class="hljs-keyword">if</span> (eat(ident)) { expect(becomes); express(); }
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (eat(callsym)) { expect(ident); }
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (eat(beginsym)) {
+    <span class="hljs-keyword">do</span> { statement(); } <span class="hljs-keyword">while</span> (eat(semicolon)); expect(endsym); }
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (eat(ifsym)) { COND(thensym) }
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (eat(whilesym)) { COND(dosym) }
+  <span class="hljs-keyword">else</span> { error(<span class="hljs-string">"statement: synax error"</span>); nextsym(); }
+}
+<span class="hljs-meta">#<span class="hljs-meta-keyword">undef</span> COND</span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">block</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span> </span>{
+  <span class="hljs-keyword">if</span> (eat(constsym)) {
+    <span class="hljs-keyword">do</span> { expect(ident); expect(eql); expect(number);
+    } <span class="hljs-keyword">while</span> (eat(comma));
+    expect(semicolon);
+  }
+
+  <span class="hljs-keyword">if</span> (eat(varsym)) {
+    <span class="hljs-keyword">do</span> { expect(ident); } <span class="hljs-keyword">while</span> (eat(comma)); expect(semicolon);
+  }
+
+  <span class="hljs-keyword">while</span> (eat(procsym)) {
+    expect(ident); expect(semicolon); block(); expect(semicolon);
+  }
+  statement();
+}
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">program</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span> </span>{
+  nextsym();
+  block();
+  expect(period);
+}
+</code></pre>
+<h2>Comparing parser generator and parser combinator</h2>
