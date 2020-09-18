@@ -1,5 +1,5 @@
 -- tag note linux linker so
--- title Parsing
+-- title Linker Quirks
 -- date 2020-09-10
 -- source https://datacadamia.com/os/linux/ld_library_path#:~:text=LD_LIBRARY_PATH%20is%20the%20search%20path,the%20standard%20set%20of%20directories.
           https://codeyarns.com/2017/11/02/how-shared-library-locations-are-found-at-runtime/

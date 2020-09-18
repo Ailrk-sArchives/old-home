@@ -8,6 +8,12 @@
 ## Unsupervised learning
 Algorithms that looking for patterns of the unlabeled data without human intervention.
 
+## Metrics
+- Euclidean distance: || a - b ||₂ = sqrt(∑(aᵢ-bᵢ)²)
+- Squared Euclidean distance: ||a - b||₂² = ∑(aᵢ-bᵢ)²
+- Manhattan distance: ||a - b||₁ = ∑|aᵢ-bᵢ|
+- Maximum distance: ||a - b||∞ = max|aᵢ-bᵢ|
+
 ## SSE: Sum of squared error.
 This is a very common metric for assessing distance between points.
 
@@ -29,7 +35,6 @@ All this machine learning methods have their theorotical goals and different imp
 ##### Conceptually
 Kmean aims to choose entroids that minimize the intertia (within cluster sum of squares).
 
-```
 let C be set of K disjointed clusters
     xᵢ be the input data. {x₁, x₂, ... xᵢ}
     μⱼ be the mean of samples in cluster
@@ -84,6 +89,9 @@ There is even a heuristic method called elbow method to help you choose ncluster
 On another hand, the number of clusters can actually be chosen by your business logic! For example, if you want to partition a data set into 3 different groups so you can produce different versions of product, you know nclusters already!
 
 ## Hierarchy Agglomerative Clustering.
+- Agglomerative: bottom up
+- Divisive: top down
+
 The grouping idea is like fast labeling algorithm, smaller cluster eventually merge to a big cluster.
 
 complexity O(n³), very slow.
@@ -92,7 +100,6 @@ The clustering eventually produce ea dendrogram. It's actually a trie.
 
 ###### Procedure
 Calculate the distance between each points and sort it. group the cloest one and repeat.
-
 
 ## K-Medoids
 - Kmean is sensitive on outliner

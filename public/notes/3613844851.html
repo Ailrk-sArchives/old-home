@@ -18,19 +18,45 @@
 <h4>synchronization</h4>
 <p>A scheduling that blocks executions to wait for a dependency. Problems that requires no synchroization are called <code>embarrassinly parallel</code>...</p>
 <h4>Preemptive vs cooperative</h4>
-<h4>Internal vs external</h4>
+<p>preemptive: Interrupting running computations to be resumed later.</p>
+<p>cooperative: Each computation give out control voluntarily.</p>
 <h4>Control flow vs data flow (Imperative vs declaritive)</h4>
+<p>control flow: the path the point of execution takes in a program. Sequential programming focuses on explicit control flow structures like loop is called imperative programming.</p>
+<p>data flow: Empahsis on the routing and transformation of data. Data flow is part of the declarative programming paradigm. Control flows data and computations are executed implicitly based on data availability.</p>
 <h4>Control dependencies vs data dependencies</h4>
+<p>dependency analysis: Determing ordering constraints between computations. The theory distinguishes between control and data dependencies.</p>
+<p>control dependency: Order of execution.</p>
+<p>data dependency: AKA true dependency</p>
+<p>Data flow model focus on data dependencies and allow avoiding spurious dependencies like accidental locking. Dataflow model is inheently simplify modeling more concurrent or indepednent computations.</p>
 <h4>Nondeterministic vs deterministic</h4>
+<p>nondeterministic: The path of execution isn't fully determined by the specification of the computation, so the same input can produce different outcomes.</p>
+<p>deterministic: deterministic computation is guaranteed to be the same.</p>
 <h4>Internal nondeterministic vs external nondeterministic</h4>
+<p>Computations can have internally nondeterministic paths of execution, but the nondeterminism can be abstracted away by the cmputational model and not observable externally.</p>
+<p>You try not to have obvervable nondeterminism because is will cause inconsistent state. Race condition is an example of an observable nondeterminism.</p>
+<p>Using lock primitives to contorl concurrency means leaving it up to programmer discipline to avoid accidental observable nondeterminism.</p>
+<p>Declarative concurrency models impose a data dependency based order of execution, thus reduce the need to make trade off between concurrency and correctness.</p>
 <h4>Thread of exection and blocking thread</h4>
+<p>thread of exection: It's generally a synonymous with control flow.</p>
+<p>blocking thread/threaded state: Core abstraction of imperative programming. In language like C, the blocking of thread offers the advantage of relatively close to the machine models.</p>
 <h4>System thread vs user thred / green thread / lightweight thread</h4>
+<p>System thread: heavyweight. It needs to allocate memory for stack, and context switching needs to switch between kernal mode and user mode.</p>
+<p>Green thread: Don't need an os context switching so much faster to spawn than a system thread.</p>
+<p>Green thread can still be parallelized by being scheduled onto different systme threads. For instance, in M:N model, M number of green threads are scheduled into N number of system threads. In this vain, nodejs is N:1 model, and apache is 1: 1 model.</p>
 <h4>Shared state vs message passing (distributed state)</h4>
+<p>In shared state: memory is shared by cooperating processes, which can exchange information by reading and writing data</p>
+<p>In message passing: communication takes place by means of messages exchange between cooperating processes.</p>
 <h4>Asynchronous vs synchronous</h4>
+<p>asynchrnous: not happen at the same time. asynchrnous message passing is a communication model that does not require the sending and receiving to be synchronized.</p>
+<p>A sequential model like the blocking thread can be extended to support concurrency by overloading synchronous calls with asynchronous semantics, meaning the call site does not create a dependency on the results of the asynchronous computation; instead, a runtime scheduler passes the results to a handler at a later time or asynchronously.</p>
+<p>With first class functions, this can be modeled with cps.</p>
 <h4>System thread vs events</h4>
+<p>Events: messages used with a runtime scheduler called an event loop that dispatches messages fro a message queue to event handler.</p>
+<p>Side note: lower level counterpart of event handlers are handware interrupt handlers.</p>
 <h4>Communicating sequential processes (CSP)</h4>
+<p>A concurrency model taht conbines the sequential thread abstraction with synchronous mesage passing communication. The message passing primitive is a blocking queue the blocks both on send and receive, meaning the concurrent computations perform a rendezvous.</p>
 <h4>Actor model</h4>
-<h4>Functional reactive programming in small</h4>
+<p>Similiar abstraction to CSP but using asynchrnous mesage passing communication (mailbox), where each actor can have a named identity, some mailboxes, and can send message to their own mailboxes.</p>
 <h2>Parallelism and concurrency</h2>
 <p>All about making program faster by spliting a task into smaller chunks and execute each one separatly. If you want to parallelize some operation you might want raw system threads or separate processes occupy all yoru cpu cores. By gostav's law you also try to increase the ratio of parallelizable job in your code to improve performance gain.</p>
 <p>Concurrency is the more generic version of parallelism. You also care about making things happen at the same time. Concurrency is about they way of structuring program but parallelism is more about the natural of the hardware that allows you to run a piece of code at the same time. Concurrency is frequently be used to address implementation of non blocked io</p>
@@ -49,12 +75,80 @@
 <p>Green thread is essentially asynchronous io, you don't get too much benefits on doing data parallelism. But note the difference between green thread and node js's event loop approach: event loop can not utilize all cpus, but green threads can span all cores as with no problem.</p>
 <h4>Polymorphic size array</h4>
 <p>In most other languages it's called ndarray, but it's haskell so you'd expect some fancy words. Haskell has some pretty advance numpy equivalent. Comparig with numpy, theses libraies tends to have much stronger emphasis on type safty.</p>
-<h4>Auto data parallel</h4>
-<h4>Nested data parallelism and GPU</h4>
+<h4>Automatic data parallel</h4>
+<p>Convert sequential code into multi-threaded or vectorized code automatically. Openmp can be one of the example.</p>
+<h4>Flat parallelism Nested data parallelism</h4>
+<p>Flat parallelism when your work only contains scalars instead of some nested structures. Flat parallelism is well understood and have a lot of implementations already.</p>
+<p>Nested data parallelism roughly means while you are parallelizing an array, you find you need to parallelize some other arrayes; there are nested structures in the to-be parallelized data.</p>
 <h4>Repa</h4>
+<p>A haskell equivalent of numpy, the main salling point is all the implementation are entirely on haskell, you don't need dependencies like blas and lapack. Also it handles automatic data parallelism.</p>
+<p>Array has type <code>data family Array rep sh e</code>, which rep can be either unboxed <code>U</code> or boxed <code>A</code>. sh is the shape of the array, denoted as (Z :. *).</p>
+<p>Some examples. It gives a taste of how to do data parallelism in haskell.</p>
+<pre><code class="language-haskell"><span class="hljs-keyword">import</span> System.Environment
+<span class="hljs-keyword">import</span> Data.Word
+<span class="hljs-keyword">import</span> Foreign.Ptr
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">qualified</span> Foreign.ForeignPtr.Safe <span class="hljs-keyword">as</span> FPS
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">qualified</span> Data.Vector.Storable <span class="hljs-keyword">as</span> V
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">qualified</span> Data.Array.Repa <span class="hljs-keyword">as</span> R
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">qualified</span> Data.Repa.Repr.ForeignPtr <span class="hljs-keyword">as</span> RFP
+<span class="hljs-keyword">import</span> Data.Array.Repa
+<span class="hljs-keyword">import</span> Data.Array.Repa.IO.DevIL
+
+<span class="hljs-title">i</span>, j, k :: <span class="hljs-type">Int</span>
+(i, j, k) = (<span class="hljs-number">255</span>, <span class="hljs-number">255</span>, <span class="hljs-number">4</span>)
+
+<span class="hljs-comment">-- cycle :: [a] -&gt; [a]</span>
+<span class="hljs-title">v</span> :: <span class="hljs-type">V</span>.<span class="hljs-type">Vector</span> <span class="hljs-type">Word8</span>
+<span class="hljs-title">v</span> = <span class="hljs-type">V</span>.fromlist . take (i * j * k) . cycle $ concat
+    [ [ r, g, b, <span class="hljs-number">255</span>]
+      | r &lt;- [<span class="hljs-number">0</span> .. <span class="hljs-number">255</span>]
+      , g &lt;- [<span class="hljs-number">0</span> .. <span class="hljs-number">255</span>]
+      , b &lt;- [<span class="hljs-number">0</span> .. <span class="hljs-number">255</span>]]
+
+<span class="hljs-title">ptr2repa</span> :: <span class="hljs-type">Ptr</span> <span class="hljs-type">Word</span> -&gt; <span class="hljs-type">IO</span> (<span class="hljs-type">R</span>.<span class="hljs-type">Array</span> <span class="hljs-type">RFP</span>.<span class="hljs-type">F</span> <span class="hljs-type">R</span>.<span class="hljs-type">DIM3</span> <span class="hljs-type">Word8</span>)
+<span class="hljs-title">ptr2repa</span> p = <span class="hljs-keyword">do</span>
+    fp &lt;- <span class="hljs-type">FPS</span>.newForeignPtr_ p
+    return $ <span class="hljs-type">RFP</span>.fromForeignPtr (<span class="hljs-type">Z</span> :. i :. j :. k) fp
+
+<span class="hljs-comment">-- an example of matrix - matrix multiplication</span>
+<span class="hljs-comment">-- note operations like transpose will not actually create a transpose</span>
+<span class="hljs-comment">-- but rather change the way of indexing. So it's cheap to use.</span>
+<span class="hljs-title">mmMult</span> :: <span class="hljs-type">Monad</span> m
+       =&gt; <span class="hljs-type">R</span>.<span class="hljs-type">Array</span> <span class="hljs-type">U</span> <span class="hljs-type">R</span>.<span class="hljs-type">DIM2</span> <span class="hljs-type">Double</span>
+       -&gt; <span class="hljs-type">R</span>.<span class="hljs-type">Array</span> <span class="hljs-type">U</span> <span class="hljs-type">R</span>.<span class="hljs-type">DIM2</span> <span class="hljs-type">Double</span>
+       -&gt; m (<span class="hljs-type">R</span>.<span class="hljs-type">Array</span> <span class="hljs-type">U</span> <span class="hljs-type">R</span>.<span class="hljs-type">DIM2</span> <span class="hljs-type">Double</span>)
+<span class="hljs-title">mmMult</span> a b = sumP (<span class="hljs-type">R</span>.zipWith (*) aRepl bRepl)
+    <span class="hljs-keyword">where</span>
+        t = <span class="hljs-type">R</span>.transpose2D b
+        aRepl = extend (<span class="hljs-type">Z</span> :. <span class="hljs-type">R</span>.<span class="hljs-type">All</span> :. colsB :. <span class="hljs-type">All</span>) a
+        bRepl = extend (<span class="hljs-type">Z</span> :. rowsA :. <span class="hljs-type">All</span> :. <span class="hljs-type">All</span>) t
+        (<span class="hljs-type">Z</span> :. colsA :. rowsA) extent a
+        (<span class="hljs-type">Z</span> :. colsB :. rowsB) extent b
+
+<span class="hljs-comment">-- computeP :: Array -&gt; m Array</span>
+<span class="hljs-comment">-- it uses a strict monad to enforce sequential operation, thus avoid</span>
+<span class="hljs-comment">-- nested data parallelism.</span>
+<span class="hljs-title">imageDesaturate</span> :: <span class="hljs-type">R</span>.<span class="hljs-type">All</span> <span class="hljs-type">U</span> <span class="hljs-type">R</span> <span class="hljs-type">DIM2</span> <span class="hljs-type">Double</span> -&gt; <span class="hljs-type">IO</span> ()
+<span class="hljs-title">imageDesaturate</span> = <span class="hljs-keyword">do</span>
+    [f] &lt;- getArgs
+    runIL $ <span class="hljs-keyword">do</span>
+        (<span class="hljs-type">RGB</span> a) &lt;- readImage f
+        b &lt;- (computeP $ traverse a id luminosity) :: <span class="hljs-type">IL</span> (<span class="hljs-type">R</span>.<span class="hljs-type">Array</span> <span class="hljs-type">R</span>.<span class="hljs-type">F</span> <span class="hljs-type">R</span>.<span class="hljs-type">DIM3</span> <span class="hljs-type">Word8</span>)
+        writeImage (<span class="hljs-string">"grey-"</span> ++ f) (<span class="hljs-type">RGB</span> b)
+    <span class="hljs-keyword">where</span>
+        luminosity :: (<span class="hljs-type">R</span>.<span class="hljs-type">DIM3</span> -&gt; <span class="hljs-type">Word8</span>) -&gt; <span class="hljs-type">R</span>.<span class="hljs-type">DIM3</span> -&gt; <span class="hljs-type">Word8</span>
+        luminosity _ (<span class="hljs-type">Z</span> :. _ :. _ :. <span class="hljs-number">3</span>) = <span class="hljs-number">255</span>   <span class="hljs-comment">-- alpha</span>
+        luminosity _ (<span class="hljs-type">Z</span> :. i :. j :. _) = ceiling $ <span class="hljs-number">0.21</span> * r + <span class="hljs-number">0.71</span> * g + <span class="hljs-number">0.07</span> * b
+        r = fromIntegral $ f (<span class="hljs-type">S</span> :. i :. j :. <span class="hljs-number">0</span>)
+        g = fromIntegral $ f (<span class="hljs-type">S</span> :. i :. j :. <span class="hljs-number">1</span>)
+        b = fromIntegral $ f (<span class="hljs-type">S</span> :. i :. j :. <span class="hljs-number">2</span>)
+
+<span class="hljs-title">main</span> = <span class="hljs-keyword">do</span>
+    r &lt;- <span class="hljs-type">V</span>.unsafeWith v ptr2repa
+    runIL $ writeImage <span class="hljs-string">"test.png"</span> (<span class="hljs-type">RGBA</span> r)
+    imageDesaturate
+    return ()
+</code></pre>
 <h4>Sequential and monad</h4>
 <pre><code>It's not because monad somehow represents sequential operations, is that anything worth naming "sequential" with it are inherently monadic.
 </code></pre>
-<p>I saw this some where and felt it is quite a powerful statement.</p>
-<p>The famous meme <code>monad is a monoid in the category of endofunctors</code> is actual helpful to understand this statement here.  I don't know category theory, but I do know monoid. The main property of monoid is associativity.</p>
-<h4>Accelerate as an embeded langauge</h4>

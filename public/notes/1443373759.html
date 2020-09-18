@@ -1,0 +1,28 @@
+<h1>Some linker stuffs</h1>
+<p>You can check the dependency of a binary with <code>ldd</code>, and when you actually run the executable, the share object will be linked by <code>ld</code>.</p>
+<h2>ld</h2>
+<p>ld combines a number of objecets and archive files and tie up symbol references. First thing to know is <code>ld</code> is not only for c and cpp, it's just a generic program for linking object files. As long as object files follow formats it support.</p>
+<h2>ldd</h2>
+<p>Print the shared objects required by each program specified on the command line.</p>
+<h2>ldconfig</h2>
+<p>Configure dynamic linker rutime binding.</p>
+<h4>ldconfig -p</h4>
+<p><code>ldconfig -p</code> shows the current binding. This list indicates if your linker can find a given package. If your shared object is not on the list, you might need to add it to the path.</p>
+<p>Sometimes <code>ldd</code> shows a dependencies's location, but if that location is not on <code>ldconfig -p</code> it's still not linkable.</p>
+<h4>ldconfig -n &lt;path-to-lib&gt;</h4>
+<p>If you have a shared library somewhere, but it's not available at link stage, the easiest way to make it work is to do <code>ldconfig -n &lt;path&gt;</code>.</p>
+<h2>LD_LIBRARY_PATH=&lt;path&gt;</h2>
+<p>The enviroment variable is used to temporarily substitute a different library for a particular execution.</p>
+<p>It is handy for development and testing, but binary release should not depend on it.</p>
+<h2>LD_DEBUG=&lt;[files|libs|bindings]&gt;</h2>
+<p>Environment variable to trigger more verbose logging during linking.</p>
+<h2>readelf</h2>
+<p><code>readelf</code>is another alternative for <code>ldd</code>. You can do <code>readelf -d &lt;libname&gt; | grep NEEDED</code> to check required dynamic libraries.</p>
+<h2>Note for gcc</h2>
+<p>If you are using gcc to make a shared library, the compiling process looks like this:</p>
+<pre><code>gcc -fPIC -g -c -Wall a.c
+gcc -fPIC -g -c -Wall b.c
+gcc -shared -Wl, -soname, libmystaff.so.1 \
+    -o libmystaff.so.1.0.1 a.o b.o -lc
+</code></pre>
+<p>The first two lines use <code>-c</code> to specifies not to run the linker, so we can produce stand alone object files. <code>-fPIC</code> is used to generate positino indepedent code. This is of course the first step to make the library shareable.</p>
