@@ -1,7 +1,7 @@
 -- tag note haskell parallelism concurrency dip lazy
 -- title Haskell data parallelism, concurrency, and polymorphic size array
 -- date 2020-09-11
-          https://wiki.haskell.org/Numeric_Haskell:_A_Repa_Tutorial
+-- source https://wiki.haskell.org/Numeric_Haskell:_A_Repa_Tutorial
           https://myslide.cn/slides/12046
           https://stackoverflow.com/questions/59586452/haskell-parallel-computation-and-the-sequential-property-of-monads
           https://slikts.github.io/concurrency-glossary/

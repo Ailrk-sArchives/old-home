@@ -26,7 +26,7 @@ ___
 ##### Authors:
 Simon Peyton Jones, Mark Jones
 ##### Abstract
-Discussions on extensions on hasekll 98 typeclass. Contains a collection of examples to explain the motivation behind each enhancement of typeclass.
+Discussions on extensions on hasekll 98 typeclass. It demonstrates a collection of examples to explain the motivation behind each enhancement of typeclass.
 
 ---
 
@@ -90,7 +90,7 @@ Intro of linear logic.
 ##### Authors:
 John Backus
 ##### Abstract
-Some discussions on functional programming in general
+Some discussions on functional programming in general.
 
 ---
 
@@ -98,7 +98,7 @@ Some discussions on functional programming in general
 ##### Authors
 Van Roy
 ##### Abstract
-Bascially a shorter version of CTM. Very brief overview of different programming paradigms and how they fit into different languages.
+Bascially a shorter version of CTM. Very brief overview of different programming paradigms and how they fit into different languages. Topic is about fp, oop, concurrent computation model, functional reactive programming, descrete continous programming, named state, and so on. The author thinks an ideal language should support multi paradigm, but some concepts from different paradigms are fundamentally mutually exclusive. For example, purity and named state.
 
 ---
 
@@ -109,3 +109,59 @@ Philip Waldler
 Some discussion about list fusion with deforestation algorithm. There are lots of container libraries fuse intermidiate compution today, and they all share the similar concept as this paper describe.
 
 ---
+
+## [Datatype-Generic Programming](http://www.cs.ox.ac.uk/jeremy.gibbons/publications/dgp.pdf)
+##### Authors
+Jeremy Gibbons
+
+##### Abstract
+Introduciton about generic programming. So called (origami programming), hylomorphism, parameterization on shape, bifunctor, fix point, and so on. Lots of examples.
+
+---
+
+## [Practical type inference for arbitrary-rank type](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/putting.pdf)
+##### Authors
+Simon Peyton Jones, Dimitrios Vytiniotis, Stephanie Weirich
+
+##### Abstract
+The cause and effect of rank n type. It's basically a tutorial.
+
+---
+
+## [The Discoveries of Continuations](https://homepages.inf.ed.ac.uk/wadler/papers/papers-we-love/reynolds-discoveries.pdf)
+##### Authors
+John Reynolds
+
+##### Abstract
+Contination intro
+
+---
+
+## [The Essence of Compiling with Continuation](https://slang.soe.ucsc.edu/cormac/papers/pldi93.pdf)
+##### Authors
+Cormac Flanagan, Amr Sabry, Bruce F Duba, Matthias Fellei
+
+##### Abstract
+ANF and continuation, and their application in compiling.
+
+---
+
+## [Definitional interpreters for higher-order programming languages](https://surface.syr.edu/cgi/viewcontent.cgi?article=1012&context=lcsmith_other)
+###### Authors
+John Reynolds
+
+##### Abstract
+Use CPS write lisp interpreter.
+-
+
+---
+
+## [Capturing the Future by Replaying the Past](https://arxiv.org/pdf/1710.10385.pdf)
+##### Authors
+James Koppel, Gabriel Scherer, Armando Solar-lezama
+
+##### Abstract
+Implement cps with exceptions and state.
+
+---
+
