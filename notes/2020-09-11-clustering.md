@@ -36,10 +36,14 @@ All this machine learning methods have their theorotical goals and different imp
 Kmean aims to choose entroids that minimize the intertia (within cluster sum of squares).
 
 let C be set of K disjointed clusters
+```
     xᵢ be the input data. {x₁, x₂, ... xᵢ}
     μⱼ be the mean of samples in cluster
     n is the number of input
+
+```
 for every j ∈ K, we want to find μⱼ that satisfy this constraint:
+```
                    n
     J(μ₁ .. μₖ) =  ∑ min(||xᵢ - μⱼ||²), μⱼ ∈ C
                   i=0

@@ -1,7 +1,8 @@
 -- tag note haskell continuation
--- title Haskell data parallelism, concurrency, and polymorphic size array
--- date 2020-09-11
+-- title Continuation
+-- date 2020-09-21
 -- source https://en.wikibooks.org/wiki/Haskell/Continuation_passing_style
+          http://wiki.haskell.org/MonadCont_under_the_hood
 ;;
 # Continuation and denotational semantics.
 
