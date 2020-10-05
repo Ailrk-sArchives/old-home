@@ -63,14 +63,14 @@ position = lseek(fd, offset, whence)
 s = stat(name, &buf)
 </code></pre>
 <h4>Memeory protection</h4>
-<p>Operating system make sures user programs have their own address space, so their exection will not interfere with each other. For instance, a simple approach is to mark start and the end of a program in the memory with base and limit register.</p>
+<p>Operating system make sures user programs have their own <strong>address space</strong>, so their exection will not interfere with each other. For instance, a simple approach is to mark start and the end of a program in the memory with base and limit register.</p>
 <h4>Traps</h4>
-<p>Special conditions dected by the architecture. (Page fault, system call) Or software interrupt.</p>
+<p><strong>Special conditions detected by the architecture</strong>. (Page fault, system call) Or software interrupt.</p>
 <p>On detecting a trap, the hardware will save the state of the process, then transfer control to the appropriate trap handler.</p>
 <h4>IO model</h4>
-<p>The operating system needs to support both synchronous and asynchrnous IO. For asynchrnous IO, the kernel needs to be able to hand back the control to the process while doing the IO, and present the result when IO is finished.</p>
+<p>The operating system needs to support both <strong>synchronous and asynchrnous IO</strong>. For asynchrnous IO, the kernel needs to be able to hand back the control to the process while doing the IO, and present the result when IO is finished.</p>
 <h6>Interrupt based asynchronous IO</h6>
-<p>First, each device controller has its own small processor that executes asynchronously with the main cpu. And when a device finished it will put an interrupt signal on the bus.</p>
+<p>First, <strong>each device controller has its own small processor that executes asynchronously with the main cpu</strong>. And when a device finished it will put an interrupt signal on the bus.</p>
 <p>When cpu takes an interrupt:</p>
 <ul>
 <li>Saves critical cpu state</li>
@@ -92,8 +92,8 @@ s = stat(name, &buf)
 <h4>System call</h4>
 <ul>
 <li>Kernal apis provide interface of privileged instruction to user space programs.</li>
-<li>Userp program make a trap, based on the trap kernal vector to the trap handler, and based on parameter passed in execute corresponding system call.</li>
-<li>Genearl methods to pass parameters to the OS
+<li>User program make a trap, based on the trap kernal vector to the trap handler, and based on parameter passed in execute corresponding system call.</li>
+<li>Genearl <strong>methods to pass parameters</strong> to the OS
 <ul>
 <li>pass in register (but there might be more parameters than register available)</li>
 <li>parameters stored in a block in memory, and pass the address of the block in a register (linux)</li>
@@ -101,7 +101,7 @@ s = stat(name, &buf)
 </ul>
 </li>
 </ul>
-<h4>Microkernel and monolithic</h4>
+<h4>OS organization</h4>
 <ul>
 <li>Monolithic: One big kernel with all functionalities</li>
 <li>Microkernel: Make kernel small, implement more features in user space (Harder to implement, but in theory better performace and reliability)</li>
