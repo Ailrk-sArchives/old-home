@@ -1,0 +1,320 @@
+<h1>Some os</h1>
+<pre><code>Layered OS design
+
+User program
+==============
+Device drivers
+==============
+Virtual memory
+==============
+I/O channel
+==============
+CPU scheduler
+==============
+Hardware
+
+</code></pre>
+<h2>OS</h2>
+<p>OS is the interface between user and the architecture</p>
+<p>An operating system helps us to abstract away the complexity of the hardware and isolate execution.</p>
+<p>Major components of os:</p>
+<ul>
+<li>Proecss and thread management</li>
+<li>Concurrency</li>
+<li>Asynchronous IO</li>
+<li>File System</li>
+<li>(Distributed system) not part of triditional os but is trendy.</li>
+</ul>
+<h4>OS service and the correspoinding hardware support</h4>
+<pre><code>        OS                        Hardware
+    Protection          Kernal/user mode, protected instructinos, base/limit registers
+    Interrupts                  Interrupt vectors
+    System call                  Trap insruction and trap vectors
+     IO                         Interrupt and memory mapping
+  Scheduling, error recovery    Timer
+    Synchronization             Atomic instruction
+    Virtual memory              Translation look-aside buffers (page table)
+
+</code></pre>
+<h4>System call</h4>
+<p>System calls are services provided by the operating system. If you want to call privileged instructions in the user space system call is the only way to go.</p>
+<p>To make a system call, the application will make a trap, and vectors to the trap handler of in the os kernal. Then based on the parameter to the system call to jump to the right handler.</p>
+<p>Because technically system call is not performed by the same program (by kernal instead), the handler needs to save the  state of the program.</p>
+<p>Finally, there must be a way for system call to return to user mode.</p>
+<pre><code>    User process
+ running -> System call -> running
+============|=======|==============
+          trap      return
+     mode bit = 0  mode bit = 1
+         executing system call
+    Kernel
+</code></pre>
+<p>Some system call examples</p>
+<pre><code>pid = fork()
+pid = waitpid(pid, &statusloc, options)
+s = execve(name, argv, envirop)
+exit(status)
+
+fd = open(file, how, ...)
+s = close(fd)
+n = read(fd, bufferm nbytes)
+n = write(fd, buffer, nbytes)
+position = lseek(fd, offset, whence)
+s = stat(name, &buf)
+</code></pre>
+<h4>Memeory protection</h4>
+<p>Operating system make sures user programs have their own address space, so their exection will not interfere with each other. For instance, a simple approach is to mark start and the end of a program in the memory with base and limit register.</p>
+<h4>Traps</h4>
+<p>Special conditions dected by the architecture. (Page fault, system call) Or software interrupt.</p>
+<p>On detecting a trap, the hardware will save the state of the process, then transfer control to the appropriate trap handler.</p>
+<h4>IO model</h4>
+<p>The operating system needs to support both synchronous and asynchrnous IO. For asynchrnous IO, the kernel needs to be able to hand back the control to the process while doing the IO, and present the result when IO is finished.</p>
+<h6>Interrupt based asynchronous IO</h6>
+<p>First, each device controller has its own small processor that executes asynchronously with the main cpu. And when a device finished it will put an interrupt signal on the bus.</p>
+<p>When cpu takes an interrupt:</p>
+<ul>
+<li>Saves critical cpu state</li>
+<li>Disable interrupt (need to handle this interrupt first)</li>
+<li>Save state that interrupt handler will modify</li>
+<li>Invoke interrupt handler with in-memory interrupt vector</li>
+<li>Enable interrupts</li>
+<li>Restore hardware state, and continue execution of interrupted process.</li>
+</ul>
+<h4>Memory mapped IO</h4>
+<p>Map virtual memory to IO controller to enable direct access. So for a process, accessing device is almost the same as accessing the memory directly. (Although in reality its just be mapped to a memory address).</p>
+<h4>Timer &amp; Atomic instructions</h4>
+<p>Interrupt vector.</p>
+<h4>Synchronization</h4>
+<p>Interrupt interfere with exeuting processes, and OS needs to be able to synchronize cooperating, concurrent processes.</p>
+<h4>Virtual memory</h4>
+<p>Virtual memory separate a process memory into pages so you don't need to load the entire program at once. The operating system needs to know how to put separated pages together, and that's speeded uped by the hardware support called <code>translation lookaside buffer</code></p>
+<h2>OS services</h2>
+<h4>System call</h4>
+<ul>
+<li>Kernal apis provide interface of privileged instruction to user space programs.</li>
+<li>Userp program make a trap, based on the trap kernal vector to the trap handler, and based on parameter passed in execute corresponding system call.</li>
+<li>Genearl methods to pass parameters to the OS
+<ul>
+<li>pass in register (but there might be more parameters than register available)</li>
+<li>parameters stored in a block in memory, and pass the address of the block in a register (linux)</li>
+<li>parameters pushed onto the stack and popped by the kernel</li>
+</ul>
+</li>
+</ul>
+<h4>Microkernel and monolithic</h4>
+<ul>
+<li>Monolithic: One big kernel with all functionalities</li>
+<li>Microkernel: Make kernel small, implement more features in user space (Harder to implement, but in theory better performace and reliability)</li>
+</ul>
+<h4>Modules</h4>
+<p>Most operating system implement kernel moduels. Each component is separate and talk to each over over known interfaces. Each module is loadable as needed within the kernel.</p>
+<h2>Process management</h2>
+<p>OS programs. each activities of programs (a program might have multiple processes) will be encapsulated in a process.</p>
+<h4>Processs state</h4>
+<p>Process at least consist:</p>
+<ul>
+<li>code for the running program.</li>
+<li>static data for running program.</li>
+<li>heap pointer (HP)</li>
+<li>program counter (PC)</li>
+<li>execution stack (SP)</li>
+<li>value of cpu registers.</li>
+<li>os resourcse like open files.</li>
+<li>process execution state.</li>
+</ul>
+<h4>Process execution state</h4>
+<pre><code>           +-----+
+           V     V
+New -> Ready <- Running -> Terminated
+           |     |
+           |     V
+           Waiting
+</code></pre>
+<h4>Proces Control Block (PCB)</h4>
+<p>OS data structures to keep track of all processes.</p>
+<ul>
+<li>pcb keep tracks of the execution state and location of each process</li>
+<li>kernel allocate new pcb on creation of each process and placed on a state queue.</li>
+<li>os deallocates the pcd when process terminates.</li>
+</ul>
+<p>A PCB contains</p>
+<ul>
+<li>Process execution state (running, waiting, etc.)</li>
+<li>Process number</li>
+<li>Program counter</li>
+<li>Stack pointer</li>
+<li>General purpos registers</li>
+<li>Memory management information</li>
+<li>Username of owner</li>
+<li>List of open files (lof)</li>
+<li>queue pointers for state queue</li>
+<li>scheduling information (priority, niceness)</li>
+<li>IO status</li>
+</ul>
+<h4>Context switch</h4>
+<ul>
+<li>starting and stopping processes is called a context switch (expensive).</li>
+<li>When a process starts to run, the kernel loads the pcd information into cpu.</li>
+<li>when os stops a process, the running information is saves into the process's pcd.</li>
+</ul>
+<h4>Creating a process</h4>
+<p>One process can create other process to do work. The creater is called parent and the new process is called the child.</p>
+<p>In unix we fork. When forking a process, the new process will copy the entire state of the parent process.</p>
+<pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unistd.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/wait.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">int</span> pid = getpid();
+    <span class="hljs-keyword">char</span> pname[<span class="hljs-number">1024</span>];
+    gets (pname);
+    <span class="hljs-keyword">int</span> cid = fork();
+    <span class="hljs-keyword">if</span> (cid == <span class="hljs-number">0</span>) {
+        execlp (pname, pname, <span class="hljs-number">0</span>);
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"I'm parent"</span>);
+    }
+    <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<h4>Cooperative multitasking</h4>
+<p>Any two processes are either independent or cooperating. Cooperating processes hand away control volentarily.</p>
+<p><strong>Producers and consumers</strong></p>
+<h4>Inter process communication (IRC)</h4>
+<p>There are two ways to communicate between processes: message passing and shared memory.</p>
+<h5>Message passing</h5>
+<p>Channels, unix pipe and unix message; socketse</p>
+<h5>Shared memory</h5>
+<p>with mmap</p>
+<h2>Schedule process</h2>
+<h4>Preemptive</h4>
+<p>In a preemptive system the scheduler can interrupt a running process.</p>
+<h4>Some criteria for scheduling algorithms.</h4>
+<ul>
+<li>CPU utilization (minimize idle time)</li>
+<li>throughput (# of tasks completing in a unit time)</li>
+<li>turnaround time (how long does it take to run a process since it begins)</li>
+<li>wait time (total amount of time a process is in the ready queuej)</li>
+<li>response time (Time between when a process is ready to run and it's next IO request)</li>
+</ul>
+<p>No scheduling algorithms can optimize all these criterion. We mostly need to make trade off.</p>
+<h4>Scheduling algorithms</h4>
+<h5>FCFS first come first serve</h5>
+<ul>
+<li>Scheduler execute job to completion in arrival order.</li>
+<li>Simple</li>
+<li>If long job comes first average waiting time is high (short job might wait behind long jobs)</li>
+<li>lead to poor overlap of IO and cpu. (CPU bound processes will force io bound processes to wait for the CPU).</li>
+</ul>
+<h5>Round Robin (use time slice and preemption on alternative jobs)</h5>
+<ul>
+<li>Each process is assigned with a time sliceget .</li>
+<li>Schedule processes preemtively based on the time slice.</li>
+<li>Fair</li>
+<li>Average waiting time can be bad if the time slice is not choosen wisejly.</li>
+<li>If the time slice is to large it gets to the same problem FCFS has. (bad wait time)</li>
+<li>If waiting time is too short overhead from context switching will be a problem.</li>
+</ul>
+<h5>SJF (shortest job first)</h5>
+<ul>
+<li>Run the shortest job until its next IO or termination.</li>
+<li>Minimizing the average wait time.</li>
+<li>works for both preemtive and non preemtive schedulers.</li>
+<li>IO bound jobs get priority over CPU bound jobs.</li>
+<li>It's ideal, but it's impossible to anticipate amount of cpu time a job needs to do.</li>
+<li>long running cpu bound jobs can starve. (Like the cpu bound callback in node)</li>
+</ul>
+<p>PS: there is preemtive version called SRTF (shortest remaining time first)</p>
+<h5>Multilevel feedback queues (Round robin on each priority queue)</h5>
+<ul>
+<li>
+<p>Use passed behavior to predict the future (assign job priorities)</p>
+</li>
+<li>
+<p>Overcome the prediction problem</p>
+</li>
+<li>
+<p>It's kind like how JIT works with a profiler.</p>
+</li>
+<li>
+<p>multilevel feedback queue</p>
+<ul>
+<li>multiple queues with different priorities.</li>
+<li>use round robin scheduling at each priority level.</li>
+<li>run job in the order of priorities. It finish the highest priorities first then goes to the next level (might cause starvation)</li>
+<li>round robin time slice increase expoentially at lower priorites.</li>
+</ul>
+</li>
+<li>
+<p>The priorities of jobs can move among queues</p>
+<ul>
+<li>The movement is faciliated by the characteristics of the cpu burst. Job takes too much cpu time will be moved to lower priority queues.</li>
+<li>Job starts with the highest priority level.</li>
+<li>When the time slice expires, drop the priority level.</li>
+<li>If a context switch happen but job is still not expired, (Maybe from an IO), increase the priority.</li>
+<li>End result: CPU bound job drop to low priorities and IO bound jobs stay high priorities.</li>
+</ul>
+</li>
+<li>
+<p>You want cpu bound job has lower priorities otherwise they will starve the cpu.</p>
+</li>
+<li>
+<p>cap</p>
+<ul>
+<li>get preference to short jobs</li>
+<li>give preference to io bound process</li>
+<li>separate processes into categories based on their need for the processor.</li>
+</ul>
+</li>
+</ul>
+<p>Multilevel queue can be thought as an approximation of SJF.</p>
+<h5>Lottery scheduling</h5>
+<p>Assign ticket (a number) to each job. For each time slice randomly pick a lottery ticket. To approximate SJF, we give short task more tickets and long task fewer tickets.</p>
+<p>Fair with low average wait time but less predictable.</p>
+<h2>Threads</h2>
+<h4>Thread Vs process</h4>
+<ul>
+<li>
+<p>process defines the address space, text, resources</p>
+</li>
+<li>
+<p>thread is merely a sigle sequential execution within a process. (It doesn't have it's own state (not like thread.local, which is just a simulation))</p>
+</li>
+<li>
+<p>Os can support one more many address space, and each one can have one or many threads.</p>
+</li>
+</ul>
+<h4>Kernel thread and user thread</h4>
+<ul>
+<li>
+<p>creating a new thread can be a system call or be a user space <a href="library">library</a>.</p>
+</li>
+<li>
+<p>Kernel thread (lightweight process) is a thread that the os is aware of.</p>
+<ul>
+<li>it is scheduled by the os scheduler.</li>
+<li>switch between kernel threads requries a small context switch.</li>
+<li>the reason is small is you dont need to save the pcb.</li>
+<li>The more kernel thread a process create, the more time slice it will get.</li>
+</ul>
+</li>
+<li>
+<p>User level thread is a thread that the os know nothing about.</p>
+<ul>
+<li>the scheduler cannot schedule user thread.</li>
+<li>but the scheduler can still schedule the process contains the user thread.</li>
+<li>thread libraries are used rather than system calls.</li>
+</ul>
+</li>
+<li>
+<p>Pros and cons of user level thread</p>
+<ul>
+<li>no context swith at all, super fast.</li>
+<li>scheduling is more flexible. The program can make threads coperative so they volenarily gives up the control.</li>
+<li>no system call needed, also make them fast.</li>
+<li>However, the os doesn't know the user level  thread so you need to schedule it youself.</li>
+<li>Bad scheduld stragegies can happen.</li>
+</ul>
+</li>
+</ul>

@@ -1,5 +1,6 @@
 <h1>Some mixin.</h1>
-<p>Today do some oop. ewww.</p>
+<p>Today do some oop. ewww.<br>
+(3 weeks later me: This article is totally cringe. Jimmmy just learn some PL, stop guessing)</p>
 <h2>Mixin</h2>
 <h4>Mixin as composable subclass</h4>
 <p>Each mixin is a partially defined subclass that can be applied to a superclass to compose a full implementation.</p>
@@ -15,7 +16,8 @@
 </code></pre>
 <p>where the superclass is A-with-M rather than A. A-with-M is the Mixin application. The inheritance process is <code>Top -&gt; A -&gt; A with M -&gt; B</code></p>
 <h4>Isn't it similar to trait or typeclass?</h4>
-<p>No. The naming is very chaotic. Some people refer trait as mixin, but in rust trait is typeclass.</p>
+<p>(3 weeks later me: It's not, like even slightly. Why did I even pull out this question???)<br>
+No. The naming is very chaotic. Some people refer trait as mixin, but in rust trait is typeclass.</p>
 <h4>What's the difference?</h4>
 <p><strong>1</strong> Typeclass provides type constrains, while mixin have no impact on type system except the <code>minxin application</code> part.</p>
 <pre><code class="language-haskell"><span class="hljs-comment">-- typeclass serves as type constraints</span>
@@ -38,6 +40,8 @@
 applyMixin(A, [Eq]);
 </code></pre>
 <p><strong>2</strong> typeclass can achieve ad hoc polymorphism by providing implementation for different type, while mixin is not polymorphic.</p>
+<p>(3 weeks later me: This is not right! The whole comparion is basically comparing apple with pears. First of all ad hoc polymorphism is not really polymorphism, real polymorphism should put parameterization as it's core rather than overloading! Second, If it's a dynamic lanuguage for minx the <code>value</code> is actually get overloaded, but that's the case for values in dynamic language everywhere anyway.)</p>
+<p>(also 3 weeks later me: Mixin should primarily be regard as a tool to decouple ad hoc code. If you want generic mixin you still relies on parametric polymorphism or overloading even)</p>
 <pre><code class="language-haskell"><span class="hljs-comment">-- similar to function overloading, here (==) is overloaded</span>
 <span class="hljs-comment">-- with different implementations for Val and Lue.</span>
 <span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">Val</span> a = <span class="hljs-type">Val</span> a</span>
