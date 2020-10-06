@@ -185,4 +185,51 @@ way it's a partial function. Some inputs are undefined.
 <li>Lots of type system are designed based on primitive recursive function to make sure they halt.</li>
 </ul>
 <h2>Turing machine --</h2>
+<p>A conceptual machine provides a formal definition of algorithms.</p>
+<p>A turing machine consists of:</p>
+<ul>
+<li>A tape divided into cells.</li>
+<li>A head that can read and write symbols on the tape, and move the tape left and right one cell at a time.</li>
+<li>A state register stores the state of the turing machine.</li>
+<li>A finite table of instructions.</li>
+</ul>
+<h4>Formal definition</h4>
+<p>Turing machine defined as 7-tuple.</p>
+<pre><code>M = ⟨Q, Γ, b, ∑, δ, q₀, F⟩ where
+    Q:           finite, non empty __set of states__.
+    Γ:           finite, non empty set of tape __alphabet symbols__.
+    b ∈ Γ:       blank symbol (The only symbol allowed to occur on the tape infinitely)
+    ∑ ⊆ Γ \ {b}: Set of input symbols allowed to appear in the inital tape content.
+    q₀ ∈ Q:      initial state
+    F ⊆ Q:       Set of final states.
+                 (the initial tape is said to be accepted by M if it halts in a state ∈ F)
+    δ:           (Q \ F) × Γ ⇀ Q × Γ × {L, R}, a partial function called transition function
+                 where {L, R} represent left shift or right shift.
+                 If δ is not defined on the current states and the current tape symbols, the
+                 machine halts.
+</code></pre>
+<h4>Busy beaver</h4>
+<p>Busy beaver game</p>
+<p>State table for 3 state 2 symbol busy beaver defined by 7-tuple turing machine:</p>
+<pre><code>BusyBeaver = ⟨Q, Γ, b, ∑, δ, q₀, F⟩ where
+    Q = {A, B, C, HALT}
+    Γ = {0, 1}
+    b = 0
+    ∑ = {1}
+    q₀ = A
+    F = {HALT}
+    δ = defined as the state table below
+
+State Table for (Q \ F) × Γ ⇀ Q × Γ × {L, R}:
++=======+===========+===========+=============+
+| Symbol|  State A  |  State B  |   State C   |
++=======+===========+===========+=============+
+|   0   | (1, R, B) | (1, L, A) | (1, L, B)   |
++=======+===========+===========+=============+
+|   1   | (1, L, C) | (1, R, B) | (1, R, HALT)|
++=======+===========+===========+=============+
+</code></pre>
+<p>This shows how do you define an &quot;algorithm&quot; with turing machine. The current state of the  will transform</p>
+<h4>The state</h4>
+<p>The state in a turing machine is referred to the entire state of the machine, including both the current instruction and the all the symbols on the tape. So the transition</p>
 <h2>Lambda Calculus --</h2>
