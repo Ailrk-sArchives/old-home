@@ -240,7 +240,7 @@ M = ⟨Q, Γ, b, ∑, δ, q₀, F⟩ where
 ```
 
 #### Busy beaver
-Busy beaver game
+The goal is to find the program that print as most 1 as possible on the tape and eventually halt.
 
 State table for 3 state 2 symbol busy beaver defined by 7-tuple turing machine:
 ```
@@ -270,4 +270,3 @@ This shows how do you define an "algorithm" with turing machine. The current sta
 The state in a turing machine is referred to the entire state of the machine, including both the current instruction and the all the symbols on the tape. So the transition
 
 ## Lambda Calculus --
-
