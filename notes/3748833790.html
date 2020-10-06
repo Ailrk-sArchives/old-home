@@ -1,17 +1,16 @@
 <h1>Intro to computabilities</h1>
-<h2>Computable functions.</h2>
 <h2>Works on computable functions</h2>
 <ul>
 <li>Kurt Godel: created general recursive functions.</li>
 <li>Alonzo Church: Created Lambda calculus. A function on natural numbers is called <strong>λ-computable</strong> if it can be computed by lambda calculus</li>
 <li>Alan Turing: Craete Turning machine. A function is <strong>turing computable</strong> if it can be computed by a turing machine</li>
 </ul>
-<p>Later it's proved that this three systems are equivalent.</p>
+<p>Later it's proved that these three systems are equivalent.</p>
 <h2>Turing completeness</h2>
 <p>A computational model that can be implemented by any turing machine.</p>
 <h2>Turing equivalence</h2>
 <p>Two computers P and Q are called equivalent if P can simulate Q and Q can simulate P.</p>
-<h2>Church-Turing thesis (What is computable)</h2>
+<h2>Church-Turing thesis (what is a computable function)</h2>
 <p>Any functions whoes value can be computed by an algorithm can be computed by a turing machine.</p>
 <p>Formal version: A function on the natural numbers can be calculated by an effective method iff it's computable by a turing machine.</p>
 <h2>General recursive functions --</h2>
@@ -53,6 +52,8 @@
 </ul>
 </li>
 </ul>
+<p>PS: <strong>6. minimization</strong> is the property that makes primitive recursive function to general recursive function.</p>
+<p>PS: Primitive recursive functions always halt. But general recursive functions doesn't because it supports minimization, which allow us to describe parital functions.</p>
 <p>PS: <strong>Composition</strong> is defined on a function and a set of functions that yields it's parameters.</p>
 <p>PS: Projection functions is used to select argument of one function to other functions.</p>
 <pre><code>-- Primitive recurisive function.
@@ -65,18 +66,27 @@ f(a, b, c) = g(h(c, a) , h(a, b))
 f(a, b, c) = g(h(proj₃³(a, b, c), proj₁³(a, b, c)),
                h(proj₁³(a, b, c), proj₂³(a, b, c)))
 </code></pre>
-<p>PS: <strong>Primitive recursion</strong></p>
+<p>PS: <strong>Primitive recursion ρ</strong></p>
 <pre><code>Let's define
-    f : ℕⁿ ⇀  ℕ, g: ℕⁿ⁺² ⇀ ℕ (notice the paritial function)
-    h = ρⁿ(f, g) : ℕⁿ⁺¹ ⇀ ℕ
+    f : ℕⁿ ⇀ ℕ, g : ℕⁿ⁺² → ℕ
 
-First look at the name you knwo its about recursion.
-Base case:
-    h(0, x₁, x₂, ..., xₖ) = f(x₁, ..., xₖ)
-Recursive step:
-    h(succ(y), x₁, ..., xₖ) = g(y, h(y, x₁, ..., x), x₁, x₂, ..., xₖ)
+    h = ρⁿ(f, g) : ℕⁿ⁺¹ → ℕ
+    h(0, x₁, x₂, ..., xₖ) = f(x₁, ..., xₖ) -- Base case
+    h(succ(y), x₁, ..., xₖ) =
+        g(y, h(y, x₁, ..., x), x₁, x₂, ..., xₖ) -- Recursive step
 
-function g takes two more input than the base case f. Namely the final input y to h and the recursive call h(y, x₁, ..., x).
+-- intuition:
+
+function h acts like a for loop from o to the value of it's first argument.
+
+f is the base case function and it will only execute onece.
+
+function g is the for loop body. it takes two more input than the base case f.
+Namely the final input y to h and the recursive call h(y, x₁, ..., x).
+g feed current information it needs for recursive step.
+
+different functions might only need part of the argument, to achieve that
+we use projection.
 </code></pre>
 <h5>Some examples.</h5>
 <p>Note for primitive recursion different books will use different orders. We use this order:</p>
@@ -101,19 +111,19 @@ plusFour = add ∘ [proj₁¹, four]
 -- using composition and projection to select argument.
 addFirstAndThird : ℕ³ → ℕ
 addFirstAndThird = add ∘ [proj₁³, proj₃³]
-
 </code></pre>
 <p>This uses primtive recursion. Something to be aware of:</p>
 <ul>
 <li>You can't just directly &quot;wire&quot; parameters around, instead you compose with the projection</li>
 </ul>
-<pre><code>add : ℕ² → ℕ
-add = ρⁿ(proj₁¹, succ ∘ [proj₂³])
-
--- Another way to define it
+<pre><code>-- define by match cases
 add' : ℕ² → ℕ
 add' (0, x) = x
 add' (succ(n), x) = succ(proj₂³(n, add(n, x), x))
+
+-- compact version with primitive recursion axiom.
+add : ℕ² → ℕ
+add = ρⁿ(proj₁¹, succ ∘ [proj₂³])
 
 -- Another definition with primitive recursion
 mult : ℕ² → ℕ
@@ -131,5 +141,48 @@ pred' : ℕ → ℕ
 pred' (zero) = zero
 pred' (succ(n)) = proj₁²(n, pred'(n))
 </code></pre>
+<h4>Partial recursive function (general recursive or μ recursive function)</h4>
+<p>Primitive recursive function with <strong>Minimization</strong>. Close under composition, primitive recursion, and μ operator.</p>
+<p>PS: <strong>Minimization (μ operator)</strong></p>
+<p>Without minimization we can only define total function. but with<br>
+minimization we can define partial functions.</p>
+<pre><code>f : ℕⁿ⁺¹ ⇀ ℕ
+μⁿf : ℕⁿ ⇀ ℕ
+
+
+μⁿf(x₁, ..., xₖ) = z ⇔ f(i, x₁, ..., xₖ) > 0 for i = 0, ..., z - 1
+                       f(z, x₁, ..., xₖ) = 0
+
+-- intuition
+μ defines an unbounded search operator.
+
+Minimization begin the search from i = 0 and proceeding upwards the
+smallest argument that causes the function to return 0.
+
+If there is no such argument, the function doesn't halt. And this is
+way it's a partial function. Some inputs are undefined.
+
+</code></pre>
+<h4>Primitive resursive functions ⊂ total recursive function.</h4>
+<ul>
+<li><strong>partial recursive function</strong>: Primitive recursive function that supports <code>μ operator</code> (Or functions thats can be comoputed by a turing machine)</li>
+<li><strong>total recursive function</strong>: Partial recursive function that is defined for every input.</li>
+</ul>
+<p>All primitive recursive functions are total function, but not all total functions are primitive recursive. The most well known example is the Ackermann functionA(m, n).</p>
+<pre><code>    +--total recursive------+
+    | +-primitive+          |
+    | |          |          |
+    | |          | Ackermann|
+    | |          |          |
+    | +-recursive+          |
+    +-----------------------+
+</code></pre>
+<h4>General recursive function In programming language</h4>
+<p>Bounded for loop is primitive recursive function; while and goto makes partial recursive function. Algorithms can be expressed in these structures are computable because they are general recursive.</p>
+<h4>PS</h4>
+<ul>
+<li>All primitive recursive functions halt. (It's not sure for arbitrary turing machine)</li>
+<li>Lots of type system are designed based on primitive recursive function to make sure they halt.</li>
+</ul>
 <h2>Turing machine --</h2>
 <h2>Lambda Calculus --</h2>
