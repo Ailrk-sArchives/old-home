@@ -1,7 +1,8 @@
 -- tag note computability
 -- title computability
 -- date 2020-10-04
--- source
+-- source https://en.wikipedia.org/wiki/Turing_machine
+          https://en.wikipedia.org/wiki/Computability_theory
 ;;
 # Intro to computabilities
 
@@ -24,7 +25,6 @@ Two computers P and Q are called equivalent if P can simulate Q and Q can simula
 Any functions whoes value can be computed by an algorithm can be computed by a turing machine.
 
 Formal version: A function on the natural numbers can be calculated by an effective method iff it's computable by a turing machine.
-
 
 
 ## General recursive functions --
@@ -212,11 +212,62 @@ Bounded for loop is primitive recursive function; while and goto makes partial r
 - All primitive recursive functions halt. (It's not sure for arbitrary turing machine)
 - Lots of type system are designed based on primitive recursive function to make sure they halt.
 
-
-
 ## Turing machine --
+A conceptual machine provides a formal definition of algorithms.
+
+A turing machine consists of:
+- A tape divided into cells.
+- A head that can read and write symbols on the tape, and move the tape left and right one cell at a time.
+- A state register stores the state of the turing machine.
+- A finite table of instructions.
 
 
+#### Formal definition
+Turing machine defined as 7-tuple.
+```
+M = ⟨Q, Γ, b, ∑, δ, q₀, F⟩ where
+    Q:           finite, non empty __set of states__.
+    Γ:           finite, non empty set of tape __alphabet symbols__.
+    b ∈ Γ:       blank symbol (The only symbol allowed to occur on the tape infinitely)
+    ∑ ⊆ Γ \ {b}: Set of input symbols allowed to appear in the inital tape content.
+    q₀ ∈ Q:      initial state
+    F ⊆ Q:       Set of final states.
+                 (the initial tape is said to be accepted by M if it halts in a state ∈ F)
+    δ:           (Q \ F) × Γ ⇀ Q × Γ × {L, R}, a partial function called transition function
+                 where {L, R} represent left shift or right shift.
+                 If δ is not defined on the current states and the current tape symbols, the
+                 machine halts.
+```
+
+#### Busy beaver
+Busy beaver game
+
+State table for 3 state 2 symbol busy beaver defined by 7-tuple turing machine:
+```
+BusyBeaver = ⟨Q, Γ, b, ∑, δ, q₀, F⟩ where
+    Q = {A, B, C, HALT}
+    Γ = {0, 1}
+    b = 0
+    ∑ = {1}
+    q₀ = A
+    F = {HALT}
+    δ = defined as the state table below
+
+State Table for (Q \ F) × Γ ⇀ Q × Γ × {L, R}:
++=======+===========+===========+=============+
+| Symbol|  State A  |  State B  |   State C   |
++=======+===========+===========+=============+
+|   0   | (1, R, B) | (1, L, A) | (1, L, B)   |
++=======+===========+===========+=============+
+|   1   | (1, L, C) | (1, R, B) | (1, R, HALT)|
++=======+===========+===========+=============+
+```
+
+This shows how do you define an "algorithm" with turing machine. The current state of the  will transform
+
+
+#### The state
+The state in a turing machine is referred to the entire state of the machine, including both the current instruction and the all the symbols on the tape. So the transition
 
 ## Lambda Calculus --
 
