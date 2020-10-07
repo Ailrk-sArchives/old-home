@@ -4,6 +4,7 @@
 -- source https://crypto.stanford.edu/~blynn/lambda/
           https://en.wikipedia.org/wiki/Turing_completeness
           https://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis
+          https://crypto.stanford.edu/~blynn/lambda/
 ;;
 # Lambda Calculus
 
