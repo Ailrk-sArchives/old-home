@@ -165,3 +165,11 @@ Implement cps with exceptions and state.
 
 ---
 
+## [A Generic Deriving Mechanism for Haskell](http://www.dreixel.net/research/pdf/gdmh_nocolor.pdf)
+##### Authors
+Jose Pedro Magalhaes, Atze Dijkstra, Johan Jeuring, Andres Loh
+
+##### Abstract
+The [mechanism](mechanism) of today's datatype generic programming. Compare with SYB, Generics has better performance.
+
+---

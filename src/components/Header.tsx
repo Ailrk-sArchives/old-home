@@ -7,8 +7,8 @@ import {linkStyle} from '../styles/styleElements';
 import {Sidebar} from './Sidebar'
 import {HoverLink} from './Misc';
 import {useWindowSize} from '../state/hooks';
-import Chiruno from '../assets/ghead.png';
-import Beach from '../assets/beach.png';
+import Chiruno from '../assets/cat1.png';
+import Beach from '../assets/sunset.png';
 
 const headerStyle = css({
   height: "100px",
@@ -45,7 +45,7 @@ function Background(props: {img: string, height?: string}) {
       left: 0,
       right: 0,
       pointerEvents: 'none',
-      filter: "contrast(30%)",
+      filter: "contrast(80%)",
       height: height ?? '20em',
       width: '100%',
       position: 'absolute',

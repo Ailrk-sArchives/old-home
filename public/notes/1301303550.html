@@ -1,26 +1,168 @@
 <h1>Some haskell types</h1>
+<h2>MultiParm Typeclasses and FunctionalDependencies</h2>
+<p>This example make Instance of Convertible for Int no longer unique, so it's hard to do type inference since ghc don't know you want The instance for (Int, Integer) for (Int, Char).</p>
+<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE MultiParamTypeClasses #-}</span>
+<span class="hljs-keyword">import</span> Data.Char
+<span class="hljs-class">
+<span class="hljs-keyword">class</span> <span class="hljs-type">Convertible</span> a b <span class="hljs-keyword">where</span></span>
+    convert :: a -&gt; b
+<span class="hljs-class">
+<span class="hljs-keyword">instance</span> <span class="hljs-type">Convertible</span> <span class="hljs-type">Int</span> <span class="hljs-type">Integer</span> <span class="hljs-keyword">where</span></span>
+    convert = toInteger
+<span class="hljs-class">
+<span class="hljs-keyword">instance</span> <span class="hljs-type">Convertible</span> <span class="hljs-type">Int</span> <span class="hljs-type">Char</span> <span class="hljs-keyword">where</span></span>
+    convert = chr
+</code></pre>
+<p>To avoid having ambiguous instance in multi parameter typeclass, you can use functional dependencies.</p>
+<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE FunctionalDependencies #-}</span>
+<span class="hljs-meta">{-# LANGUAGE MultiParamTypeClasses #-}</span>
+<span class="hljs-class">
+<span class="hljs-keyword">class</span> <span class="hljs-type">Convertible</span> a b | a -&gt; b <span class="hljs-keyword">where</span></span>
+    convert :: a -&gt; b
+<span class="hljs-class">
+<span class="hljs-keyword">instance</span> <span class="hljs-type">Convertible</span> <span class="hljs-type">Int</span> <span class="hljs-type">Integer</span> <span class="hljs-keyword">where</span></span>
+    convert = toInteger
+</code></pre>
+<p>This says for typeclass Convertible, a uniquely define b. So it's illegal to make another instance for (Int, a).</p>
+<p>This is just for better type inference experience, technically you can annotate types for everything, but that's pretty lame.</p>
 <h2>TypeFamilies</h2>
-<p>It's associated type in rust.</p>
+<p>Write type level functions. You feed the type function with a type and it will generate a new type. It's also known as indexed type in literatures of dependent type.</p>
+<p>There are two types of type families: type family and type synonym families. Type families is type level functions, and data families is assiciate type.</p>
+<h4>Type synonym families</h4>
+<p>Example of type families (unassociate form):</p>
+<pre><code class="language-haskell"><span class="hljs-comment">-- A type level function</span>
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-keyword">family</span> <span class="hljs-type">Rep</span> a</span>
+<span class="hljs-comment">-- Specializing types</span>
+<span class="hljs-class"><span class="hljs-keyword">type</span> instance <span class="hljs-type">Rep</span> <span class="hljs-type">Int</span> = <span class="hljs-type">Char</span></span>
+<span class="hljs-class"><span class="hljs-keyword">type</span> instance <span class="hljs-type">Rep</span> <span class="hljs-type">Char</span> = <span class="hljs-type">Int</span></span>
+<span class="hljs-class">
+<span class="hljs-keyword">class</span> <span class="hljs-type">Convertible</span> a <span class="hljs-keyword">where</span></span>
+    convert :: a -&gt; <span class="hljs-type">Rep</span> a
+<span class="hljs-class">
+<span class="hljs-keyword">class</span> <span class="hljs-type">Convertible</span> <span class="hljs-type">Int</span> <span class="hljs-keyword">where</span></span>
+    convert = chr
+<span class="hljs-class">
+<span class="hljs-keyword">class</span> <span class="hljs-type">Convertible</span> <span class="hljs-type">Char</span> <span class="hljs-keyword">where</span></span>
+    convert = ord
+</code></pre>
+<p>(associate form):</p>
+<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE TypeFamilies #-}</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-type">Convertible</span> a <span class="hljs-keyword">where</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">Rep</span> a</span>
+    convert a -&gt; <span class="hljs-type">Rep</span> a
+<span class="hljs-class">
+<span class="hljs-keyword">class</span> <span class="hljs-keyword">instance</span> <span class="hljs-type">Convertible</span> <span class="hljs-type">Int</span> <span class="hljs-keyword">where</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">Rep</span> <span class="hljs-type">Int</span> = <span class="hljs-type">Char</span></span>
+    convert chr
+<span class="hljs-class">
+<span class="hljs-keyword">class</span> <span class="hljs-keyword">instance</span> <span class="hljs-type">Convertible</span> <span class="hljs-type">Char</span> <span class="hljs-keyword">where</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">Rep</span> <span class="hljs-type">Char</span> = <span class="hljs-type">Int</span></span>
+    convert ord
+</code></pre>
+<p>Note that the type class we need multi parameter type class and functional dependencies can now be described much more concisely.</p>
+<p>Associate form and unassociate form have the same power of expressiveness.</p>
+<p>Another example of type synonym families.</p>
 <pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE MultiParamTypeClasses #-}</span>
 <span class="hljs-meta">{-# LANGUAGE TypeFamilies #-}</span>
-<span class="hljs-class">
-<span class="hljs-keyword">class</span> <span class="hljs-type">A</span> a b <span class="hljs-keyword">where</span></span>
+
+<span class="hljs-comment">-- SumType a b is an associate type you provide when you</span>
+<span class="hljs-comment">-- are implementing an intance.</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-type">A</span> a b <span class="hljs-keyword">where</span></span>
     <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">SumType</span> a b</span>
     plus a -&gt; b -&gt; <span class="hljs-type">SumType</span> a b
-<span class="hljs-class">
-<span class="hljs-keyword">instance</span> <span class="hljs-type">Add</span> <span class="hljs-type">Integer</span> <span class="hljs-type">Integer</span> <span class="hljs-keyword">where</span></span>
+
+<span class="hljs-comment">-- So here you're saying SumType Int Int is actually just Int.</span>
+<span class="hljs-class"><span class="hljs-keyword">instance</span> <span class="hljs-type">Add</span> <span class="hljs-type">Integer</span> <span class="hljs-type">Integer</span> <span class="hljs-keyword">where</span></span>
     <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-type">SumType</span> <span class="hljs-type">Integer</span> <span class="hljs-type">Integer</span> = <span class="hljs-type">Integer</span></span>
     plus x y = x + y
 </code></pre>
-<h2>Existentially quantified types</h2>
-<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE ExistentialQuantification #-}</span>
+<h4>Data families</h4>
+<p>It allows us to create new type parameterized data constructors. It's like allowing you to provide adhoc implementation for different data constructors.</p>
+<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE TypeFamilies #-}</span>
 
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">qualified</span> Data.Vector.Unboxed <span class="hljs-keyword">as</span> V
+
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-keyword">family</span> <span class="hljs-type">Array</span> a</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> instance <span class="hljs-type">Array</span> <span class="hljs-type">Int</span> = <span class="hljs-type">IArray</span> (<span class="hljs-type">V</span>.<span class="hljs-type">Vector</span> <span class="hljs-type">Int</span>)</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> instance <span class="hljs-type">Array</span> <span class="hljs-type">Bool</span> = <span class="hljs-type">BArray</span> (<span class="hljs-type">V</span>.<span class="hljs-type">Vector</span> <span class="hljs-type">Bool</span>)</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> instance <span class="hljs-type">Array</span> (<span class="hljs-title">a</span>, <span class="hljs-title">b</span>) = <span class="hljs-type">PArray</span> (<span class="hljs-type">Array</span> <span class="hljs-title">a</span>, <span class="hljs-type">Array</span> <span class="hljs-title">b</span>)</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> instance <span class="hljs-type">Array</span> (<span class="hljs-type">Maybe</span> <span class="hljs-title">a</span>) = <span class="hljs-type">MArray</span> (<span class="hljs-type">V</span>.<span class="hljs-type">Vector</span> <span class="hljs-type">Bool</span>) (<span class="hljs-type">Array</span> <span class="hljs-title">a</span>)</span>
+<span class="hljs-class">
+<span class="hljs-keyword">class</span> <span class="hljs-type">IArray</span> a <span class="hljs-keyword">where</span></span>
+    index :: <span class="hljs-type">Array</span> a -&gt; <span class="hljs-type">Int</span> -&gt; a
+<span class="hljs-class">
+<span class="hljs-keyword">class</span> <span class="hljs-type">IArray</span> <span class="hljs-type">Int</span> <span class="hljs-keyword">where</span></span>
+    index (<span class="hljs-type">IArray</span> xs) i = xs <span class="hljs-type">V</span>.! i
+<span class="hljs-class">
+<span class="hljs-keyword">class</span> <span class="hljs-type">IArray</span> <span class="hljs-type">Bool</span> <span class="hljs-keyword">where</span></span>
+    index (<span class="hljs-type">IArray</span> xs) i = xs <span class="hljs-type">V</span>.! i
+<span class="hljs-class">
+<span class="hljs-keyword">class</span> (<span class="hljs-type">IArray</span> <span class="hljs-title">a</span>, <span class="hljs-type">IArray</span> <span class="hljs-title">b</span>) =&gt; <span class="hljs-type">IArray</span> (<span class="hljs-title">a</span>, <span class="hljs-title">b</span>) <span class="hljs-keyword">where</span></span>
+    index (<span class="hljs-type">PArray</span> xs ys) i = (index xs i, index ys i)
+<span class="hljs-class">
+<span class="hljs-keyword">instance</span> (<span class="hljs-type">IArray</span> <span class="hljs-title">a</span>) =&gt; <span class="hljs-type">IArray</span> (<span class="hljs-type">Maybe</span> <span class="hljs-title">a</span>) <span class="hljs-keyword">where</span></span>
+    index (<span class="hljs-type">MArray</span> bm xs) i =
+        <span class="hljs-keyword">case</span> bm <span class="hljs-type">V</span>.! i <span class="hljs-keyword">of</span>
+            <span class="hljs-type">True</span> -&gt; <span class="hljs-type">Nothing</span>
+            <span class="hljs-type">False</span> -&gt; <span class="hljs-type">Just</span> $ index xs i
+</code></pre>
+<h2>Universal quantification</h2>
+<p>Universal quantification encodes parametric polymorphism in haskell.</p>
+<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE ExplicitForAll #-}</span>
+<span class="hljs-title">ex1</span> :: <span class="hljs-keyword">forall</span> a. [a]
+<span class="hljs-title">ex1</span> = []
+
+<span class="hljs-title">map'</span> :: <span class="hljs-keyword">forall</span> a b. (a -&gt; b) -&gt; [a] -&gt; [b]
+<span class="hljs-title">map'</span> f = foldr ((:). f) []
+</code></pre>
+<p>Normally it can be omitted, but if you use rank n type you need it to specify nested quantification.</p>
+<h2>Existentially quantified types</h2>
+<p>Using existential type to make heterogeneous list.</p>
+<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE ExistentialQuantification #-}</span>
+<span class="hljs-comment">-- Here we know s must have a show instance.</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-type">ShowBox</span> = forall a. <span class="hljs-type">Show</span> s =&gt; <span class="hljs-type">SB</span> s <span class="hljs-keyword">deriving</span> <span class="hljs-type">Show</span></span>
+
+<span class="hljs-title">heteroList</span> :: [<span class="hljs-type">ShowBox</span>]
+<span class="hljs-title">heteroList</span> = [<span class="hljs-type">SB</span> (), <span class="hljs-type">SB</span> <span class="hljs-number">5</span>, <span class="hljs-type">SB</span> <span class="hljs-type">True</span>]
+
+<span class="hljs-title">f</span> :: [<span class="hljs-type">ShowBox</span>] -&gt; <span class="hljs-type">IO</span> ()
+<span class="hljs-title">f</span> xs = mapM_ print xs
 </code></pre>
 <h2>Scoped Type variables</h2>
-<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE ScopedTypeVariables #-}</span>
+<p>Allows free type variables to be resued in  the scope of a function</p>
+<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE RankNTypes #-}</span>
+<span class="hljs-meta">{-# LANGUAGE ScopedTypeVariables #-}</span>
+<span class="hljs-title">mkpair</span> :: for all a b. a -&gt; b -&gt; (a, b)
+<span class="hljs-title">mkpair</span> aa bb = (ida aa, bb)
+    <span class="hljs-keyword">where</span>
+        ida :: b -&gt; b <span class="hljs-comment">-- use b defined at the top.</span>
+        ida = id
 
+<span class="hljs-title">sizeOfPtr</span> :: <span class="hljs-type">Ptr</span> a -&gt; <span class="hljs-type">Int</span>
+<span class="hljs-title">sizeOfPtr</span> = sizeOf . (undefined :: <span class="hljs-type">Ptr</span> a -&gt; a)
 </code></pre>
 <h2>RankNTypes</h2>
-<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE ScopedTypeVariables #-}</span>
+<p>N is the number of forall whidch are nested.</p>
+<pre><code class="language-haskell"><span class="hljs-meta">{-# LANGUAGE RankNTypes #-}</span>
+<span class="hljs-comment">-- repesent a list as an opaque value that knows how to</span>
+<span class="hljs-comment">-- execute a foldr over a list.</span>
+<span class="hljs-class"><span class="hljs-keyword">newtype</span> <span class="hljs-type">ChurchList</span> a = <span class="hljs-type">ChurchList</span></span>
+  { runList :: <span class="hljs-keyword">forall</span> r. (a -&gt; r -&gt; r) -&gt; r -&gt; r }
 
+<span class="hljs-title">fromList</span> :: [a] -&gt; <span class="hljs-type">ChurchList</span> a
+<span class="hljs-title">fromList</span> xs = <span class="hljs-type">ChurchList</span> $ \k z -&gt; foldr k z xs
+
+<span class="hljs-title">toList</span> <span class="hljs-type">ChurchList</span> a -&gt; [a]
+<span class="hljs-title">toLst</span> xs = runList xs (:) []
+
+<span class="hljs-title">cons</span> :: a -&gt; <span class="hljs-type">ChurchList</span> a -&gt; <span class="hljs-type">ChurchList</span> a
+<span class="hljs-title">cons</span> x xs = <span class="hljs-type">ChurchList</span> $ \k z  -&gt; k x (runList xs k z)
+
+<span class="hljs-title">append</span> :: <span class="hljs-type">ChurchList</span> a -&gt; <span class="hljs-type">ChurchList</span> a -&gt; <span class="hljs-type">ChurchList</span> a
+<span class="hljs-title">append</span> xs ys = <span class="hljs-type">ChurchList</span> $ \k z -&gt; runtime xs k (runList ys k z)
+
+<span class="hljs-title">nil</span> = <span class="hljs-type">ChurchList</span> $ \k z -&gt; z
+
+<span class="hljs-title">singleton</span> x = <span class="hljs-type">ChurchList</span> $ \k z -&gt; k x z
+<span class="hljs-title">snoc</span> xs x = <span class="hljs-type">ChurchList</span> $ \k z -&gt; runList xs k (k x z)
 </code></pre>

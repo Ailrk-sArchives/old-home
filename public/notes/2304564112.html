@@ -1,0 +1,140 @@
+<h1>Continuation and denotational semantics.</h1>
+<h2>Continuation</h2>
+<p>A style of programming that functions do not return values but rather pass the control into a continutation.</p>
+<p>For instance, the callback style in nodejs. You don't return anything, but rather pass the result of the computation into the callback.</p>
+<p>Look at some eample:</p>
+<pre><code class="language-haskell"><span class="hljs-comment">-- normal</span>
+<span class="hljs-title">let</span> r1 = map (*<span class="hljs-number">2</span>) [<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">8</span>]
+
+<span class="hljs-comment">-- continuation passing style</span>
+<span class="hljs-title">let</span> r2 = map ($ <span class="hljs-number">2</span>) [(*<span class="hljs-number">2</span>), (*<span class="hljs-number">4</span>), (*<span class="hljs-number">8</span>)]
+</code></pre>
+<p>Recall <code>($) :: (a -&gt; b) -&gt; a -&gt; b</code> is just function application.</p>
+<p>Here, <code>($ 2) :: (a -&gt; b) -&gt; b</code> is a suspended computaion that requires us to pass another function to make it complete.</p>
+<h5>Another explaination</h5>
+<p>Think of expression (+ 1 (+ 2 (+ 3 4))). (+ 2 _) will be evaluated after the hole (+ 3 4) is evaluated.</p>
+<p>A computation with hold is a continuation. Continuation is sequential in nature: one continuation is chained with another continuation.</p>
+<p>If you manually expose the hold as an argument, we can write</p>
+<pre><code>kplust x y k = k (+ x y)
+let a = kplus 2 3 (\n -> kplus 1 n id)
+</code></pre>
+<p>PS: Any plain value can be converted into suspened computation with <code>flip ($) :: a -&gt; (a -&gt; b) -&gt; b</code> . Because if you apply a value to it the expression will become the same form of <code>($ 2)</code> , and waiting for another function that use the value to complete it's task.</p>
+<h4>Benefits</h4>
+<p>Continuation allows to drastically change the contro flow of the program. You can simulate early return and goto with cps; exceptions and failures can be expressed with cps (in nodejs for example you pass in a continuation and a exception handler); you can also describe coroutine with cps: suspend a computation and resume it at some later time. Continuation sometimes can be used to implement cooperative concurrency.</p>
+<p>In haskell you can use cps to implement complicated control flow in monad.</p>
+<h4>Examples</h4>
+<h5>Pythagoras</h5>
+<p>The funcion pass the value that it should return if it is not in cps style to the continutaion and hand the control over.</p>
+<pre><code class="language-haskell"><span class="hljs-title">add</span> :: <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span> -&gt; ((<span class="hljs-type">Int</span> -&gt; r) -&gt; r)
+<span class="hljs-title">add</span> x y f = f (+ x y)
+
+<span class="hljs-title">square</span> :: <span class="hljs-type">Int</span> -&gt; ((<span class="hljs-type">Int</span> -&gt; r) -&gt; r)
+<span class="hljs-title">square</span> x f = f (* x x)
+
+[pyth](pyth) :: <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span> -&gt; ((<span class="hljs-type">Int</span> -&gt; r) -&gt; r)
+<span class="hljs-title">pyth</span> x y = \k -&gt;
+    square x $ \x2 -&gt;
+    square y $ \y2 -&gt;
+    add x2 x2 $ k
+</code></pre>
+<h5>Thrice</h5>
+<pre><code class="language-haskell"><span class="hljs-title">thrice</span> :: (a -&gt; a) -&gt; a -&gt; a
+<span class="hljs-title">thrice</span> f x = f (f (f x))
+
+<span class="hljs-comment">-- rule of thumb all return value should be converted into a continuation.</span>
+<span class="hljs-title">thriceCPS</span> :: (a -&gt; ((a -&gt; r) -&gt; r)) -&gt; a -&gt; ((a -&gt; r) -&gt; r)
+<span class="hljs-title">thriceCPS</span> f x = \k -&gt;
+    f x $ \fx -&gt;
+    f fx $ \fxx -&gt;
+    f ffx $ k
+</code></pre>
+<h5>ChainCPS</h5>
+<pre><code class="language-haskell"><span class="hljs-title">chainCPS</span> :: ((a -&gt; r) -&gt; r) -&gt; (r -&gt; ((b -&gt; r) -&gt; r)) -&gt; ((b -&gt; r) -&gt; r)
+<span class="hljs-title">chainCPS</span> s f = \k -&gt; s $ \x -&gt; f x $ k
+</code></pre>
+<h4><code>Cond</code> monad</h4>
+<p>We are in haskell, so we want to make cps a monad!</p>
+<pre><code class="language-haskell"><span class="hljs-class"><span class="hljs-keyword">newtype</span> <span class="hljs-type">Cont</span> r a =  { <span class="hljs-title">runCont</span> :: (<span class="hljs-title">a</span> -&gt; <span class="hljs-title">r</span>) -&gt; <span class="hljs-title">r</span> }</span>
+<span class="hljs-class"><span class="hljs-keyword">instance</span> <span class="hljs-type">Monad</span> (<span class="hljs-type">Cont</span> <span class="hljs-title">r</span>) <span class="hljs-keyword">where</span></span>
+    return x = <span class="hljs-type">Cont</span> ($ x) <span class="hljs-comment">-- convert the value into a continuation</span>
+    s &gt;&gt;= f =  <span class="hljs-type">Cont</span> $ \c -&gt; runCont s $ \x -&gt; runCont (f x) c
+    <span class="hljs-comment">-- the continuation of s is (f x)</span>
+    <span class="hljs-comment">-- c is the continuation for the composed computation.</span>
+<span class="hljs-title">cont</span> :: ((a -&gt; r) -&gt; r) -&gt; <span class="hljs-type">Cont</span> r a
+<span class="hljs-title">cont</span> = <span class="hljs-type">Cont</span>
+</code></pre>
+<p>Now you can compose continuations.</p>
+<pre><code class="language-haskell"><span class="hljs-keyword">import</span> Control.Monad.Trans.Cont
+
+<span class="hljs-title">add</span> :: <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Cont</span> r <span class="hljs-type">Int</span>
+<span class="hljs-title">add</span> x y = return (+ x y)
+
+<span class="hljs-title">square</span> :: <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Cont</span> r <span class="hljs-type">Int</span>
+<span class="hljs-title">square</span> x = return (* x x)
+
+<span class="hljs-comment">-- Now the order is sequential again.</span>
+<span class="hljs-title">pyth</span> :: <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Cont</span> r <span class="hljs-type">Int</span>
+<span class="hljs-title">pyth</span> x y = <span class="hljs-keyword">do</span>
+    x2 &lt;- square x
+    y2 &lt;- square y
+    add x y
+</code></pre>
+<h4><code>callCC</code> call with current continuation</h4>
+<p><code>callCC :: ((a -&gt; Cont r b) -&gt; Cont r a) -&gt; Cont r a</code> Bring the continuation back from <code>Cont r a</code> monad.</p>
+<pre><code class="language-haskell"><span class="hljs-title">square</span> :: <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Cont</span> r <span class="hljs-type">Int</span>
+<span class="hljs-title">square</span> n = callCC $ \k -&gt; k (n ^ <span class="hljs-number">2</span>)
+</code></pre>
+<p>callCC let you supply a function and generate a suspend computation. What makes this different from using cont monad alone?</p>
+<p>Note the argument k: Call it anywhere will cause the value get passed to it being made into suspend computation. The suspend computation is then inserted into the contro flow at where the callCC get called. Whatever follows the call of <code>callCC</code> will be discarded.</p>
+<h5>deciding when to use k</h5>
+<pre><code class="language-haskell"><span class="hljs-comment">-- Use calCC as early return.</span>
+<span class="hljs-title">foo</span> :: <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Cont</span> r <span class="hljs-type">String</span>
+<span class="hljs-title">foo</span> x = callCC $ \k -&gt; <span class="hljs-keyword">do</span>
+    <span class="hljs-keyword">let</span> y = x ^ <span class="hljs-number">2</span> + <span class="hljs-number">3</span>
+    when (y &gt; <span class="hljs-number">20</span>) $ k <span class="hljs-string">"over twenty"</span>
+    return (show $ y - <span class="hljs-number">4</span>)
+</code></pre>
+<p>So in the example above, if y &gt; 20 we call k, we return from the callCC immediately with &quot;over twenty&quot; get pass into the continutation. Notice the value get passed into the continuation has the same notion of a return value in a non cps function, so k here bascially act likea early return. Of course, if y &lt; 20 the last expression will get evaluated.</p>
+<pre><code class="language-haskell"><span class="hljs-comment">-- another example</span>
+<span class="hljs-comment">-- Here k behaves like a goto.</span>
+<span class="hljs-comment">-- if the pred is true the rest of the code will note</span>
+<span class="hljs-comment">-- be executed at all.</span>
+<span class="hljs-title">bar</span> :: <span class="hljs-type">Char</span> -&gt; <span class="hljs-type">String</span> -&gt; <span class="hljs-type">Cont</span> r <span class="hljs-type">Int</span>
+<span class="hljs-title">bar</span> c s = <span class="hljs-keyword">do</span>
+    msg &lt;- callCC $ \k -&gt; <span class="hljs-keyword">do</span>
+        <span class="hljs-keyword">let</span> s0 = c : s
+        when (s0 == <span class="hljs-string">"hello"</span>) $ k <span class="hljs-string">"They say hello"</span>
+        <span class="hljs-keyword">let</span> s1 = show s0
+        return (<span class="hljs-string">"Say"</span> ++ s1)
+    return (length msg)
+</code></pre>
+<pre><code class="language-haskell"><span class="hljs-comment">-- in this example the last line will never get executed.</span>
+<span class="hljs-title">quux</span> :: <span class="hljs-type">Cont</span> r <span class="hljs-type">Int</span>
+<span class="hljs-title">quux</span> = callCC $ \k -&gt; <span class="hljs-keyword">do</span>
+    <span class="hljs-keyword">let</span> n = <span class="hljs-number">50</span>
+    k n
+    return <span class="hljs-number">25</span>   <span class="hljs-comment">-- this will never be executed.</span>
+</code></pre>
+<h5>More about callCC</h5>
+<pre><code class="language-haskell"><span class="hljs-title">callCC</span> :: ((a -&gt; <span class="hljs-type">Cont</span> r b) -&gt; <span class="hljs-type">Cont</span> r a) -&gt; <span class="hljs-type">Cont</span> r a
+<span class="hljs-title">callCC</span> f = cont $ \h -&gt; runCont (f (\a -&gt; cont $ \_ -&gt; h a)) h
+</code></pre>
+<p>Take a look at how it works in the same example.<br>
+The overall return type should be <code>Cont r Int</code>, not matter if x &lt; 10 or not.<br>
+If n &gt;= 10, calCC return 25, which just convert the value into a suspend computation.</p>
+<p>If n &lt; 10, callCC invoke k on n. so what is k in this case? first of all, k has type <code>k :: Int -&gt; Cont r b</code>. k's argument is made into a suspend computation inserted at the position of callCC invocation.</p>
+<pre><code class="language-haskell"><span class="hljs-title">foo</span> :: <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Cont</span> r <span class="hljs-type">Int</span>
+<span class="hljs-title">foo</span> n x y = callCC $ \k -&gt; <span class="hljs-keyword">do</span>
+    when (n &lt; <span class="hljs-number">10</span>) $ k x
+    when (n &lt; <span class="hljs-number">20</span>) $ k y
+    return <span class="hljs-number">25</span>
+</code></pre>
+<h5>More complicated control flow</h5>
+<pre><code class="language-haskell"><span class="hljs-comment">-- exception</span>
+<span class="hljs-title">divExcept</span> :: <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span> -&gt; (<span class="hljs-type">String</span> -&gt; <span class="hljs-type">Cont</span> r <span class="hljs-type">Int</span>) -&gt; <span class="hljs-type">Cont</span> r <span class="hljs-type">Int</span>
+<span class="hljs-title">divExcept</span> x y handler = callCC $ \ok -&gt; <span class="hljs-keyword">do</span>
+    err &lt;- callCC $ \notOk -&gt; <span class="hljs-keyword">do</span>
+        when (y == <span class="hljs-number">0</span>) $ notOk <span class="hljs-string">"Denominator 0"</span>
+        ok $ x `div` y
+    handler err
+</code></pre>

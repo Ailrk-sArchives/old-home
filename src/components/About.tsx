@@ -17,12 +17,12 @@ export function About() {
         link={"https://github.com/ailrk/resume/blob/master/resume.pdf"}
         ogColor={"DimGray"}
         onHoverColor={"LightCoral"}
-        element={e => (<h3>{e}</h3>)} />
+        element={e => (<h4>{e}</h4>)} />
       <HoverLink text={"→ My Github"}
         link={"https://github.com/ailrk/"}
         ogColor={"DimGray"}
         onHoverColor={"LightCoral"}
-        element={e => (<h3>{e}</h3>)} />
+        element={e => (<h4>{e}</h4>)} />
 
     </Container>
   );

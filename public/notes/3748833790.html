@@ -1,0 +1,235 @@
+<h1>Intro to computabilities</h1>
+<h2>Works on computable functions</h2>
+<ul>
+<li>Kurt Godel: created general recursive functions.</li>
+<li>Alonzo Church: Created Lambda calculus. A function on natural numbers is called <strong>λ-computable</strong> if it can be computed by lambda calculus</li>
+<li>Alan Turing: Craete Turning machine. A function is <strong>turing computable</strong> if it can be computed by a turing machine</li>
+</ul>
+<p>Later it's proved that these three systems are equivalent.</p>
+<h2>Turing completeness</h2>
+<p>A computational model that can be implemented by any turing machine.</p>
+<h2>Turing equivalence</h2>
+<p>Two computers P and Q are called equivalent if P can simulate Q and Q can simulate P.</p>
+<h2>Church-Turing thesis (what is a computable function)</h2>
+<p>Any functions whoes value can be computed by an algorithm can be computed by a turing machine.</p>
+<p>Formal version: A function on the natural numbers can be calculated by an effective method iff it's computable by a turing machine.</p>
+<h2>General recursive functions --</h2>
+<p>General recursive functions are partial functions that take finite tuples of natural numbers and return a single natural number.</p>
+<p>General recursive functions are the smallest class of partial funtions that includes the initial functions and is <strong>closed under composition, primitive recursion and μ operator</strong>.</p>
+<h4>Total function and parital functions</h4>
+<ul>
+<li>Integer multiplication (a, b) = a * b is a <strong>total function</strong> of ℤ² → ℤ, because all elements in it's domain will have a correspondence in the codomain.</li>
+<li>Integer division (a, b) = ⌊a / b⌋ is a <strong>parital function</strong> of ℤ² ⇀ ℤ (Notice the half arrow), because not all elements in the domain has result in codomain. E.g (a / 0) is not defined.</li>
+</ul>
+<h4>Primitive recursive function (function that can be computed by for loops..)</h4>
+<p>Functions that can be computed with a known upper bound of the number of iteration before entering the loop.</p>
+<ul>
+<li>Most function we care in mathematics in general are primitive recursive functions (+, /, factorial, exp...)</li>
+</ul>
+<p>PS: n-ary function means the function takes n parameters.</p>
+<h5>Definitions</h5>
+<p>Note primitive recursive functions are defined on natural numbers.</p>
+<ul>
+<li>Primitive recursive functions known <strong>by axioms</strong>
+<ul>
+<li><strong>1</strong>. <strong>Zero Constant function</strong> (zero): 0-ary functions <code>f() = 0</code></li>
+<li><strong>2</strong>. <strong>Successor fuction (succ)</strong> : 1-ary functions <code>S(k) = k + 1</code> where k ∈ ℕ (Peano natural numbers)</li>
+<li><strong>3</strong>. <strong>Projection function</strong>: <code>Pᵢ(x₁, x₂, ..., xₙ) = xᵢ</code> where i &lt; n, i, n ∈ ℕ</li>
+</ul>
+</li>
+<li>More complex primitive recursive functions
+<ul>
+<li>
+<ol start="4">
+<li><strong>Composition (∘)</strong>: For k-ary primitive recursive function f and k many m-ary primitive recursive function g₁ to gₖ, then `h(x₁, ..., xₘ) = f(g₁(x1, ..., xₘ), ..., gₖ(x1, ..., xm))`` is also primitive recursive.</li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li><strong>Primitive recursive (ρ)</strong>: let f be a k-ary primitive recursive function, and g be a (k+2)-ary primitive recursive function. the (k+1)-ary function h is defined as the primitive recursion of f and g. E.g the function h is primitive recursive when <code>h(0, x₁, x₂, ..., xₖ) = f(x₁, ..., xₖ)</code> and <code>h(succ(y), x₁, ..., xₖ) = g(y, h(y, x₁, ..., x), x₁, x₂, ..., xₖ)</code></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<p>PS: <strong>6. minimization</strong> is the property that makes primitive recursive function to general recursive function.</p>
+<p>PS: Primitive recursive functions always halt. But general recursive functions doesn't because it supports minimization, which allow us to describe parital functions.</p>
+<p>PS: <strong>Composition</strong> is defined on a function and a set of functions that yields it's parameters.</p>
+<p>PS: Projection functions is used to select argument of one function to other functions.</p>
+<pre><code>-- Primitive recurisive function.
+-- Notice this is not a formal primitive recursive definition.
+-- "Wiring" parameters is not part of the axioms
+f(a, b, c) = g(h(c, a) , h(a, b))
+
+-- formal primitive recursive definition with
+-- components and projections:
+f(a, b, c) = g(h(proj₃³(a, b, c), proj₁³(a, b, c)),
+               h(proj₁³(a, b, c), proj₂³(a, b, c)))
+</code></pre>
+<p>PS: <strong>Primitive recursion ρ</strong></p>
+<pre><code>Let's define
+    f : ℕⁿ ⇀ ℕ, g : ℕⁿ⁺² → ℕ
+
+    h = ρⁿ(f, g) : ℕⁿ⁺¹ → ℕ
+    h(0, x₁, x₂, ..., xₖ) = f(x₁, ..., xₖ) -- Base case
+    h(succ(y), x₁, ..., xₖ) =
+        g(y, h(y, x₁, ..., x), x₁, x₂, ..., xₖ) -- Recursive step
+
+-- intuition:
+
+function h acts like a for loop from o to the value of it's first argument.
+
+f is the base case function and it will only execute onece.
+
+function g is the for loop body. it takes two more input than the base case f.
+Namely the final input y to h and the recursive call h(y, x₁, ..., x).
+g feed current information it needs for recursive step.
+
+different functions might only need part of the argument, to achieve that
+we use projection.
+</code></pre>
+<h5>Some examples.</h5>
+<p>Note for primitive recursion different books will use different orders. We use this order:</p>
+<pre><code>-- Base case:
+--     h(0, x₁, x₂, ..., xₖ) = f(x₁, ..., xₖ)
+-- Recursive step:
+--     h(succ(y), x₁, ..., xₖ) = g(y, h(y, x₁, ..., x), x₁, x₂, ..., xₖ)
+-- where y is the final input,
+--       h is the recursive call.
+</code></pre>
+<p>Some basic examples:</p>
+<pre><code>one : ℕ → ℕ
+one = succ ∘ zero
+
+four : ℕ → ℕ
+four = succ ∘ succ ∘ succ ∘ succ ∘ zero
+</code></pre>
+<p>you can compose with multiple functions as long as the arity matches up.</p>
+<pre><code>plusFour : ℕ → ℕ
+plusFour = add ∘ [proj₁¹, four]
+
+-- using composition and projection to select argument.
+addFirstAndThird : ℕ³ → ℕ
+addFirstAndThird = add ∘ [proj₁³, proj₃³]
+</code></pre>
+<p>This uses primtive recursion. Something to be aware of:</p>
+<ul>
+<li>You can't just directly &quot;wire&quot; parameters around, instead you compose with the projection</li>
+</ul>
+<pre><code>-- define by match cases
+add' : ℕ² → ℕ
+add' (0, x) = x
+add' (succ(n), x) = succ(proj₂³(n, add(n, x), x))
+
+-- compact version with primitive recursion axiom.
+add : ℕ² → ℕ
+add = ρⁿ(proj₁¹, succ ∘ [proj₂³])
+
+-- Another definition with primitive recursion
+mult : ℕ² → ℕ
+mult = ρ¹(zero, add ∘ [proj₂³, proj₃³])
+-- note
+-- first for base case f : ℕ → ℕ, mult(x, 0) = 0. so f = zero
+-- then for recursive step, mult(x, y+1) = x + mult(x, y)
+-- g : ℕ³ → ℕ = g(x₁, x₂, x₃) = g(y, x, mult(x, y))
+
+-- predcessor
+pred : ℕ → ℕ
+pred = ρ₀(zero, proj₁²)
+
+pred' : ℕ → ℕ
+pred' (zero) = zero
+pred' (succ(n)) = proj₁²(n, pred'(n))
+</code></pre>
+<h4>Partial recursive function (general recursive or μ recursive function)</h4>
+<p>Primitive recursive function with <strong>Minimization</strong>. Close under composition, primitive recursion, and μ operator.</p>
+<p>PS: <strong>Minimization (μ operator)</strong></p>
+<p>Without minimization we can only define total function. but with<br>
+minimization we can define partial functions.</p>
+<pre><code>f : ℕⁿ⁺¹ ⇀ ℕ
+μⁿf : ℕⁿ ⇀ ℕ
+
+
+μⁿf(x₁, ..., xₖ) = z ⇔ f(i, x₁, ..., xₖ) > 0 for i = 0, ..., z - 1
+                       f(z, x₁, ..., xₖ) = 0
+
+-- intuition
+μ defines an unbounded search operator.
+
+Minimization begin the search from i = 0 and proceeding upwards the
+smallest argument that causes the function to return 0.
+
+If there is no such argument, the function doesn't halt. And this is
+way it's a partial function. Some inputs are undefined.
+
+</code></pre>
+<h4>Primitive resursive functions ⊂ total recursive function.</h4>
+<ul>
+<li><strong>partial recursive function</strong>: Primitive recursive function that supports <code>μ operator</code> (Or functions thats can be comoputed by a turing machine)</li>
+<li><strong>total recursive function</strong>: Partial recursive function that is defined for every input.</li>
+</ul>
+<p>All primitive recursive functions are total function, but not all total functions are primitive recursive. The most well known example is the Ackermann functionA(m, n).</p>
+<pre><code>    +--total recursive------+
+    | +-primitive+          |
+    | |          |          |
+    | |          | Ackermann|
+    | |          |          |
+    | +-recursive+          |
+    +-----------------------+
+</code></pre>
+<h4>General recursive function In programming language</h4>
+<p>Bounded for loop is primitive recursive function; while and goto makes partial recursive function. Algorithms can be expressed in these structures are computable because they are general recursive.</p>
+<h4>PS</h4>
+<ul>
+<li>All primitive recursive functions halt. (It's not sure for arbitrary turing machine)</li>
+<li>Lots of type system are designed based on primitive recursive function to make sure they halt.</li>
+</ul>
+<h2>Turing machine --</h2>
+<p>A conceptual machine provides a formal definition of algorithms.</p>
+<p>A turing machine consists of:</p>
+<ul>
+<li>A tape divided into cells.</li>
+<li>A head that can read and write symbols on the tape, and move the tape left and right one cell at a time.</li>
+<li>A state register stores the state of the turing machine.</li>
+<li>A finite table of instructions.</li>
+</ul>
+<h4>Formal definition</h4>
+<p>Turing machine defined as 7-tuple.</p>
+<pre><code>M = ⟨Q, Γ, b, ∑, δ, q₀, F⟩ where
+    Q:           finite, non empty __set of states__.
+    Γ:           finite, non empty set of tape __alphabet symbols__.
+    b ∈ Γ:       blank symbol (The only symbol allowed to occur on the tape infinitely)
+    ∑ ⊆ Γ \ {b}: Set of input symbols allowed to appear in the inital tape content.
+    q₀ ∈ Q:      initial state
+    F ⊆ Q:       Set of final states.
+                 (the initial tape is said to be accepted by M if it halts in a state ∈ F)
+    δ:           (Q \ F) × Γ ⇀ Q × Γ × {L, R}, a partial function called transition function
+                 where {L, R} represent left shift or right shift.
+                 If δ is not defined on the current states and the current tape symbols, the
+                 machine halts.
+</code></pre>
+<h4>Busy beaver</h4>
+<p>The goal is to find the program that print as most 1 as possible on the tape and eventually halt.</p>
+<p>State table for 3 state 2 symbol busy beaver defined by 7-tuple turing machine:</p>
+<pre><code>BusyBeaver = ⟨Q, Γ, b, ∑, δ, q₀, F⟩ where
+    Q = {A, B, C, HALT}
+    Γ = {0, 1}
+    b = 0
+    ∑ = {1}
+    q₀ = A
+    F = {HALT}
+    δ = defined as the state table below
+
+State Table for (Q \ F) × Γ ⇀ Q × Γ × {L, R}:
++=======+===========+===========+=============+
+| Symbol|  State A  |  State B  |   State C   |
++=======+===========+===========+=============+
+|   0   | (1, R, B) | (1, L, A) | (1, L, B)   |
++=======+===========+===========+=============+
+|   1   | (1, L, C) | (1, R, B) | (1, R, HALT)|
++=======+===========+===========+=============+
+</code></pre>
+<p>This shows how do you define an &quot;algorithm&quot; with turing machine. The current state of the  will transform</p>
+<h4>The state</h4>
+<p>The state in a turing machine is referred to the entire state of the machine, including both the current instruction and the all the symbols on the tape. So the transition</p>
+<h2>Lambda Calculus --</h2>
