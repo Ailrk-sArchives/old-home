@@ -173,3 +173,10 @@ Jose Pedro Magalhaes, Atze Dijkstra, Johan Jeuring, Andres Loh
 The [mechanism](mechanism) of today's datatype generic programming. Compare with SYB, Generics has better performance.
 
 ---
+
+## [Secrets of the Glasgow Haskell Compiler inliner](https://www.microsoft.com/en-us/research/wp-content/uploads/2002/07/inline.pdf?from=https%3A%2F%2Fresearch.microsoft.com%2Fen-us%2Fum%2Fpeople%2Fsimonpj%2FPapers%2Finlining%2Finline.pdf)
+#### Authors
+Simon Peyton Jones, Simon Marlow
+
+#### Abstract
+Describes how GHC perform inlining.
