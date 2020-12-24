@@ -9,13 +9,22 @@ export function List(props: {
   markdowns: Array<Markdown>,
 }) {
   const {markdowns} = props;
+  const delay = useDelayRender(0.1);
   const lists =
-    markdowns.map(m => <ItemRow markdown={m} key={m.header.id} />);
-  const delay = useDelayRender();
+    markdowns.map(m =>
+      <ItemRow markdown={m} key={m.header.id} />);
   return (
     <Container>
+      <div style={{
+        visibility: delay ? "hidden" : "visible",
+        zIndex: 100,
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        background: "white"
+      }} />
       {
-        delay ? lists : <div/>
+        lists
       }
     </Container>
   );

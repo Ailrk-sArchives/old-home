@@ -1,10 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Container, Row} from 'react-bootstrap';
 import {css} from 'glamor';
-import {Link} from 'react-router-dom';
+import {Link, useParams, useLocation} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
-import {FaTimes} from 'react-icons/fa';
+import {
+  FaTimes, FaHome, FaTags, FaStickyNote, FaBook, FaHandPaper, FaMapPin
+} from 'react-icons/fa';
 import {useWindowSize} from '../state/hooks';
+import {CSSTransition} from 'react-transition-group';
 
 
 const wideSideBarStyle = css({
@@ -13,8 +16,10 @@ const wideSideBarStyle = css({
   position: "fixed",
   background: "WhiteSmoke",
   zIndex: 1000,
+  transitionDuration: 250,
   paddingTop: "30px",
   height: "100%",
+  fontSize: "2em",
   width: "20%",
 });
 
@@ -33,15 +38,16 @@ export function Sidebar(props: {
         marginLeft: "10px",
         color: "Salmon",
         cursor: "pointer",
+
         marginBottom: "30px",
       }}
         onClick={() => setSidebarOn(on => !on)} />
-      <Tab name={"home"} link={"/"} />
-      <Tab name={"tags"} link={"/tags"} />
-      <Tab name={"notes"} link={"/notes"} />
-      <Tab name={"reports"} link={"/reports"} />
-      <Tab name={"paper"} link={"/paper"} />
-      <Tab name={"about me"} link={"/about"} />
+      <Tab name={<><FaHome /> home</>} link={"/"} />
+      <Tab name={<><FaTags /> tags</>} link={"/tags"} />
+      <Tab name={<><FaStickyNote /> notes</>} link={"/notes"} />
+      <Tab name={<><FaBook /> reports</>} link={"/reports"} />
+      <Tab name={<><FaHandPaper /> paper</>} link={"/paper"} />
+      <Tab name={<><FaMapPin /> about</>} link={"/about"} />
     </Container>
   );
 }
@@ -50,14 +56,17 @@ const tabStyle = css({
   marginTop: "20px",
   marginLeft: "20px",
   marginBottom: "20px",
-  fontSize: 20,
+  fontSize: "1em",
 });
 
 function Tab(props: {
-  name: string, link: string
+  name: JSX.Element,
+  link: string,
 }) {
   const {name, link} = props;
   const [color, setColor] = useState<string>("SlateGray");
+  const location = useLocation();
+
   return (
     <Row {...tabStyle}>
       <Link to={link}

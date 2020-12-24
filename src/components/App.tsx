@@ -11,6 +11,7 @@ import {
 } from './Page';
 
 import 'highlightjs/styles/github.css';
+import '../styles/general.css';
 
 
 const ArticlePage: any = lazy(() => import("./lazyPage/ArticlePage"));

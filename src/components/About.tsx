@@ -4,25 +4,32 @@ import {HoverLink} from './Misc';
 import {useWindowSize} from '../state/hooks';
 
 
+let descrption = `
+  I do some Haskell, c++, typescript, and python.
+`;
+
 export function About() {
   const {width} = useWindowSize();
   return (
     <Container style={width > 600 ? {} : {marginLeft: 30}}>
       <div style={{color: "LightCoral", }}>
-        <h1> About me </h1>
+        <h3> About me </h3>
       </div>
       <hr />
+
+      <h4 style={{color: "DimGray", }}>{descrption}</h4>
+      <br/>
 
       <HoverLink text={"→ My Resume"}
         link={"https://github.com/ailrk/resume/blob/master/resume.pdf"}
         ogColor={"DimGray"}
         onHoverColor={"LightCoral"}
-        element={e => (<h4>{e}</h4>)} />
+        element={e => (<h5>{e}</h5>)} />
       <HoverLink text={"→ My Github"}
         link={"https://github.com/ailrk/"}
         ogColor={"DimGray"}
         onHoverColor={"LightCoral"}
-        element={e => (<h4>{e}</h4>)} />
+        element={e => (<h5>{e}</h5>)} />
 
     </Container>
   );

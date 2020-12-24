@@ -6,11 +6,12 @@ type WindowSize = {
   height: number,
 }
 
-export function useDelayRender(time: number = 0.1) {
+export function useDelayRender(time: number = 100) {
   const [render, setRender] = useState(false);
   useEffect(() => {
     setTimeout(() => {
       setRender(true);
+      console.log("yo");
     }, time);
   }, []);
   return render;

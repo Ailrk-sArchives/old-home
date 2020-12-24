@@ -60,11 +60,10 @@ export function Article(props: {
         <div className="Article" dangerouslySetInnerHTML={{__html: article}} />
       </div>
       <hr />
-      <h1 style={{color: "DimGray", fontWeight: "bolder"}}>Source</h1>
+      <h3 style={{color: "DimGray", fontWeight: "bolder"}}>Source</h3>
       <SourceList sources={markdown?.header.source} />
     </>
   );
-
 
   return (
     <Container {...style ?? defaultArticleStyle} >

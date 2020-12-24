@@ -7,24 +7,25 @@ import {linkStyle} from '../styles/styleElements';
 import {Sidebar} from './Sidebar'
 import {HoverLink} from './Misc';
 import {useWindowSize} from '../state/hooks';
-import Chiruno from '../assets/cat1.png';
-import Beach from '../assets/sunset.png';
+import Chiruno from '../assets/ghead.png';
+import Beach from '../assets/planet.jpg';
+import {CSSTransition} from 'react-transition-group';
 
 const headerStyle = css({
   height: "100px",
   width: "100%",
-  paddingTop: "28px",
+  paddingTop: "50px",
   paddingRight: "40px",
   paddingLeft: "80px",
-  marginBottom: "30px",
+  marginBottom: "50px",
 });
 
 function Title(props: {letterSpacing?: string}) {
   const {letterSpacing} = props;
   return (
     <h1 style={{
-      fontSize: "3em",
-      letterSpacing: letterSpacing ?? "0.05em",
+      fontSize: "2.5em",
+      letterSpacing: letterSpacing ?? "0.01em",
       fontFamily: "RobotoSlab",
     }}>
       A Bag of Words
@@ -34,25 +35,28 @@ function Title(props: {letterSpacing?: string}) {
 
 function Background(props: {img: string, height?: string}) {
   const {img, height} = props;
+  const {width} = useWindowSize();
   return (
-
-    <div style={{
-      backgroundImage: `url(${img})`,
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: 'cover',
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-      pointerEvents: 'none',
-      filter: "contrast(80%)",
-      height: height ?? '20em',
-      width: '100%',
-      position: 'absolute',
-      overflow: 'hidden',
-      zIndex: -1,
-    }}
-    />
+    <>
+      <div style={{
+        backgroundImage: `url(${img})`,
+        backgroundRepeat: 'no-repeat',
+          // background: "WhiteSmoke",
+        backgroundSize: 'cover',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        pointerEvents: 'none',
+        filter: "contrast(90%)",
+        height: height ?? '23em',
+        width: '100%',
+        position: 'absolute',
+        overflow: 'hidden',
+        zIndex: -1,
+      }}
+      />
+    </>
   );
 }
 
@@ -60,7 +64,7 @@ export function CollapsedHeader() {
   const {width} = useWindowSize();
   const toggleTopPadding = width > 450 ? "100px" : "30px";
   return (
-    <div style={{marginBottom: 40, color: "WhiteSmoke"}}>
+    <div style={{marginBottom: 40, color: "LightCoral"}}>
 
       <Container>
         <Background img={Beach} height={"10em"} />
@@ -86,7 +90,7 @@ export function Header() {
   return (
     <div className={"Header"}
       style={{
-        marginBottom: 80,
+        marginBottom: 20,
       }}>
       <Background img={Beach} />
       <Container>
@@ -94,7 +98,7 @@ export function Header() {
           <Col>
             <Link to={'/'} style={{
               ...linkStyle,
-              color: "white",
+              color: "LightCoral",
             }}>
               <Title />
             </Link>
@@ -112,6 +116,7 @@ export function Header() {
 const avatarStyle = css({
   paddingLeft: "100px",
   width: "100%",
+  paddingBottom: "150px",
 });
 
 function Avatar() {
@@ -122,24 +127,24 @@ function Avatar() {
           width={150}
           height={150}
           style={{
-            borderRadius: 90,
+            borderRadius: 100,
             border: "white solid 5px",
           }} />
       </Col>
-      <Col {...css({paddingTop: "30px"})}>
+      <Col {...css({paddingTop: "30px", paddingLeft: "80px"})}>
         <Row>
           <HoverLink text={"⊢ Jimmy Yao's blog"}
             link={"https://ailrk.github.io/home"}
-            ogColor={"white"}
-            onHoverColor={"white"} />
+            ogColor={"DimGray"}
+            onHoverColor={"LightCoral"} />
         </Row>
         <Row>
           <HoverLink text={"⊢ Github"}
             link={"https://github.com/ailrk"}
-            ogColor={"white"}
-            onHoverColor={"white"} />
+            ogColor={"DimGray"}
+            onHoverColor={"LightCoral"} />
         </Row>
-        <Row {...css({color: "white"})}>
+        <Row {...css({color: "DimGray"})}>
           <b> ⊢ Email: jimmy123good@hotmail.com </b>
         </Row>
       </Col>
@@ -153,16 +158,18 @@ function Toggle(props: {style?: CSSProperties}) {
     ...{
       cursor: "pointer",
       paddingTop: "4px",
-      color: "WhiteSmoke"
+      color: "LightCoral"
     },
     ...style,
   };
 
   const [sidebarOn, setSidebarOn] = useState<boolean>(false);
+
   return (
     <>
       {
-        sidebarOn ? <Sidebar setSidebarOn={setSidebarOn} /> :
+        sidebarOn ?
+        <Sidebar setSidebarOn={setSidebarOn} /> :
           <FaBars size={35}
             style={toggleStyle}
             onClick={() => {setSidebarOn(s => !s)}} />

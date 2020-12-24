@@ -30,6 +30,7 @@ function ItemRowSkeleton(props: {titleElement: JSX.Element, dateElement: JSX.Ele
       <Col> {titleElement}</Col>
       <Col> {dateElement}</Col>
       <Col> {tagElement}</Col>
+      <hr style={{width: "50%", margin: "0px", marginTop: 50}} />
     </Container>
   );
 }
@@ -75,10 +76,7 @@ export function ItemRow(props: {
   markdown: Markdown
 }) {
   const {markdown} = props;
+
   const {header} = markdown;
-  return ItemRowSkeleton({
-    titleElement: title(header),
-    dateElement: date(header),
-    tagElement: tag(header)
-  });
+  return <ItemRowSkeleton titleElement={title(header)} dateElement={date(header)} tagElement={tag(header)} />;
 }
