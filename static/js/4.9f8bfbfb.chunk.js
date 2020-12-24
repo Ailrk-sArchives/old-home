@@ -1,0 +1,2 @@
+(this.webpackJsonpshoothole=this.webpackJsonpshoothole||[]).push([[4],{190:function(t,e,n){"use strict";n.r(e),n.d(e,"default",(function(){return c}));var o=n(0),r=n.n(o),a=n(55),s=n(15),u=n(4);function c(){var t=Object(u.g)().id,e=s.a.get(Number.parseInt(t));return r.a.createElement(a.a,{markdown:e})}}}]);
+//# sourceMappingURL=4.9f8bfbfb.chunk.js.map
