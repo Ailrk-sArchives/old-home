@@ -135,16 +135,16 @@ function Avatar() {
         <Row>
           <HoverLink text={"⊢ Jimmy Yao's blog"}
             link={"https://ailrk.github.io/home"}
-            ogColor={"DimGray"}
+            ogColor={"WhiteSmoke"}
             onHoverColor={"LightCoral"} />
         </Row>
         <Row>
           <HoverLink text={"⊢ Github"}
             link={"https://github.com/ailrk"}
-            ogColor={"DimGray"}
+            ogColor={"WhiteSmoke"}
             onHoverColor={"LightCoral"} />
         </Row>
-        <Row {...css({color: "DimGray"})}>
+        <Row {...css({color: "WhiteSmoke"})}>
           <b> ⊢ Email: jimmy123good@hotmail.com </b>
         </Row>
       </Col>
