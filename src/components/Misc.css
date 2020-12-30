@@ -6,6 +6,7 @@
 }
 
 .misc-add-page-title-h2 {
+  user-select: none;
   color: DimGray;
   font-weight: bold;
   font-size: 1.5em;

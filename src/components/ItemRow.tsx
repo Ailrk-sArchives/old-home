@@ -39,7 +39,6 @@ const date = (header: MarkdownHeader) => (
 );
 
 const tag = (header: MarkdownHeader) => {
-
   const tagListElements = header.tag?.map(t => (
     <span key={t}>
       <Badge variant="light">

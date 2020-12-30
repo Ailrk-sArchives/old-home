@@ -11,6 +11,7 @@
   }
 
   .sidebar-tab-main {
+    user-select: none;
     margin-top: 10px;
     margin-left: 60px;
     margin-bottom: 10px;
@@ -21,21 +22,26 @@
 @media screen and (max-width: 999px) {
   .sidebar-main  {
     margin-left: -60px;
+    visibility: hidden;
+    height: 0px;
   }
 
   .sidebar-tab-main {
+    user-select: none;
     margin-top: 10px;
-    margin-left: 70px;
+    margin-left: 90px;
     margin-bottom: 10px;
     font-size: 20px;
   }
 
   .header-sidebar-slidein {
-    visibility: visible;
+    visibility: visible !important;
+    height: 100%;
   }
 
-  .header-sidebar-slidein {
-    visibility: hidden;
+  .header-sidebar-slideout {
+    visibility: hidden !important;
+    height: 0px !important;
   }
 }
 

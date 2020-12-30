@@ -6,7 +6,7 @@
 
 @media screen and (max-width: 700px) {
   .item-row-separator {
-    width: 90%;
+    width: 105%;
     margin-top: 20px;
     margin-bottom: 20px;
   }
