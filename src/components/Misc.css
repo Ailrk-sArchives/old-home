@@ -1,0 +1,17 @@
+.misc-bar {
+  height: 2em;
+  width: 80%;
+  display: block;
+  background: Grey;
+}
+
+.misc-add-page-title-h2 {
+  color: DimGray;
+  font-weight: bold;
+  font-size: 1.5em;
+  margin-bottom: 2em;
+}
+
+.misc-to-bold-h2 {
+  text-shadow: 1px 0px, 0px 1px;
+}

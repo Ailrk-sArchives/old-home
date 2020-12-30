@@ -3,6 +3,7 @@ import {Container} from 'react-bootstrap';
 import {linkStyle} from '../styles/styleElements';
 import {useWindowSize, useDelayRender} from '../state/hooks';
 import Loader from 'react-loader-spinner';
+import "./Misc.css";
 
 export function HoverLink(props: {
   text: string,
@@ -25,7 +26,7 @@ export function HoverLink(props: {
 export function toBoldH2(text: string) {
   return (
     <h2>
-      <b style={{textShadow: "1px 0px, 0px 1px"}}>
+      <b className={"misc-to-bold-h2"}>
         <span style={{color: "LightCoral"}}>∘</span>
           &nbsp;
         {text}
@@ -34,15 +35,8 @@ export function toBoldH2(text: string) {
 }
 
 export function Bar(props: {style?: CSSProperties}) {
-  const style: CSSProperties = {
-    height: "2em",
-    width: "80%",
-    ...props?.style,
-    display: "block",
-    background: "grey",
-  };
   return (
-    <div style={style} />
+    <div className={"misc-bar"} style={props?.style} />
   );
 }
 
@@ -50,23 +44,17 @@ export function AddPageTitle(props: {pageTitle: string, page: JSX.Element}) {
   const {pageTitle, page} = props;
   const {width} = useWindowSize();
   let delay = useDelayRender();
-  const content = (
-    <>
-      <h2 style={{
-        color: "DimGray",
-        fontWeight: "bold",
-        fontSize: '1.5em',
-        marginBottom: '2em',
+  const AddPageTitleH2 = () => (
+    <h2 className={"misc-add-page-title-h2"}
+      style={{
         marginLeft: (width > 600 ? '3em' : '1.8em'),
       }}>{`${pageTitle}`}</h2>
-      {
-        page
-      }
-    </>);
+  );
+  const Content = () => (<> <AddPageTitleH2 /> {page} </>);
   return (
     <Container>
       {
-        delay ? content : <div />
+        delay ? <Content /> : <div />
       }
     </Container>
   );

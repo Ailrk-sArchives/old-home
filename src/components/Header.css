@@ -1,0 +1,70 @@
+.header-background {
+  background-size: cover;
+  background-repeat: no-repeat;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  filter: contrast(95%);
+  z-index: -1;
+  overflow: hidden;
+  width: 100%;
+  pointer-events: none;
+  position: absolute;
+}
+
+/* header-main */
+.header-main {
+  margin-bottom: 30px;
+}
+
+/* header title */
+.header-title {
+  height: 100px;
+  width: 100%;
+  padding-top: 50px;
+  margin-bottom: 60px;
+}
+
+.header-title-font {
+  font-size: 3em;
+  font-family: Monospace;
+}
+
+/* header avatar */
+.header-avatar {
+  padding-left: 100px;
+  padding-bottom: 120px;
+  width: 100%;
+}
+
+.header-avatar-img {
+  border-radius: 100%;
+  border: white solid 5px;
+}
+
+.header-avatar-info {
+  padding-top: 40px;
+  padding-left: 100px;
+}
+
+/* collapsed header */
+
+.collapsed-header-title {
+  margin-left: 20px;
+  padding-right: 50px;
+  margin-top: 50px;
+}
+
+.collapsed-header-toggle {
+  margin-left: 50px;
+  margin-bottom: 15px;
+}
+
+/* header toggle */
+.header-toggle {
+  cursor: pointer;
+  padding-top: 4px;
+  color: LightCoral;
+}
+

@@ -4,6 +4,7 @@ import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 import {ItemRow} from './ItemRow';
 import {useDelayRender} from '../state/hooks';
+import "./List.css";
 
 export function List(props: {
   markdowns: Array<Markdown>,
@@ -15,14 +16,8 @@ export function List(props: {
       <ItemRow markdown={m} key={m.header.id} />);
   return (
     <Container>
-      <div style={{
-        visibility: delay ? "hidden" : "visible",
-        zIndex: 100,
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        background: "white"
-      }} />
+      <div className={"list-main"}
+        style={{visibility: delay ? "hidden" : "visible", }} />
       {
         lists
       }

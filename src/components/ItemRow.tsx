@@ -4,12 +4,12 @@ import {textTheme, linkStyle} from '../styles/styleElements';
 import {HoverLink, toBoldH2} from './Misc';
 import {useWindowSize} from '../state/hooks';
 import {Container, Col, Badge} from 'react-bootstrap';
+import "./ItemRow.css";
 
 import {Link} from 'react-router-dom';
 import {css} from 'glamor';
 
 const itemRowStyle = css(textTheme, {
-  marginLeft: "2em",
   paddingBottom: "1em",
   marginBottom: "1em",
 });
@@ -20,7 +20,6 @@ const collapsedItemRowStyle = css(textTheme, {
   marginBottom: "50px",
 })
 
-
 function ItemRowSkeleton(props: {titleElement: JSX.Element, dateElement: JSX.Element, tagElement: JSX.Element}) {
   const {width} = useWindowSize();
   const {titleElement, dateElement, tagElement} = props;
@@ -30,24 +29,23 @@ function ItemRowSkeleton(props: {titleElement: JSX.Element, dateElement: JSX.Ele
       <Col> {titleElement}</Col>
       <Col> {dateElement}</Col>
       <Col> {tagElement}</Col>
-      <hr style={{width: "50%", margin: "0px", marginTop: 50}} />
+      <hr className={"item-row-separator"} />
     </Container>
   );
 }
 
 const title = (header: MarkdownHeader) => (
-  <h3 style={{fontSize: "1.5em"}}>
+  <h3 style={{fontSize: "1em"}}>
     <HoverLink text={`${header.title}`}
       link={`${process.env.PUBLIC_URL}/#/article/${header.id}`}
       ogColor={"DimGrey"}
       onHoverColor={"LightCoral"}
       element={toBoldH2} />
   </h3>
-
 );
 
 const date = (header: MarkdownHeader) => (
-  <div {...css({paddingLeft: "20px", color: "Grey"})}>
+  <div className={"item-row-date"}>
     {header.time.toJSON().replace(/-/gi, '.').split('T')[0]}
   </div>
 );

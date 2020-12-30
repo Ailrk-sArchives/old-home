@@ -1,0 +1,10 @@
+
+.item-row-separator {
+  width: 50%;
+  margin-top: 50px;
+}
+
+.item-row-date {
+  padding-left: 20px;
+  color: Grey;
+}

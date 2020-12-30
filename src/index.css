@@ -1,12 +1,13 @@
-/* @font-face { */
-/*   font-family: 'Lato'; */
-/*   src: local('Lato'), url(./assets/fonts/Lato-Regular.ttf) format('ttf'); */
-/* } */
+@font-face {
+  font-family: 'Lato';
+  src: local('Lato'), url(./assets/fonts/Lato-Regular.ttf) format('ttf');
+}
 
 @font-face {
-  font-family: 'RobotoSlab';
-  src: local('RobotoSlab'), url(./assets/fonts/RobotoSlab-VariableFont_wght.ttf) format('ttf');
+  font-family: 'Lato';
+  src: local('Lato'), url(./assets/fonts/Lato-Regular.ttf) format('ttf');
 }
+
 
 body {
   margin: 0;
@@ -18,10 +19,6 @@ body {
 
 html {
   overflow-y: scroll;
-}
-
-:not(b) {
-   font-family: RobotoSlab;
 }
 
 code {

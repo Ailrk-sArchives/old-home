@@ -1,0 +1,49 @@
+.sidebar-wide-sidebar-main {
+  top: 0;
+  right: 0;
+  position: fixed;
+  background: WhiteSmoke;
+  z-index: 1000;
+  transition-duration: 250;
+  padding-top: 30px;
+  height: 100%;
+  font-size: 2em;
+  width: 20%;
+}
+
+.sidebar-collapsed-sidebar-main  {
+  top: 0;
+  font-size: 1em;
+  margin-left: -60px;
+}
+
+.sidebar-tab-main {
+  margin-top: 10px;
+  margin-left: 60px;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.sidebar-close-button {
+  margin-left: 30px;
+  color: Salmon;
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+.header-sidebar-slide {
+  right: 0;
+  animation-duration: 0.5s;
+  animation-name: slidein;
+}
+
+@keyframes slidein {
+  from {
+    margin-left: 100%;
+  }
+
+  to {
+    margin-left: 0%;
+  }
+
+}

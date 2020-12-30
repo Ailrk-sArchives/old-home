@@ -50,7 +50,7 @@ export function Article(props: {
     fetchArticle();
   }, []);
 
-  const content = (
+  const Content = () => (
     <>
       <div {...css({
         width: "90%",
@@ -68,7 +68,7 @@ export function Article(props: {
   return (
     <Container {...style ?? defaultArticleStyle} >
       {
-        delay ? content : <div />
+        delay ? <Content /> : <div />
       }
     </Container>
   );

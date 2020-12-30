@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {AddPageTitle} from '../Misc';
 import {NotesChronoList} from '../List';

@@ -1,7 +1,8 @@
 .Article>p {
-  font-size: 1.4em;
+  font-size: 1.3em;
   color: black;
-  line-height: 1.4em;
+  line-height: 1.5em;
+  letter-spacing: 0.06em;
 }
 
 .Article>ul {
@@ -19,7 +20,6 @@
   padding-bottom: 3em;
 }
 
-
 /*
  * Headers
  * h1, h2 are too big for articles.
@@ -28,88 +28,48 @@
 .Article>h1 {
   color: DimGray;
   font-weight: bolder;
-  font-size: 1.75em;
+  font-size: 2em;
   line-height: 2em;
+  letter-spacing: 0.06em;
 }
 
 .Article>h2 {
   color: DimGray;
   font-weight: bolder;
-  font-size: 1.75em;
+  font-size: 1.8em;
   line-height: 2em;
+  letter-spacing: 0.06em;
 }
 
 /* Article title should use h3 */
 .Article>h3 {
   color: DimGray;
+  font-size: 1.8em;
   font-weight: bold;
   line-height: 2em;
+  letter-spacing: 0.06em;
 }
 
 .Article>h4 {
   color: LightCoral;
+  letter-spacing: 0.06em;
 }
 
 
 .Article>h5 {
   font-size: 1.5em;
   color: LightCoral;
+  letter-spacing: 0.06em;
 }
 
 
 .Article>h6 {
   font-size: 1.5em;
   color: LightCoral;
+  letter-spacing: 0.06em;
 }
 
 .Article a {
   color: LightCoral;
+  letter-spacing: 0.06em;
 }
-
-
-/* .Article>h2 { */
-/*   color: DimGray; */
-/*   font-weight: bold; */
-/* } */
-/* .Article>h3 { */
-/*   color: DimGray; */
-/*   font-weight: bolder; */
-/*   text-shadow: 0px 0px, 0px 0px, 0px 1px; */
-/*   line-height: 3em; */
-/* } */
-
-/* .Article>p { */
-/*   font-size: 1.5em; */
-/*   color: black; */
-/*   line-height: 1.2em; */
-/* } */
-
-/* .Article>h1 { */
-/*   line-height: 1.5em; */
-/*   margin-bottom: 40px; */
-/* } */
-
-/* .Article>h2 { */
-/*   line-height: 2em; */
-/*   font-size: 2.2em; */
-/* } */
-
-/* .Article>h4, h5, h6{ */
-/*   color: LightCoral; */
-/*   font-weight: bold; */
-/*   line-height: 2em; */
-/* } */
-
-/* .Article> h5  { */
-/*   font-size: 1.7em; */
-/* } */
-
-/* .Article> h6  { */
-/*   font-size: 1.5em; */
-/* } */
-
-/* .Article pre { */
-/*   margin-top: 50px; */
-/*   margin-bottom: 50px; */
-/*     font-size: 1.3em; */
-/* } */
