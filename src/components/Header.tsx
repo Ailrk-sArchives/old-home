@@ -1,7 +1,6 @@
-import React, {useState, CSSProperties} from 'react';
+import React, {useState, useRef, CSSProperties} from 'react';
 import {Row, Col, Container} from 'react-bootstrap';
-import {css} from 'glamor';
-import {FaBars} from 'react-icons/fa';
+import {FaBars, FaTimes} from 'react-icons/fa';
 import {Link} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
 import {Sidebar} from './Sidebar'
@@ -15,10 +14,12 @@ import {CSSTransition} from 'react-transition-group';
 function Title(props: {letterSpacing?: string}) {
   const {letterSpacing} = props;
   return (
-    <h1 className={"header-title-font"}
-      style={{letterSpacing: letterSpacing ?? "0.01em", }}>
-      A Bag of Words
-    </h1>
+    <span className={"header-title-font"}>
+      <h2
+        style={{letterSpacing: letterSpacing ?? "0.01em", }}>
+        A Bag of Words
+    </h2>
+    </span>
   );
 }
 
@@ -38,17 +39,16 @@ function Background(props: {img: string, height?: string}) {
 
 export function CollapsedHeader() {
   const {width} = useWindowSize();
-  const toggleTopPadding = width > 340 ? "100px" : "50px";
+  const toggleTopPadding = width > 335 ? "100px" : "40px";
   return (
     <div style={{marginBottom: 40, color: "LightCoral"}}>
 
       <Container>
         <Background img={Beach} height={"10em"} />
-        <div className={"collapsed-header-title"}>
+        <div className={"header-title"}>
           <Title letterSpacing={"0em"} />
         </div>
-        <div className={"collapsed-header-toggle"}
-          style={{paddingTop: toggleTopPadding, }}>
+        <div style={{paddingTop: toggleTopPadding, }}>
           <Toggle />
         </div>
       </Container>
@@ -59,7 +59,7 @@ export function CollapsedHeader() {
 export function Header() {
   const HeaderTitle = () => (
     <div className={"header-title"}>
-      <Row xs={8}>
+      <Row>
         <Col>
           <Link to={'/'} style={{
             ...linkStyle,
@@ -68,19 +68,17 @@ export function Header() {
             <Title />
           </Link>
         </Col>
-        <Row> <Toggle /> </Row>
+        <Toggle />
       </Row>
     </div>
   );
   return (
     <div className={"header-main"}>
-      <Background img={Beach} />
-      <Container>
+      <div>
+        <Background img={Beach} />
         <HeaderTitle />
-        <Row>
-          <Avatar />
-        </Row>
-      </Container>
+        <Avatar />
+      </div>
     </div>
   )
 }
@@ -105,13 +103,12 @@ function Avatar() {
           <b> ⊢ Email: jimmy123good@hotmail.com </b>
         </Row>
       </Col>
-
     </div>
   );
   return (
     <div className={"header-avatar"}>
       <Row>
-        <Col xs={3}>
+        <Col xs={2}>
           <img src={Chiruno}
             width={150}
             height={150}
@@ -123,27 +120,38 @@ function Avatar() {
   );
 }
 
-function Toggle(props: {style?: CSSProperties}) {
-  const {style} = props;
+function Toggle() {
   const [sidebarOn, setSidebarOn] = useState<boolean>(false);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
   const SidebarButton = () => (
     <FaBars size={35}
-      className={"header-toggle"}
-      style={style}
-      onClick={() => {setSidebarOn(s => !s)}} />
+      className={"header-toggle-button"}
+      onClick={() => {
+        setSidebarOn(on => !on);
+        const current = sidebarRef.current;
+        current?.classList.remove("header-sidebar-slideout");
+        current?.classList.toggle("header-sidebar-slidein");
+        console.log(current?.classList);
+      }} />
+  );
+  const CloseSideBarButton = () => (
+    <FaTimes size={35}
+      className={"header-toggle-button header-toggle-cross"}
+      onClick={
+        () => {
+          setSidebarOn(on => !on);
+          const current = sidebarRef.current;
+          current?.classList.remove("header-sidebar-slidein");
+          current?.classList.toggle("header-sidebar-slideout");
+        }
+      } />
   );
 
   return (
-    <div>
-      {!sidebarOn && <SidebarButton />}
-      <CSSTransition
-        in={sidebarOn}
-        timeout={100}
-        unmountOnExit>
-        <div>
-          <Sidebar setSidebarOn={setSidebarOn} />
-        </div>
-      </CSSTransition>
+    <div className="header-toggle">
+      {sidebarOn ? <CloseSideBarButton /> : <SidebarButton />}
+      <Sidebar ref={sidebarRef}/>
     </div>
   );
 }

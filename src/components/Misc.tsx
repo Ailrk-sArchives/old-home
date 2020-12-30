@@ -25,13 +25,10 @@ export function HoverLink(props: {
 
 export function toBoldH2(text: string) {
   return (
-    <h2>
-      <b className={"misc-to-bold-h2"}>
-        <span style={{color: "LightCoral"}}>∘</span>
-          &nbsp;
-        {text}
-      </b>
-    </h2>);
+    <p className={"misc-to-bold-h2"}>
+      &nbsp;
+      {text}
+    </p>);
 }
 
 export function Bar(props: {style?: CSSProperties}) {
@@ -47,7 +44,7 @@ export function AddPageTitle(props: {pageTitle: string, page: JSX.Element}) {
   const AddPageTitleH2 = () => (
     <h2 className={"misc-add-page-title-h2"}
       style={{
-        marginLeft: (width > 600 ? '3em' : '1.8em'),
+        marginLeft: (width > 600 ? '1.2em' : '1em'),
       }}>{`${pageTitle}`}</h2>
   );
   const Content = () => (<> <AddPageTitleH2 /> {page} </>);

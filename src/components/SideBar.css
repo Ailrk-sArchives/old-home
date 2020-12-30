@@ -1,49 +1,77 @@
-.sidebar-wide-sidebar-main {
-  top: 0;
-  right: 0;
-  position: fixed;
-  background: WhiteSmoke;
-  z-index: 1000;
-  transition-duration: 250;
-  padding-top: 30px;
-  height: 100%;
-  font-size: 2em;
-  width: 20%;
+@media screen and (min-width: 1000px) {
+  .sidebar-main {
+    top: 0;
+    right: -20%;
+    position: fixed;
+    z-index: 10;
+    background: WhiteSmoke;
+    padding-top: 140px;
+    height: 100%;
+    width: 20%;
+  }
+
+  .sidebar-tab-main {
+    margin-top: 10px;
+    margin-left: 60px;
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
 }
 
-.sidebar-collapsed-sidebar-main  {
-  top: 0;
-  font-size: 1em;
-  margin-left: -60px;
+@media screen and (max-width: 999px) {
+  .sidebar-main  {
+    margin-left: -60px;
+  }
+
+  .sidebar-tab-main {
+    margin-top: 10px;
+    margin-left: 70px;
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+
+  .header-sidebar-slidein {
+    visibility: visible;
+  }
+
+  .header-sidebar-slidein {
+    visibility: hidden;
+  }
 }
 
-.sidebar-tab-main {
-  margin-top: 10px;
-  margin-left: 60px;
-  margin-bottom: 10px;
-  font-size: 20px;
+.header-sidebar-slidein {
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+  animation-name: header-sidebar-slidein;
 }
 
-.sidebar-close-button {
-  margin-left: 30px;
-  color: Salmon;
-  cursor: pointer;
-  margin-bottom: 30px;
-}
-
-.header-sidebar-slide {
-  right: 0;
-  animation-duration: 0.5s;
-  animation-name: slidein;
-}
-
-@keyframes slidein {
+@keyframes header-sidebar-slidein {
   from {
-    margin-left: 100%;
+    visibility: visible;
+    right: -20%;
   }
-
   to {
-    margin-left: 0%;
+    visibility: visible;
+    right: 0%;
   }
+}
 
+.header-sidebar-slideout {
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+  animation-name: header-sidebar-slideout;
+}
+
+@keyframes header-sidebar-slideout {
+  from {
+    right: 0%;
+    visibility: visible;
+  }
+  50% {
+    right: -10%;
+  }
+  to {
+    right: -20%;
+    visibility: visible;
+  }
 }

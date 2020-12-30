@@ -1,10 +1,18 @@
-
 .item-row-separator {
-  width: 50%;
+  width: 100%;
   margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+@media screen and (max-width: 700px) {
+  .item-row-separator {
+    width: 90%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 }
 
 .item-row-date {
-  padding-left: 20px;
+  padding-left: 14px;
   color: Grey;
 }

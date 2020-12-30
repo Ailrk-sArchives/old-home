@@ -9,26 +9,14 @@ import "./ItemRow.css";
 import {Link} from 'react-router-dom';
 import {css} from 'glamor';
 
-const itemRowStyle = css(textTheme, {
-  paddingBottom: "1em",
-  marginBottom: "1em",
-});
-
-const collapsedItemRowStyle = css(textTheme, {
-  fontSize: "0.8em",
-  paddingBottom: "30px",
-  marginBottom: "50px",
-})
-
 function ItemRowSkeleton(props: {titleElement: JSX.Element, dateElement: JSX.Element, tagElement: JSX.Element}) {
   const {width} = useWindowSize();
   const {titleElement, dateElement, tagElement} = props;
-
   return (
-    <Container {...(width > 600 ? itemRowStyle : collapsedItemRowStyle)}>
-      <Col> {titleElement}</Col>
-      <Col> {dateElement}</Col>
-      <Col> {tagElement}</Col>
+    <Container>
+      <div> {titleElement} </div>
+      <div> {dateElement}</div>
+      <div> {tagElement}</div>
       <hr className={"item-row-separator"} />
     </Container>
   );
@@ -64,7 +52,7 @@ const tag = (header: MarkdownHeader) => {
                     &nbsp;
     </span>));
   return (
-    <div {...css({paddingLeft: "20px"})}>
+    <div {...css({paddingLeft: "10px"})}>
       <h4> {tagListElements} </h4>
     </div>
   );

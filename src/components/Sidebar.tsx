@@ -1,37 +1,25 @@
 import React, {useState, useEffect} from 'react';
 import {Container, Row} from 'react-bootstrap';
-import {css} from 'glamor';
 import {Link, useParams, useLocation} from 'react-router-dom';
 import {linkStyle} from '../styles/styleElements';
 import {
-  FaTimes, FaHome, FaTags, FaStickyNote, FaBook, FaHandPaper, FaMapPin
+  FaHome, FaTags, FaStickyNote, FaBook, FaHandPaper, FaMapPin
 } from 'react-icons/fa';
-import {useWindowSize} from '../state/hooks';
 import "./SideBar.css";
 
-export function Sidebar(props: {
-  setSidebarOn: React.Dispatch<React.SetStateAction<boolean>>
-}) {
-  const {width} = useWindowSize();
-  const {setSidebarOn} = props;
-  const sidebarStyle = width > 1000 ?
-        "sidebar-wide-sidebar-main" :
-        "sidebar-collapsed-sidebar-main";
+export const Sidebar = React.forwardRef((props, ref) => {
   return (
-    <Container>
-      <div className={sidebarStyle + " header-sidebar-slide"}>
-        <FaTimes className={"sidebar-close-button"}
-          onClick={() => setSidebarOn(on => !on)} />
-        <Tab name={<><FaHome /> home</>} link={"/"} />
-        <Tab name={<><FaStickyNote /> notes</>} link={"/notes"} />
-        <Tab name={<><FaBook /> reports</>} link={"/reports"} />
-        <Tab name={<><FaTags /> tags</>} link={"/tags"} />
-        <Tab name={<><FaHandPaper /> paper</>} link={"/paper"} />
-        <Tab name={<><FaMapPin /> about</>} link={"/about"} />
-      </div>
-    </Container>
+    <div className={"sidebar-main"}
+      ref={ref as React.RefObject<HTMLDivElement>}>
+      <Tab name={<><FaHome /> home</>} link={"/"} />
+      <Tab name={<><FaStickyNote /> notes</>} link={"/notes"} />
+      <Tab name={<><FaBook /> reports</>} link={"/reports"} />
+      <Tab name={<><FaTags /> tags</>} link={"/tags"} />
+      <Tab name={<><FaHandPaper /> paper</>} link={"/paper"} />
+      <Tab name={<><FaMapPin /> about</>} link={"/about"} />
+    </div>
   );
-}
+});
 
 function Tab(props: {
   name: JSX.Element,
