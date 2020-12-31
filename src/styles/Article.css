@@ -1,3 +1,7 @@
+.Article {
+    user-select: none;
+}
+
 .Article>p {
   font-size: 1.3em;
   color: black;
@@ -79,8 +83,8 @@
 .Article>table {
     display: table;
     border-collapse: separate;
-    border-spacing: 2px;
-    border-color: black;
+    border-spacing: 20px;
+    border-color: DimGray;
 }
 
 .Article>thead {
@@ -121,7 +125,7 @@
 
 .Article>td, th {
     display: table-cell;
-    vertical-align: inherit
+    vertical-align: inherit;
 }
 
 .Article>th {
