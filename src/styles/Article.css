@@ -74,3 +74,61 @@
   color: LightCoral;
   letter-spacing: 0.06em;
 }
+
+
+.Article>table {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: black;
+}
+
+.Article>thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit
+}
+
+.Article>tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit
+}
+
+.Article>tfoot {
+    display: table-footer-group;
+    vertical-align: middle;
+    border-color: inherit
+}
+
+.Articel>table > tr {
+    vertical-align: middle;
+}
+
+.Article>col {
+    display: table-column
+}
+
+.Article>colgroup {
+    display: table-column-group
+}
+
+.Article>tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit
+}
+
+.Article>td, th {
+    display: table-cell;
+    vertical-align: inherit
+}
+
+.Article>th {
+    font-weight: bold
+}
+
+.Articel>caption {
+    display: table-caption;
+    text-align: -webkit-center
+}

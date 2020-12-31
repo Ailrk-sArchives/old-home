@@ -9,9 +9,9 @@
 <h4>ldconfig -p</h4>
 <p><code>ldconfig -p</code> shows the current binding. This list indicates if your linker can find a given package. If your shared object is not on the list, you might need to add it to the path.</p>
 <p>Sometimes <code>ldd</code> shows a dependencies's location, but if that location is not on <code>ldconfig -p</code> it's still not linkable.</p>
-<h4>ldconfig -n &lt;path-to-lib&gt;</h4>
+<h4>ldconfig -n <path-to-lib></h4>
 <p>If you have a shared library somewhere, but it's not available at link stage, the easiest way to make it work is to do <code>ldconfig -n &lt;path&gt;</code>.</p>
-<h2>LD_LIBRARY_PATH=&lt;path&gt;</h2>
+<h2>LD_LIBRARY_PATH=<path></h2>
 <p>The enviroment variable is used to temporarily substitute a different library for a particular execution.</p>
 <p>It is handy for development and testing, but binary release should not depend on it.</p>
 <h2>LD_DEBUG=&lt;[files|libs|bindings]&gt;</h2>

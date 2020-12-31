@@ -1,0 +1,48 @@
+<h3>Different ways to enter Vim normal mode</h3>
+<p>Vim is famous for it's modal editing. You insert text in the insert mode, and do almost everything else in the normal mode. The switching happens so frequently that even the slightest overhead makes it feels super cumbersome. I believe most Vim users sooner or later will throw the same question: why <code>Esc</code>? It seems the least suitable key for such an important job. It's far away, it's small, and it stretches the left middle finger unnecessarily. It turns out there is a historical reason: Vim was developed with a keyboard layout that <code>Esc</code> was at the position of <code>Tab</code> today. It doesn't seem to be a bad decision back then. However, since most people are not gonna use the old keyboard layout, it doesn't make sense to stick with <code>Esc</code> anymore. There are several well known alternatives like <code>C-c</code> and <code>Capslock</code>. Thought which one to use is largely up to the taste, there are some quirks that you won't find out until you try them out. I've tried 4 different alternatives, and here is what I find out.</p>
+<figure>
+    <img style="display: block; margin: auto;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/KB_Terminal_ADM3A.svg/640px-KB_Terminal_ADM3A.svg.png">
+    <figcaption align="center"> <i>ADM-3A, the layout that Vim was designed for. More history <a href="https://www.reddit.com/r/vim/comments/dvvbbi/how_many_people_actually_use_the_escape_key/">here</a></i>
+    </figcaption>
+</figure>
+<h5>Map to CapsLock</h5>
+<p>First one I tried is to map <code>CapsLock</code> to <code>Esc</code>. At the first glance it might be the best solution. It's only one key, you don't need to press a key chord; the button is big and obvious; because <code>CapsLock</code> is roughly at the same position of the old <code>Esc</code>, one can even argue that this binding inherits the true Vim spirit. It all sounds nice, but once you've been using it for a while, you will find it's really hard to get used to. The biggest problem is that <code>CapsLock</code> is very close to <code>A</code> and <code>Tab</code>, which are commonly used for entering insert mode and triggering autocompletion. These keys are used so frequently, and they are so close, it's very easy to make a typo. It gets worse, the left most keyboard is probably governed by your left hand ring finger or pinky, which are both weak and hard to control. Imagine you want to enter normal mode, but typed <code>Tab</code> instead. All the sudden your cursor jumps a tab away, and now you need to go back to retry again. This can be really frustrating.</p>
+<p>The advantage of doing so, of course, is that you can finally put <code>CapsLock</code> in some good use. To enable the map, you need to switch <code>Esc</code> and <code>CapsLock</code> in the x window level directly. (Assume on Linux). It's because <code>CapsLock</code> sends the interrupt to the OS directly before Vim can do anything with it. For people don't want to search on Stackoverflow:</p>
+<pre><code>$ xmodmap -e 'clear Lock' -e 'keycode 0x42' = Escape'
+</code></pre>
+<h5>Ctrl-C</h5>
+<p><code>C-c</code> doesn't have most of problems <code>CapsLock</code> has, and it just feel so natural to exit insert mode with <code>Ctrl-C</code>, like how you do it in the shell. Except... it's not really an <code>Esc</code> replacement. Instead, just like in a shell, it's act like sending a <code>SIGINT</code> and stop what's happening immediately. If you have abbreviation, <code>Esc</code> will expand that then enter normal mode, but <code>C-c</code> will just leave what you've typed and switch mode directly.</p>
+<p>For me, there is a bigger issue: most editors' Vim mode doesn't support <code>C-c</code>, so the muscle memory doesn't transfer. Sometimes you are forced to use certain tools. For instance android studio or emacs. You can always fall back to other alternatives, but it will be nice to use Vim the same way everywhere.</p>
+<h5>Ctrl-[</h5>
+<p>One of the nice thing about <code>Ctrl-[</code> is that it behaves exactly the same as <code>Esc</code>, which makes it an ideal alternative. The key chord is not too hard to press, although it's still harder than <code>C-c</code> and <code>CapsLock</code>, but according to my experience, once you're used to it, the accuracy is pretty reliable. <code>Ctrl-[</code> is implemented on most Vim plugins, so you can use them everywhere. If you really want to find a problem for it, I guess it might be that it's too close to <code>p</code>, which makes you accidentally paste bunch of text unnecessarily. Other than that, I feel it's the directly alternative for <code>Esc</code>.</p>
+<h5>Alt + motion keys</h5>
+<p>I discovered this shortcut quite recently, but it terms out it's immediately useful. The idea is that when you are in the editing mode, you can press <code>Alt</code> plus another motion key, <code>h, i, j, k</code> so to speak. This will bring you to the normal mode, and perform the motion directly right after. Advantage is that it's super easy to type, even when you are in insert mode, you can pretend you are already in the normal mode, and all the sudden the connection becomes seamless. I have a mapping to complete the left brace with a right brace, and place the bracket in the middle. It's nice that after I press the left brace I can fill the content, but for things like function without parameter, what you reall want is move the cursor after the right brace. Without <code>Alt+motion</code>, you have two options: you either need to press some <code>Esc</code> equivalence, then press <code>l</code> twice; or you can use <code>Ctrl-O</code>, which temporarily brings your to the normal mode for one command, and then press <code>A</code> to move the cursor one after. <code>Alt+motion</code> allows you switch without any overhead, which I think is really valuable.</p>
+<p>It's worth noting that <code>ALt+motion</code> can't replace <code>Esc</code> for all cases. For example, you can close a temporary buffer with <code>Esc</code>, but <code>Alt+motion</code> will do nothing at all. But for most of the cases it is a good enough alternative that it's tolerable to use a <code>Esc</code> only for special cases.</p>
+<h5>Conclusion</h5>
+<table>
+    <tr>
+        <td> Key/Key chord </td>
+        <td>Has the same behavior as ESC? (y/n)</td>
+        <td>Easy to type (rank)</td>
+        <td>Support by most editor's Vim mode? (y/n)</td>
+    </tr>
+     <tr>
+        <td>CapsLock</td>
+        <td>yes</td>
+        <td>2ed</td>
+        <td>yes (need to map in the OS level)</td>
+    </tr>
+      <tr>
+        <td>C-[</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+       <tr>
+        <td>CapsLock</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+<p>Now I use <code>ALt+motion</code> for most of the time. When I really <code>Esc</code>, I will choose <code>C-[</code>. This way you get the best ergonomics without the need to worry about transferability. Of course this is only my personal preference, it really up to your experience. The best part of using Vim is that you can constantly find some way to do micro optimize your work flow. Each improvement might seem trivial if you look at them separately, once you look back it feels that you're able to do so much more.</p>

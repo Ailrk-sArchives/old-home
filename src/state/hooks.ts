@@ -11,7 +11,7 @@ export function useDelayRender(time: number = 100) {
   useEffect(() => {
     setTimeout(() => {
       setRender(true);
-      console.log("yo");
+      console.log("yoo");
     }, time);
   }, []);
   return render;
