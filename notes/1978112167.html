@@ -109,7 +109,7 @@ This means the only valid struct is <code>'b &gt; 'a</code>, so that the referen
 <h5>18. Rationale of lifetime elision rules?</h5>
 <p>It is emperical, but you can somewhat explain it.</p>
 <p>First step is just part of the algorithm. If the second and third steps finished but there are still incoherent amount of input lifetime and output lifetime then you cannot have anonymous lifetime parameter.</p>
-<p>if there is only one reference, one case is you create a value on heap and return the reference of it, in which case the ownership of the value is Box&lt;T&gt;, which has it's lifetime. Another is you want to do something with the input reference and return it back. In such case the output can only have the same lifetime as the input parameter.</p>
+<p>if there is only one reference, one case is you create a value on heap and return the reference of it, in which case the ownership of the value is Box<T>, which has it's lifetime. Another is you want to do something with the input reference and return it back. In such case the output can only have the same lifetime as the input parameter.</p>
 <p>Third rule is for methods. If you have a method it always take self as parameter, and everything it produces works around the lifetime of self.<br>
 For special case:<br>
 e.g 1<br>
