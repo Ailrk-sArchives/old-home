@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/home/static/css/main.4024c3e9.chunk.css",
+    "main.css": "/home/static/css/main.cfc110e6.chunk.css",
     "main.js": "/home/static/js/main.6bd71467.chunk.js",
     "main.js.map": "/home/static/js/main.6bd71467.chunk.js.map",
     "runtime-main.js": "/home/static/js/runtime-main.5319312d.js",
@@ -17,10 +17,10 @@
     "static/js/6.70dadc9a.chunk.js": "/home/static/js/6.70dadc9a.chunk.js",
     "static/js/6.70dadc9a.chunk.js.map": "/home/static/js/6.70dadc9a.chunk.js.map",
     "index.html": "/home/index.html",
-    "precache-manifest.9e941311b3938ac683be01260e08922d.js": "/home/precache-manifest.9e941311b3938ac683be01260e08922d.js",
+    "precache-manifest.c93855b96d88b5e786e61b0de9ebe5cb.js": "/home/precache-manifest.c93855b96d88b5e786e61b0de9ebe5cb.js",
     "service-worker.js": "/home/service-worker.js",
     "static/css/2.95c294d6.chunk.css.map": "/home/static/css/2.95c294d6.chunk.css.map",
-    "static/css/main.4024c3e9.chunk.css.map": "/home/static/css/main.4024c3e9.chunk.css.map",
+    "static/css/main.cfc110e6.chunk.css.map": "/home/static/css/main.cfc110e6.chunk.css.map",
     "static/js/2.4e5f5d62.chunk.js.LICENSE.txt": "/home/static/js/2.4e5f5d62.chunk.js.LICENSE.txt",
     "static/media/general.css": "/home/static/media/RobotoSlab-VariableFont_wght.0b2aeb1c.ttf",
     "static/media/planet.jpg": "/home/static/media/planet.a630891d.jpg"
@@ -29,7 +29,7 @@
     "static/js/runtime-main.5319312d.js",
     "static/css/2.95c294d6.chunk.css",
     "static/js/2.4e5f5d62.chunk.js",
-    "static/css/main.4024c3e9.chunk.css",
+    "static/css/main.cfc110e6.chunk.css",
     "static/js/main.6bd71467.chunk.js"
   ]
 }
