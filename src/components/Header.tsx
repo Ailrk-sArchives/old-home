@@ -17,7 +17,9 @@ function Title(props: {letterSpacing?: string}) {
     <span className={"header-title-font"}>
       <h2
         style={{letterSpacing: letterSpacing ?? "0.01em", }}>
-        A Bag of Words
+        <b>
+        jimmy yao
+        </b>
     </h2>
     </span>
   );
@@ -39,7 +41,7 @@ function Background(props: {img: string, height?: string}) {
 
 export function CollapsedHeader() {
   const {width} = useWindowSize();
-  const toggleTopPadding = width > 335 ? "100px" : "40px";
+  const toggleTopPadding = width > 250 ? "100px" : "40px";
   return (
     <div style={{marginBottom: 40, color: "LightCoral"}}>
 
@@ -83,12 +85,16 @@ export function Header() {
   )
 }
 
+// <Row style={{color: "WhiteSmoke"}}>
+//   <b> ⊢ Email: jimmy123good@hotmail.com </b>
+// </Row>
+
 function Avatar() {
   const AvatarInfo = () => (
     <div className={"header-avatar-info"}>
       <Col >
         <Row>
-          <HoverLink text={"⊢ Jimmy Yao's blog"}
+          <HoverLink text={"⊢ Articles"}
             link={"https://ailrk.github.io/home"}
             ogColor={"WhiteSmoke"}
             onHoverColor={"LightCoral"} />
@@ -99,8 +105,11 @@ function Avatar() {
             ogColor={"WhiteSmoke"}
             onHoverColor={"LightCoral"} />
         </Row>
-        <Row style={{color: "WhiteSmoke"}}>
-          <b> ⊢ Email: jimmy123good@hotmail.com </b>
+        <Row>
+          <HoverLink text={"⊢ Twitter"}
+            link={"https://twitter.com/ailrk123"}
+            ogColor={"WhiteSmoke"}
+            onHoverColor={"LightCoral"} />
         </Row>
       </Col>
     </div>
@@ -151,7 +160,7 @@ function Toggle() {
   return (
     <div className="header-toggle">
       {sidebarOn ? <CloseSideBarButton /> : <SidebarButton />}
-      <Sidebar ref={sidebarRef}/>
+      <Sidebar ref={sidebarRef} />
     </div>
   );
 }

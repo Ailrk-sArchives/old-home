@@ -7,6 +7,8 @@
 ;;
 ### Different ways to enter Vim normal mode
 
+<br/>
+
 Vim is famous for it's modal editing. You insert text in the insert mode, and do almost everything else in the normal mode. The switching happens so frequently that even the slightest overhead makes it feels super cumbersome. I believe most Vim users sooner or later will throw the same question: why `Esc`? It seems the least suitable key for such an important job. It's far away, it's small, and it stretches the left middle finger unnecessarily. It turns out there is a historical reason: Vim was developed with a keyboard layout that `Esc` was at the position of `Tab` today. It doesn't seem to be a bad decision back then. However, since most people are not gonna use the old keyboard layout, it doesn't make sense to stick with `Esc` anymore. There are several well known alternatives like `C-c` and `Capslock`. Alhough which one to use is largely up to the taste, there are some quirks that you won't notice until you start to use them. I've tried 4 different alternatives, and here is what I find out.
 
 <figure>

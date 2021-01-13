@@ -1,12 +1,12 @@
-.Article {
-    user-select: none;
-}
+/* .Article { */
+/*     user-select: none; */
+/* } */
 
 .Article>p {
-  font-size: 1.3em;
+  font-size: 1.5em;
   color: black;
   line-height: 1.5em;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.03em;
 }
 
 .Article>ul {
@@ -15,7 +15,7 @@
 }
 
 .Article>pre {
-  font-size: 1em;
+  font-size: 1.1em;
   color: black;
   background: WhiteSmoke;
   padding-left: 2em;
@@ -33,26 +33,26 @@
 .Article>h1 {
   color: DimGray;
   font-weight: bolder;
-  font-size: 2em;
-  line-height: 2em;
-  letter-spacing: 0.06em;
+  font-size: 2.6em;
+  line-height: 1em;
+  letter-spacing: 0.02em;
 }
 
 .Article>h2 {
   color: DimGray;
   font-weight: bolder;
-  font-size: 1.8em;
-  line-height: 2em;
-  letter-spacing: 0.06em;
+  font-size: 2.6em;
+  line-height: 1em;
+  letter-spacing: 0.02em;
 }
 
 /* Article title should use h3 */
 .Article>h3 {
   color: DimGray;
-  font-size: 1.8em;
+  font-size: 2.6em;
   font-weight: bold;
-  line-height: 2em;
-  letter-spacing: 0.06em;
+  line-height: 1em;
+  letter-spacing: 0.02em;
 }
 
 .Article>h4 {

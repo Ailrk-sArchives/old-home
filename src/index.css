@@ -11,8 +11,11 @@
 
 body {
   margin: 0;
-  font-family: 'RobotoSlab', 'Lato', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+
+  /* font-family: 'Serif', 'RobotoSlab', 'Lato', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; */
+
+  font-family:  'Serif' !important;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

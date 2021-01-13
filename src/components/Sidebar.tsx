@@ -13,13 +13,14 @@ export const Sidebar = React.forwardRef((props, ref) => {
       ref={ref as React.RefObject<HTMLDivElement>}>
       <Tab name={<><FaHome /> home</>} link={"/"} />
       <Tab name={<><FaStickyNote /> notes</>} link={"/notes"} />
-      <Tab name={<><FaBook /> reports</>} link={"/reports"} />
       <Tab name={<><FaTags /> tags</>} link={"/tags"} />
-      <Tab name={<><FaHandPaper /> paper</>} link={"/paper"} />
-      <Tab name={<><FaMapPin /> about</>} link={"/about"} />
+     <Tab name={<><FaMapPin /> about</>} link={"/about"} />
     </div>
   );
 });
+
+      // <Tab name={<><FaBook /> reports</>} link={"/reports"} />
+      // <Tab name={<><FaHandPaper /> paper</>} link={"/paper"} />
 
 function Tab(props: {
   name: JSX.Element,
@@ -33,7 +34,7 @@ function Tab(props: {
     <Row>
       <Link to={link}
         className={"sidebar-tab-main "}
-        style={{...linkStyle, fontFamily: "monospace", color}}
+        style={{...linkStyle, fontFamily: "Serif", color}}
         onMouseEnter={() => setColor("lightCoral")}
         onMouseLeave={() => setColor("SlateGray")}>
         {name}
