@@ -3,7 +3,7 @@ import {Container, Row} from 'react-bootstrap';
 import {StyleAttribute, css} from 'glamor';
 import {Markdown} from '../state/markdowns';
 import {textTheme} from '../styles/styleElements';
-import {HoverLink} from './Misc';
+import {HoverLink, toNormalP} from './Misc';
 import {useWindowSize, useDelayRender} from '../state/hooks';
 import '../styles/Article.css';
 
@@ -82,7 +82,9 @@ function SourceList(props: {sources?: Array<string>}) {
         <HoverLink text={source}
           link={source}
           ogColor={"DimGray"}
-          onHoverColor={"LightCoral"} />
+          onHoverColor={"LightCoral"}
+          element={toNormalP}
+        />
       </Row>
     )
   };

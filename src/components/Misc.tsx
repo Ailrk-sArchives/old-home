@@ -31,6 +31,14 @@ export function toBoldH2(text: string) {
     </p>);
 }
 
+export function toNormalP(text: string) {
+  return (
+    <p>
+      {text}
+    </p>
+  );
+}
+
 export function Bar(props: {style?: CSSProperties}) {
   return (
     <div className={"misc-bar"} style={props?.style} />
