@@ -1,6 +1,6 @@
 -- tag Vim casual
 -- title How to enter Vim normal mode?
--- time 2020-12-30
+-- time 2021-01-16
 -- source https://vim.fandom.com/wiki/Avoid_the_escape_key
           https://en.wikipedia.org/wiki/ADM-3A
           https://www.howtogeek.com/683823/why-does-the-caps-lock-key-exist-and-why-was-it-created/
@@ -34,7 +34,7 @@ For me, there is a bigger issue: most editors' Vim mode doesn't support `C-c`, s
 ##### Ctrl-[
 One of the nice thing about `Ctrl-[` is that it behaves exactly the same as `Esc`, which makes it an ideal alternative. The key chord is not too hard to press, although it's still harder than `C-c` and `CapsLock`, but according to my experience, once you're used to it, the accuracy is pretty reliable. `Ctrl-[` is implemented on most Vim plugins, so you can use them everywhere. If you really ask for a problem, I guess it might be that it's too close to `p`, which makes you accidentally paste bunch of text. Other than that, It might be the best alternative for `Esc`.
 
-##### Alt + motion keys
+##### Alt + motion keys
 I discovered this shortcut quite recently, but it terms out it's immediately useful. The idea is that when you are in the editing mode, you can press `Alt` plus another motion key, `h, i, j, k` so to speak. This will bring you to the normal mode, and perform the motion directly right after. The advantage is that it's super easy to type, even when you are in insert mode, you can pretend you are already in the normal mode, and all the sudden the mode switching becomes seamless. An exmaple: I have a mapping that completes the right brace if I type a left brace, then place the cursor in the middle. It's nice if I need to fill the brace, but for typing things like function without parameter, you want to move the cursor after the right brace. Without `Alt+motion`, you have two options: you can either press some `Esc` equivalence, then press `l` twice; or you can use `Ctrl-O`, which temporarily brings you to the normal mode for one command, and then press `A` to move the cursor one after. These two methods both require you to press a intermediate key for transition (`Esc` and `Ctrl-O`). But if you use `Alt+motion`, you can combine mode switching and motion into on key chord. It seems only save on key press, but because mode switching is quite common, it can save quite a bit of typing.
 
 It's worth noting that `ALt+motion` can't replace `Esc` for all situations. For example, you can close a temporary window with `Esc`, but `Alt+motion` will do nothing at all.

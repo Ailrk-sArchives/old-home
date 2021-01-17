@@ -14,7 +14,7 @@ body {
 
   /* font-family: 'Serif', 'RobotoSlab', 'Lato', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; */
 
-  font-family:  'Serif' !important;
+  font-family:  Serif !important;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
