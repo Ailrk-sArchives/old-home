@@ -48,7 +48,7 @@ sketh
 *.log
 
 .mypy_cache
-public/
+public/*
 # End of https://www.toptal.com/developers/gitignore/api/reactc
 #
 
