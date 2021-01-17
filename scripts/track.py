@@ -37,14 +37,20 @@ def track(pp: PathPipe):
     if pp.persistent_path.is_symlink():
         raise RuntimeError("cannot track a symlink")
     if not pp.track_path.exists():
+        # note replace is move
         pp.persistent_path.replace(pp.track_path)
 
     pp.persistent_path.symlink_to(pp.track_path)
 
 
 def untrack(pp: PathPipe):
+    print(pp.persistent_path.absolute())
     if (not pp.persistent_path.exists()):
         raise FileNotFoundError
+    if (not pp.persistent_path.is_symlink()):
+        raise RuntimeError("need to untrack a symlink")
+    if (not pp.track_path.exists()):
+        raise RuntimeError("No file in abuf to untrack")
 
     if (pp.persistent_path.is_symlink()):
         pp.persistent_path.unlink()
@@ -58,9 +64,9 @@ def parse_args() -> argparse.ArgumentParser:
     parser.add_argument(
         "-v", "--version", action="version",
         version=f"{parser.prog} verseion 0.0.1")
-    parser.add_argument("--file", help="file name")
+    parser.add_argument("-file", help="file name")
     parser.add_argument(
-        '--untrack',
+        '-untrack',
         nargs="?",
         default=argparse.SUPPRESS,
         help="untrack the file")
