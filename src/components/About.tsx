@@ -30,6 +30,11 @@ export function About() {
         ogColor={"DimGray"}
         onHoverColor={"LightCoral"}
         element={e => (<h5>{e}</h5>)} />
+      <HoverLink text={"→ My Twitter"}
+        link={"https://twitter.com/ailrk123"}
+        ogColor={"DimGray"}
+        onHoverColor={"LightCoral"}
+        element={e => (<h5>{e}</h5>)} />
 
     </Container>
   );

@@ -1,3 +1,7 @@
+"""
+use netstat to find the id of the process listening on tcp port 3000.
+if the process is a node process, kill it. Otherwise do nothing.
+"""
 import os
 import signal
 import sys

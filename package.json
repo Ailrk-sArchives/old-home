@@ -43,9 +43,13 @@
         "build": "react-scripts build",
         "updateLink": "npm link markdowndb.macro ",
         "test": "react-scripts test",
+        "watch": "npm-watch",
         "eject": "react-scripts eject",
         "predeploy": "npm run build",
         "deploy": "gh-pages -d build"
+    },
+    "watch" : {
+      "build": "src/"
     },
     "eslintConfig": {
         "extends": "react-app",

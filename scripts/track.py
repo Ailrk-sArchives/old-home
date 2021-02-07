@@ -65,13 +65,13 @@ def parse_args() -> argparse.ArgumentParser:
         "-v", "--version", action="version",
         version=f"{parser.prog} verseion 0.0.1")
     parser.add_argument("-file", help="file name")
+
     parser.add_argument(
         '-untrack',
         nargs="?",
         default=argparse.SUPPRESS,
         help="untrack the file")
     return parser
-
 
 if __name__ == "__main__":
     parser = parse_args()

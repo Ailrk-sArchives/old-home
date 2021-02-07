@@ -6,6 +6,8 @@ import {
 
 import markdowndb, {Markdown, MarkdownDB} from 'markdowndb.macro';
 import {unique, flat} from '../untils/list-ops';
+import * as watch from './watch';
+watch.abuf_dummy();
 
 export const articlesDB: MarkdownDB = markdowndb({
   markdownDir: 'articles',

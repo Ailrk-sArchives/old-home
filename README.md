@@ -16,6 +16,9 @@ There is a `.exrc` file under the root directory provides some vim commands to m
 
 # Undo APPTrack
 :APPUntrack
+
+# Refresh
+:APPRefresh
 ```
 
 #### Todo

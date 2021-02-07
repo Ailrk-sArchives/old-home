@@ -1,6 +1,6 @@
 -- tag Vim casual
 -- title How to enter Vim normal mode?
--- time 2021-01-16
+-- time 2021-01-11
 -- source https://vim.fandom.com/wiki/Avoid_the_escape_key
           https://en.wikipedia.org/wiki/ADM-3A
           https://www.howtogeek.com/683823/why-does-the-caps-lock-key-exist-and-why-was-it-created/

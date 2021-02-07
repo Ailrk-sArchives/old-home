@@ -1,6 +1,7 @@
 import React, {Suspense, lazy} from 'react';
 import {HashRouter, Switch, Route} from 'react-router-dom';
 import {Header, CollapsedHeader} from './Header';
+import {HeaderSimple} from './HeaderSimple';
 import {useWindowSize} from '../state/hooks';
 import {LoaderSpinner} from './Misc';
 import {
@@ -22,15 +23,16 @@ const OthersChronoListPage: any = lazy(() => import("./lazyPage/OthersChronoList
 function App() {
 
   const {width} = useWindowSize();
-  const header = width > 1000 ? <Header /> : <CollapsedHeader />;
+  // const header = width > 1000 ? <Header /> : <CollapsedHeader />;
+  const header = <HeaderSimple />
 
   return (
     <HashRouter>
-      {
-        header
-      }
       <Switch>
         <Suspense fallback={LoaderSpinner}>
+          {
+            header
+          }
           <Route exact path="/article/:id" component={ArticlePage} />
           <Route exact path="/" component={ArticleChronoListPage} />
           <Route exact path="/about" component={AboutMePage} />

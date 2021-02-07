@@ -7,8 +7,18 @@
 
 <br/>
 
-#### An introduction
+#### Introduction
+Some introduction will be nice though.
 
 #### Immutability
+Immuta
 
 #### Common techniques
+
+#### List
+What is that?
+How can I achieve the same resolution while  make the font a bit bigger?
+
+#### DAG
+
+directed acyclic graph
