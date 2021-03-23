@@ -27,7 +27,7 @@ export function HeaderSimple() {
         <Row className="header-simple-text">
           <Col xl={8}>
             <Link style={{...linkStyle}} to="/">
-              <h2 id="header-simple-title-text" >
+              <span id="header-simple-title" >
                 <span>
                   <img src={Ghead}
                     alt="."
@@ -35,8 +35,8 @@ export function HeaderSimple() {
                     width={60}
                     className="header-simple-avatar" />
                 </span>
-              4 letters prose
-            </h2>
+                <span id="header-simple-title-text"> 4 letters prose </span>
+            </span>
             </Link>
           </Col>
 

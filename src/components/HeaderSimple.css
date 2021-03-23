@@ -1,6 +1,15 @@
+#header-simple-title-text{
+  color: LightCoral;
+  font-weight: bolder;
+  user-select: none;
+}
+
 @media screen and (min-width: 1000px) {
 .header-simple-main {
   height: 160px;
+}
+#header-simple-title-text{
+  font-size: 2em;
 }
 }
 
@@ -8,13 +17,9 @@
 .header-simple-main {
   height: 180px;
 }
-
+#header-simple-title-text{
+  font-size: 1.5em;
 }
-
-#header-simple-title-text {
-  color: LightCoral;
-  font-weight: bolder;
-  user-select: none;
 }
 
 .header-simple-text {
@@ -29,6 +34,7 @@
 @media screen and (min-width: 281px) {
 .header-simple-navbar {
   margin-left: 50px;
+  padding-top: 10px;
 }
 }
 
