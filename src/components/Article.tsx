@@ -89,7 +89,7 @@ function SourceList(props: {sources?: Array<string>}) {
           onHoverColor={"LightCoral"}
           element={(s: string) => (
             <span  style={{
-              fontSize: "1.7em",
+              fontSize: "1.5em",
                 wordBreak: "break-all",
             }}>
               {s}

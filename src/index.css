@@ -4,22 +4,20 @@
 }
 
 @font-face {
-  font-family: 'Lato';
-  src: local('Lato'), url(./assets/fonts/Lato-Regular.ttf) format('ttf');
+  font-family: '';
 }
 
 html {
   zoom: 100%;
-
 }
 
 
 body {
   margin: 0;
 
-  /* font-family: 'Serif', 'RobotoSlab', 'Lato', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; */
+  font-family: 'Serif', 'RobotoSlab', 'Lato', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 
-  font-family:  'Times New Roman' !important;
+  font-family: 'georgia', 'Times New Roman', Serif, 'DejaVu Serif', 'RobotoSlab', 'Fira Sans'  !important;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

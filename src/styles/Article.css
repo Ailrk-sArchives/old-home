@@ -2,6 +2,11 @@
 /*     user-select: none; */
 /* } */
 
+.Article>pre {
+  background: White;
+}
+
+
 .Article>p {
   color: #4d4d4d;
 }
@@ -13,7 +18,8 @@
   width: 111%;
 }
 .Article p code {
-  color: LightCoral;
+  color: black;
+  font-family: KaTeX_Typewriter, monospace;
 }
 
 .Article code{
@@ -94,7 +100,7 @@
 @media screen and (min-width: 1000px) {
 .Article>p {
   font-size: 1.5rem;
-  line-height: 1.9rem;
+  line-height: 2.2rem;
   letter-spacing: 0.02em;
   display: block;
   margin-block-start: 1em;
@@ -113,13 +119,11 @@
 
 .Article>pre {
   font-size: 1.1em;
-  background: WhiteSmoke;
   line-height: 1.4rem;
   padding-left: 2em;
   padding-right: 2em;
   padding-top: 3em;
   padding-bottom: 3em;
-  border-left: 5px solid LightCoral;
 }
 
 /*
@@ -194,8 +198,8 @@
 /* mobile */
 @media screen and (max-width: 999px) {
 .Article>p {
-  font-size: 1.2rem;
-  line-height: 1.8rem;
+  font-size: 1rem;
+  line-height: 1.4rem;
   letter-spacing: 0.03em;
   display: block;
   margin-block-start: 1em;
@@ -220,15 +224,13 @@
 
 
 .Article>pre {
-  font-size: 1.2em;
+  font-size: 1.1em;
   color: black;
-  background: WhiteSmoke;
   line-height: 1.4rem;
   padding-left: 2em;
   padding-right: 2em;
   padding-top: 3em;
   padding-bottom: 3em;
-  border-left: 5px solid LightCoral;
 }
 
 /*
@@ -239,7 +241,7 @@
 .Article>h1 {
   color: DimGray;
   font-weight: bold;
-  font-size: 2.3em;
+  font-size: 2em;
   line-height: 1em;
   letter-spacing: 0.02em;
 }
@@ -247,7 +249,7 @@
 .Article>h2 {
   color: DimGray;
   font-weight: bold;
-  font-size: 2.3em;
+  font-size: 2em;
   line-height: 1em;
   letter-spacing: 0.02em;
 }
@@ -256,7 +258,7 @@
 /* Article title should use h3 */
 .Article>h3 {
   color: DimGray;
-  font-size: 2.5em;
+  font-size: 1.5em;
   font-weight: bold;
   line-height: 1em;
   text-align: center;
@@ -266,20 +268,21 @@
 .Article>h4 {
   color: DimGray;
   font-weight: bold;
+  font-size: 2em;
   letter-spacing: 0.06em;
 }
 
 
 .Article>h5 {
   font-weight: bold;
-  font-size: 2.0em;
+  font-size: 1.5em;
   color: DimGray;
   letter-spacing: 0.06em;
 }
 
 
 .Article>h6 {
-  font-size: 1.5em;
+  font-size: 1.2em;
   color: DimGray;
   letter-spacing: 0.06em;
 }
