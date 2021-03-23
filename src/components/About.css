@@ -9,3 +9,21 @@
   color: DimGray;
   font-size: 1.4em;
 }
+
+@media screen and (max-width: 570px) {
+.about-title {
+  font-size: 1em;
+  font-weight: bold;
+  color: DimGray;
+}
+
+.about-descrption {
+  color: DimGray;
+  font-size: 1em;
+}
+
+.about-info {
+  font-size: 1em;
+  color: DimGray;
+}
+}

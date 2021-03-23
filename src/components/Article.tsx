@@ -70,7 +70,7 @@ export function Article(props: {
   );
 
   return (
-    <Container {...style ?? defaultArticleStyle} >
+    <Container fluid="lg" className="page-body" {...style ?? defaultArticleStyle} >
       {
         delay ? <Content /> : <div />
       }
@@ -88,10 +88,7 @@ function SourceList(props: {sources?: Array<string>}) {
           ogColor={"DimGray"}
           onHoverColor={"LightCoral"}
           element={(s: string) => (
-            <span  style={{
-              fontSize: "1.5em",
-                wordBreak: "break-all",
-            }}>
+            <span className="source-list" >
               {s}
             </span>)
           }

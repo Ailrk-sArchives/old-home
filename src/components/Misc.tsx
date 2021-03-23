@@ -57,7 +57,7 @@ export function AddPageTitle(props: {pageTitle: string, page: JSX.Element}) {
   );
   const Content = () => (<> <AddPageTitleH2 /> {page} </>);
   return (
-    <Container>
+    <Container className="page-body">
       {
         delay ? <Content /> : <div />
       }

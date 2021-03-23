@@ -6,6 +6,17 @@
   background: White;
 }
 
+.Article>pre {
+  font-size: 1.1em;
+  color: black;
+  line-height: 1.4rem;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 3em;
+  padding-bottom: 3em;
+}
+
+
 
 .Article>p {
   color: #4d4d4d;
@@ -18,8 +29,9 @@
   width: 111%;
 }
 .Article p code {
-  color: black;
-  font-family: KaTeX_Typewriter, monospace;
+  color: inherit;
+  font-weight: bold;
+  font-family: monospace;
 }
 
 .Article code{
@@ -93,18 +105,21 @@
     /* border-spacing: 20px; */
     /* border-color: DimGray; */
 }
-
-
-
 /* laptop */
 @media screen and (min-width: 1000px) {
+.source-list {
+  fontSize: 1.5em;
+  wordBreak: "break-all";
+}
+
 .Article>p {
   font-size: 1.5rem;
-  line-height: 2.2rem;
+  line-height: 2.3rem;
   letter-spacing: 0.02em;
   display: block;
   margin-block-start: 1em;
   margin-block-end: 1em;
+  text-align: justify;
 }
 
 .Article>ul {
@@ -117,15 +132,6 @@
   color: black;
 }
 
-.Article>pre {
-  font-size: 1.1em;
-  line-height: 1.4rem;
-  padding-left: 2em;
-  padding-right: 2em;
-  padding-top: 3em;
-  padding-bottom: 3em;
-}
-
 /*
  * Headers
  * h1, h2 are too big for articles.
@@ -134,7 +140,7 @@
 .Article>h1 {
   color: DimGray;
   font-weight: bolder;
-  font-size: 2.3em;
+  font-size: 2.4em;
   line-height: 1em;
   letter-spacing: 0.01em;
 }
@@ -142,7 +148,7 @@
 .Article>h2 {
   color: DimGray;
   font-weight: bolder;
-  font-size: 2.3em;
+  font-size: 2.4em;
   line-height: 1em;
   letter-spacing: 0.01em;
   text-align: center;
@@ -152,7 +158,7 @@
 /* Article title should use h3 */
 .Article>h3 {
   color: DimGray;
-  font-size: 1.5em;
+  font-size: 2.1em;
   font-weight: bolder;
   line-height: 1em;
   letter-spacing: 0.01em;
@@ -160,6 +166,7 @@
 
 .Article>h4 {
   color: DimGray;
+  font-size: 2.1em;
   font-weight: bolder;
   letter-spacing: 0.01em;
 }
@@ -191,21 +198,19 @@
 .Article>colgroup {
     display: table-column-group
 }
-
 }
-
 
 /* mobile */
 @media screen and (max-width: 999px) {
 .Article>p {
   font-size: 1rem;
-  line-height: 1.4rem;
+  line-height: 2.1rem;
   letter-spacing: 0.03em;
   display: block;
   margin-block-start: 1em;
   margin-block-end: 1em;
+  text-align: justify;
 
-  word-break: break-word;
   hyphens: auto;
 }
 
@@ -223,16 +228,6 @@
 }
 
 
-.Article>pre {
-  font-size: 1.1em;
-  color: black;
-  line-height: 1.4rem;
-  padding-left: 2em;
-  padding-right: 2em;
-  padding-top: 3em;
-  padding-bottom: 3em;
-}
-
 /*
  * Headers
  * h1, h2 are too big for articles.
@@ -241,7 +236,7 @@
 .Article>h1 {
   color: DimGray;
   font-weight: bold;
-  font-size: 2em;
+  font-size: 2.4em;
   line-height: 1em;
   letter-spacing: 0.02em;
 }
@@ -249,7 +244,7 @@
 .Article>h2 {
   color: DimGray;
   font-weight: bold;
-  font-size: 2em;
+  font-size: 2.4em;
   line-height: 1em;
   letter-spacing: 0.02em;
 }
@@ -258,7 +253,7 @@
 /* Article title should use h3 */
 .Article>h3 {
   color: DimGray;
-  font-size: 1.5em;
+  font-size: 2.1em;
   font-weight: bold;
   line-height: 1em;
   text-align: center;
@@ -268,6 +263,7 @@
 .Article>h4 {
   color: DimGray;
   font-weight: bold;
+  font-size: 2.1em;
   font-size: 2em;
   letter-spacing: 0.06em;
 }
@@ -275,7 +271,7 @@
 
 .Article>h5 {
   font-weight: bold;
-  font-size: 1.5em;
+  font-size: 2.0em;
   color: DimGray;
   letter-spacing: 0.06em;
 }
@@ -293,3 +289,41 @@
 }
 }
 
+/* @media screen and (max-width: 999px) { */
+/* .Article>p { */
+/*   font-size: 1.2rem; */
+/*   line-height: 1.3em; */
+/* } */
+/* } */
+
+@media screen and (max-width: 570px) {
+.Article>p {
+  font-size: 0.7rem;
+  line-height: 1.3em;
+}
+
+.source-list {
+  fontSize: 0.7em;
+  wordBreak: "break-all";
+}
+
+.Article>h3,h4 {
+  font-weight: bold;
+  font-size: 1.5em;
+  color: DimGray;
+  letter-spacing: 0.06em;
+}
+
+.Article table {
+  font-size: 0.8em;
+}
+
+.Article>h5,h6 {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: DimGray;
+  letter-spacing: 0.06em;
+}
+
+
+}

@@ -13,7 +13,7 @@ function TopbarNavTab(props: {name: string, link: string}) {
       <Link style={{...linkStyle, color}} to={props.link}
         onMouseEnter={() => setColor("lightCoral")}
         onMouseLeave={() => setColor("SlateGray")}>
-        <h4>{props.name}</h4>
+        <span>{props.name}</span>
       </Link>
     </div>);
 }
