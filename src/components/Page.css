@@ -5,8 +5,12 @@
   margin-bottom: 40;
 }
 
+.page-tags-tag {
+  font-size: 1.3rem;
+
+}
+
 .page-tags-main {
-  font-size: 2em;
   padding-left: 40;
   padding-right: 100;
 }

@@ -15,6 +15,5 @@
 
 .misc-to-bold-h2 {
   font-size: 1.5em;
-  font-weight: bolder;
-  text-shadow: 1px 0px, 0px 1px;
+  text-shadow: 1px 0px, 0px 0px;
 }

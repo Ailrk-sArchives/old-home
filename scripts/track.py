@@ -73,6 +73,7 @@ def parse_args() -> argparse.ArgumentParser:
         help="untrack the file")
     return parser
 
+
 if __name__ == "__main__":
     parser = parse_args()
     args = parser.parse_args()

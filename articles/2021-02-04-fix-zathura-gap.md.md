@@ -1,1 +1,0 @@
-/home/jimmy/newDisk/Repo/home/src/assets/abuf/2021-02-06-fix-zathura-gap.md.md

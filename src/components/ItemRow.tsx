@@ -13,8 +13,8 @@ function ItemRowSkeleton(props: {titleElement: JSX.Element, dateElement: JSX.Ele
   const {width} = useWindowSize();
   const {titleElement, dateElement, tagElement} = props;
   return (
-    <Container>
-      <div> {titleElement} </div>
+    <Container >
+      <div className={"item-row-title"}> {titleElement} </div>
       <div> {dateElement}</div>
       <div> {tagElement}</div>
       <hr className={"item-row-separator"} />
@@ -23,7 +23,8 @@ function ItemRowSkeleton(props: {titleElement: JSX.Element, dateElement: JSX.Ele
 }
 
 const title = (header: MarkdownHeader) => (
-  <h3 style={{fontSize: "1em"}}>
+  <h3
+      style={{fontSize: "1em"}}>
     <HoverLink text={`${header.title}`}
       link={`${process.env.PUBLIC_URL}/#/article/${header.id}`}
       ogColor={"DimGrey"}

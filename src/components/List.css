@@ -4,3 +4,11 @@
   height: 100%;
   background: white;
 }
+
+@media screen and (max-width: 999px) {
+.item-row-title p {
+  text-align: center;
+  vertical-align: baseline;
+}
+}
+

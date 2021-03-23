@@ -60,7 +60,11 @@ export function Article(props: {
         <div className="Article" dangerouslySetInnerHTML={{__html: article}} />
       </div>
       <hr />
-      <h3 style={{color: "DimGray", fontWeight: "bolder"}}>Source</h3>
+      <h3 style={
+        {
+          color: "DimGray",
+          fontWeight: "bolder"
+        }}>Source</h3>
       <SourceList sources={markdown?.header.source} />
     </>
   );
@@ -83,7 +87,11 @@ function SourceList(props: {sources?: Array<string>}) {
           link={source}
           ogColor={"DimGray"}
           onHoverColor={"LightCoral"}
-          element={toNormalP}
+          element={(s: string) => (
+            <p style={{fontSize: "1.3em"}}>
+              {s}
+            </p>)
+          }
         />
       </Row>
     )

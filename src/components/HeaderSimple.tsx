@@ -9,13 +9,13 @@ function TopbarNavTab(props: {name: string, link: string}) {
 
   const [color, setColor] = useState<string>("SlateGray");
   return (
-    <Col className="header-simple-info" sm={1}>
+    <div className="header-simple-info">
       <Link style={{...linkStyle, color}} to={props.link}
         onMouseEnter={() => setColor("lightCoral")}
         onMouseLeave={() => setColor("SlateGray")}>
         <h4>{props.name}</h4>
       </Link>
-    </Col>);
+    </div>);
 }
 
 
@@ -35,14 +35,15 @@ export function HeaderSimple() {
                   className="header-simple-avatar" />
               </span>
 
-              ONZ, AILRK!
+              AILRK
             </h2>
           </Col>
 
-          <TopbarNavTab name="articles" link={"/"}/>
-          <TopbarNavTab name="tags" link={"/tags"}/>
-          <TopbarNavTab name="notes" link={"/notes"}/>
-          <TopbarNavTab name="about" link={"/about"}/>
+          <Row className={"header-simple-navbar"}>
+            <TopbarNavTab name="articles" link={"/"} />
+            <TopbarNavTab name="tags" link={"/tags"} />
+            <TopbarNavTab name="about" link={"/about"} />
+          </Row>
         </Row>
       </Container>
       <hr id="header-simple-separator-1" />

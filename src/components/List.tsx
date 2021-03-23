@@ -30,17 +30,17 @@ export function ArticleChronoList() {
   return <List markdowns={chronoLists.articleChronoList} />
 }
 
-export function NotesChronoList() {
-  return <List markdowns={chronoLists.noteChronoList} />
-}
+// export function NotesChronoList() {
+//   return <List markdowns={chronoLists.noteChronoList} />
+// }
 
-export function OthersChronoList() {
-  return <List markdowns={chronoLists.otherChronoList} />
-}
+// export function OthersChronoList() {
+//   return <List markdowns={chronoLists.otherChronoList} />
+// }
 
-export function ReportChronoList() {
-  return <List markdowns={chronoLists.noteChronoList} />
-}
+// export function ReportChronoList() {
+//   return <List markdowns={chronoLists.noteChronoList} />
+// }
 
 export function TagList() {
   const {tag} = useParams();

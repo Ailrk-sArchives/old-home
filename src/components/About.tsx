@@ -2,35 +2,36 @@ import React from 'react';
 import {Container} from 'react-bootstrap';
 import {HoverLink} from './Misc';
 import {useWindowSize} from '../state/hooks';
+import "./About.css";
 
 
 let descrption = `
-  I do some Haskell, c++, typescript, and python.
+  I work on some haskell, c++, python and typescript.
 `;
 
 export function About() {
   const {width} = useWindowSize();
   return (
     <Container style={width > 600 ? {} : {marginLeft: 30}}>
-      <div style={{color: "LightCoral", }}>
-        <h3> About me </h3>
+      <div>
+        <h5 className="about-title"> About me </h5>
       </div>
       <hr />
 
-      <h4 style={{color: "DimGray", }}>{descrption}</h4>
+      <p className="about-descrption">{descrption}</p>
       <br/>
 
-      <HoverLink text={"→ My Resume"}
+      <HoverLink text={"→ Resume"}
         link={"https://github.com/ailrk/resume/blob/master/resume.pdf"}
         ogColor={"DimGray"}
         onHoverColor={"LightCoral"}
         element={e => (<h5>{e}</h5>)} />
-      <HoverLink text={"→ My Github"}
+      <HoverLink text={"→ Github"}
         link={"https://github.com/ailrk/"}
         ogColor={"DimGray"}
         onHoverColor={"LightCoral"}
         element={e => (<h5>{e}</h5>)} />
-      <HoverLink text={"→ My Twitter"}
+      <HoverLink text={"→ Twitter"}
         link={"https://twitter.com/ailrk123"}
         ogColor={"DimGray"}
         onHoverColor={"LightCoral"}

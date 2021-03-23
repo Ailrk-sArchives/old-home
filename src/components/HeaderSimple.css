@@ -1,13 +1,12 @@
-
 @media screen and (min-width: 1000px) {
 .header-simple-main {
-  height: 120px;
+  height: 160px;
 }
 }
 
 @media screen and (max-width: 999px) {
 .header-simple-main {
-  height: 300px;
+  height: 180px;
 }
 
 #header-simple-separator-1 {
@@ -30,10 +29,24 @@
   text-decoration: none;
 }
 
+@media screen and (min-width: 281px) {
+.header-simple-navbar {
+  margin-left: 50px;
+}
+}
+
+@media screen and (max-width: 280px) {
+.header-simple-navbar {
+  margin-left: 20px;
+}
+}
+
+
 .header-simple-info {
   color: DimGray;
   cursor: pointer;
   text-decoration: none;
+  margin-right: 15px;
   user-select: none;
 }
 

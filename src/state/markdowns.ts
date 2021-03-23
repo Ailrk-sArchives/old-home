@@ -16,32 +16,32 @@ export const articlesDB: MarkdownDB = markdowndb({
   logLevel: "silence",
 });
 
-export const notesDB: MarkdownDB = markdowndb({
-  markdownDir: "notes",
-  mode: "static",
-  publicURL: "/home",
-  logLevel: "silence",
-});
+// export const notesDB: MarkdownDB = markdowndb({
+//   markdownDir: "notes",
+//   mode: "static",
+//   publicURL: "/home",
+//   logLevel: "silence",
+// });
 
-export const othersDB: MarkdownDB = markdowndb({
-  markdownDir: "others",
-  mode: "static",
-  publicURL: "/home",
-  logLevel: "silence",
-});
+// export const othersDB: MarkdownDB = markdowndb({
+//   markdownDir: "others",
+//   mode: "static",
+//   publicURL: "/home",
+//   logLevel: "silence",
+// });
 
-export const papersDB: MarkdownDB = markdowndb({
-  markdownDir: "papers",
-  mode: "static",
-  publicURL: "/home",
-  logLevel: "silence",
-});
+// export const papersDB: MarkdownDB = markdowndb({
+//   markdownDir: "papers",
+//   mode: "static",
+//   publicURL: "/home",
+//   logLevel: "silence",
+// });
 
 export const allDB: MarkdownDB = new AllDB([
   articlesDB,
-  notesDB,
-  othersDB,
-  papersDB
+  // notesDB,
+  // othersDB,
+  // papersDB
 ]);
 
 export function chronoList(md: MarkdownDB): Array<Markdown> {
@@ -54,8 +54,8 @@ export function chronoList(md: MarkdownDB): Array<Markdown> {
 }
 
 export const chronoLists = {
-  otherChronoList: chronoList(othersDB),
-  noteChronoList: chronoList(notesDB),
+  // otherChronoList: chronoList(othersDB),
+  // noteChronoList: chronoList(notesDB),
   articleChronoList: chronoList(articlesDB),
 };
 

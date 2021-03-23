@@ -1,3 +1,4 @@
+// @deprecated
 import React, {useState, useEffect} from 'react';
 import {Container, Row} from 'react-bootstrap';
 import {Link, useParams, useLocation} from 'react-router-dom';

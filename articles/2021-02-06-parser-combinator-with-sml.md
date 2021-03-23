@@ -8,7 +8,7 @@
           https://en.wikipedia.org/wiki/Parser_combinator
           https://en.wikipedia.org/wiki/Pushdown_automaton
 ;;
-### A parser combinator in SML (Part 1)
+## A parser combinator in SML (Part 1)
 
 <br/>
 
@@ -23,6 +23,9 @@ This is the part one of a series of blogs. Here is the map for all the series:
 [A parser combinator in SML - Code up in sml, finishing everything (Part 7)]()
 
 <br/>
+
+TODO. one day I'll back TAT
+
 
 #### All about parsing
 
