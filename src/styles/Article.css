@@ -2,6 +2,9 @@
 /*     user-select: none; */
 /* } */
 
+.Article>p {
+  color: #4d4d4d;
+}
 .Article figcaption {
   font-size: 1.5em;
 }
@@ -91,7 +94,6 @@
 @media screen and (min-width: 1000px) {
 .Article>p {
   font-size: 1.5rem;
-  color: black;
   line-height: 1.9rem;
   letter-spacing: 0.02em;
   display: block;
@@ -111,7 +113,6 @@
 
 .Article>pre {
   font-size: 1.1em;
-  color: black;
   background: WhiteSmoke;
   line-height: 1.4rem;
   padding-left: 2em;
@@ -194,7 +195,6 @@
 @media screen and (max-width: 999px) {
 .Article>p {
   font-size: 1.2rem;
-  color: black;
   line-height: 1.8rem;
   letter-spacing: 0.03em;
   display: block;
