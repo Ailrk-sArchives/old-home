@@ -35,7 +35,7 @@ export function HeaderSimple() {
                   className="header-simple-avatar" />
               </span>
 
-              AILRK
+              4 letters prose
             </h2>
           </Col>
 

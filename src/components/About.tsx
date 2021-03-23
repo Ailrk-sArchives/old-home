@@ -2,6 +2,7 @@ import React from 'react';
 import {Container} from 'react-bootstrap';
 import {HoverLink} from './Misc';
 import {useWindowSize} from '../state/hooks';
+import {FaGithub, FaPaperPlane, FaTwitter} from "react-icons/fa/index";
 import "./About.css";
 
 
@@ -21,21 +22,21 @@ export function About() {
       <p className="about-descrption">{descrption}</p>
       <br/>
 
-      <HoverLink text={"→ Resume"}
+      <HoverLink text={"Resume"}
         link={"https://github.com/ailrk/resume/blob/master/resume.pdf"}
         ogColor={"DimGray"}
         onHoverColor={"LightCoral"}
-        element={e => (<h5>{e}</h5>)} />
-      <HoverLink text={"→ Github"}
+        element={e => (<h5 className="about-info"> <FaPaperPlane/> {e}</h5>)} />
+      <HoverLink text={" Github"}
         link={"https://github.com/ailrk/"}
         ogColor={"DimGray"}
         onHoverColor={"LightCoral"}
-        element={e => (<h5>{e}</h5>)} />
-      <HoverLink text={"→ Twitter"}
+        element={e => (<h5 className="about-info"> <FaGithub/>{e}</h5>)} />
+      <HoverLink text={" Twitter"}
         link={"https://twitter.com/ailrk123"}
         ogColor={"DimGray"}
         onHoverColor={"LightCoral"}
-        element={e => (<h5>{e}</h5>)} />
+        element={e => (<h5 className="about-info"> <FaTwitter/>{e}</h5>)} />
 
     </Container>
   );
