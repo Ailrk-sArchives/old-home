@@ -88,9 +88,12 @@ function SourceList(props: {sources?: Array<string>}) {
           ogColor={"DimGray"}
           onHoverColor={"LightCoral"}
           element={(s: string) => (
-            <p style={{fontSize: "1.3em"}}>
+            <span  style={{
+              fontSize: "1.3em",
+                wordBreak: "break-all",
+            }}>
               {s}
-            </p>)
+            </span>)
           }
         />
       </Row>
