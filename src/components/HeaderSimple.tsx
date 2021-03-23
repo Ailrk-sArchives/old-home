@@ -26,17 +26,18 @@ export function HeaderSimple() {
       <Container>
         <Row className="header-simple-text">
           <Col xl={8}>
-            <h2 id="header-simple-title-text" >
-              <span>
-                <img src={Ghead}
-                  alt="."
-                  height={60}
-                  width={60}
-                  className="header-simple-avatar" />
-              </span>
-
+            <Link style={{...linkStyle}} to="/">
+              <h2 id="header-simple-title-text" >
+                <span>
+                  <img src={Ghead}
+                    alt="."
+                    height={60}
+                    width={60}
+                    className="header-simple-avatar" />
+                </span>
               4 letters prose
             </h2>
+            </Link>
           </Col>
 
           <Row className={"header-simple-navbar"}>
