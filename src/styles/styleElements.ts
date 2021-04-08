@@ -7,7 +7,7 @@ export const centerLabel = css({
 });
 
 export const textTheme = css({
-  fontFamily: 'georgia, Times New Roman, Serif, DejaVu Serif',
+  fontFamily: 'APL386, georgia, Times New Roman, Serif, DejaVu Serif',
   fontSize: "1.2em",
   lineHeight: 2.1,
 });

@@ -35,7 +35,7 @@ function Tab(props: {
     <Row>
       <Link to={link}
         className={"sidebar-tab-main "}
-        style={{...linkStyle, fontFamily: "Times New Roman", color}}
+        style={{...linkStyle, fontFamily: "APL386", color}}
         onMouseEnter={() => setColor("lightCoral")}
         onMouseLeave={() => setColor("SlateGray")}>
         {name}
