@@ -22,32 +22,30 @@ function TopbarNavTab(props: {name: string, link: string}) {
 export function HeaderSimple() {
 
   return (
-    <div className="header-simple-main">
-      <Container>
-        <Row className="header-simple-text">
-          <Col xl={8}>
-            <Link style={{...linkStyle}} to="/">
-              <span id="header-simple-title" >
-                <span>
-                  <img src={Ghead}
-                    alt="."
-                    height={60}
-                    width={60}
-                    className="header-simple-avatar" />
-                </span>
-                <span id="header-simple-title-text"> 4 letters prose </span>
+    <Container className="header-simple-main">
+      <Row className="header-simple-text">
+        <Col sm={8}>
+          <Link style={{...linkStyle}} to="/">
+            <span id="header-simple-title" >
+              <span>
+                <img src={Ghead}
+                  alt="."
+                  height={60}
+                  width={60}
+                  className="header-simple-avatar" />
+              </span>
+              <span id="header-simple-title-text"> 4 letters prose </span>
             </span>
-            </Link>
-          </Col>
+          </Link>
+        </Col>
 
-          <Row className={"header-simple-navbar"}>
-            <TopbarNavTab name="articles" link={"/"} />
-            <TopbarNavTab name="tags" link={"/tags"} />
-            <TopbarNavTab name="about" link={"/about"} />
-          </Row>
+        <Row className={"header-simple-navbar"}>
+          <TopbarNavTab name="articles" link={"/"} />
+          <TopbarNavTab name="tags" link={"/tags"} />
+          <TopbarNavTab name="about" link={"/about"} />
         </Row>
-      </Container>
-      <hr id="header-simple-separator-1" />
-    </div>
+      </Row>
+    </Container>
   );
 }
+//<hr id="header-simple-separator-1" />

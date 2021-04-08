@@ -7,10 +7,14 @@
 @media screen and (min-width: 1000px) {
 .header-simple-main {
   height: 160px;
+  width: 50%;
+  padding-left: 3%;
 }
+
 #header-simple-title-text{
   font-size: 2em;
 }
+
 #header-simple-text{
   margin-left: 10px;
 }
@@ -20,6 +24,7 @@
 @media screen and (max-width: 999px) {
 .header-simple-main {
   height: 180px;
+  width: 100%;
 }
 #header-simple-title-text{
   font-size: 1.3em;

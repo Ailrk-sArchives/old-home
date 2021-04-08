@@ -1,3 +1,16 @@
+
+@media screen and (max-width: 999px) {
+.page-body {
+  width: 100%;
+}
+}
+
+@media screen and (min-width: 1000px) {
+.page-body {
+  width: 50%;
+}
+}
+
 .page-tag-page-h3 {
   color: DimGray;
   font-weight: bold;

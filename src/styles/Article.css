@@ -174,7 +174,7 @@
 
 .Article>h5 {
   font-weight: bolder;
-  font-size: 2.0em;
+  font-size: 1.8em;
   color: DimGray;
   letter-spacing: 0.01em;
 }
@@ -204,7 +204,7 @@
 @media screen and (max-width: 999px) {
 .Article>p {
   font-size: 1rem;
-  line-height: 2.1rem;
+  line-height: 1.8rem;
   letter-spacing: 0.03em;
   display: block;
   margin-block-start: 1em;
@@ -271,7 +271,7 @@
 
 .Article>h5 {
   font-weight: bold;
-  font-size: 2.0em;
+  font-size: 1.8em;
   color: DimGray;
   letter-spacing: 0.06em;
 }
@@ -298,7 +298,7 @@
 
 @media screen and (max-width: 570px) {
 .Article>p {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   line-height: 1.3em;
 }
 
