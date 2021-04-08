@@ -19,7 +19,7 @@
 
 
 .Article>p {
-  color: #4d4d4d;
+  color: black;
 }
 .Article figcaption {
   font-size: 1.5em;
@@ -31,11 +31,11 @@
 .Article p code {
   color: inherit;
   font-weight: bold;
-  font-family: monospace;
+  font-family: "APL386";
 }
 
 .Article code{
-  font-family: "monospace";
+  font-family: "APL386";
 }
 .Articel>caption {
     display: table-caption;
@@ -98,7 +98,7 @@
 
 .Article>table {
     display: table;
-    font-family: "monospace";
+    font-family: "APL386";
     font-size: 1.2em;
     border: 3px solid DimGray;
     /* border-collapse: separate; */
