@@ -23,7 +23,7 @@ export function Friends() {
           return (
             <HoverLink text={name}
               link={link}
-              ogColor={"DimGray"}
+              ogColor={"black"}
               onHoverColor={"LightCoral"}
               element={e => (<h5 className="about-info"> <FaUserFriends />{e}</h5>)} />);
         })

@@ -82,7 +82,7 @@
 .Article tr>td {
     color: black;
     font-weight: bold;
-    border: 3px solid DimGray;
+    border: 3px solid black;
     padding: 5px;
 }
 
@@ -100,10 +100,10 @@
     display: table;
     font-family: "APL386";
     font-size: 1.2em;
-    border: 3px solid DimGray;
+    border: 3px solid black;
     /* border-collapse: separate; */
     /* border-spacing: 20px; */
-    /* border-color: DimGray; */
+    /* border-color: black; */
 }
 /* laptop */
 @media screen and (min-width: 1000px) {
@@ -138,7 +138,7 @@
  * here they are adjusted to the same size as h3.
  * */
 .Article>h1 {
-  color: DimGray;
+  color: black;
   font-weight: bolder;
   font-size: 2.4em;
   line-height: 1em;
@@ -146,7 +146,7 @@
 }
 
 .Article>h2 {
-  color: DimGray;
+  color: black;
   font-weight: bolder;
   font-size: 2.4em;
   line-height: 1em;
@@ -157,7 +157,7 @@
 
 /* Article title should use h3 */
 .Article>h3 {
-  color: DimGray;
+  color: black;
   font-size: 2.1em;
   font-weight: bolder;
   line-height: 1em;
@@ -165,7 +165,7 @@
 }
 
 .Article>h4 {
-  color: DimGray;
+  color: black;
   font-size: 2.1em;
   font-weight: bolder;
   letter-spacing: 0.0em;
@@ -175,14 +175,14 @@
 .Article>h5 {
   font-weight: bolder;
   font-size: 1.8em;
-  color: DimGray;
+  color: black;
   letter-spacing: 0.0em;
 }
 
 
 .Article>h6 {
   font-size: 1.5em;
-  color: DimGray;
+  color: black;
   letter-spacing: 0.0em;
 }
 
@@ -234,7 +234,7 @@
  * here they are adjusted to the same size as h3.
  * */
 .Article>h1 {
-  color: DimGray;
+  color: black;
   font-weight: bold;
   font-size: 2.4em;
   line-height: 1em;
@@ -242,7 +242,7 @@
 }
 
 .Article>h2 {
-  color: DimGray;
+  color: black;
   font-weight: bold;
   font-size: 2.4em;
   line-height: 1em;
@@ -252,7 +252,7 @@
 
 /* Article title should use h3 */
 .Article>h3 {
-  color: DimGray;
+  color: black;
   font-size: 2.1em;
   font-weight: bold;
   line-height: 1em;
@@ -261,7 +261,7 @@
 }
 
 .Article>h4 {
-  color: DimGray;
+  color: black;
   font-weight: bold;
   font-size: 2.1em;
   font-size: 2em;
@@ -272,14 +272,14 @@
 .Article>h5 {
   font-weight: bold;
   font-size: 1.8em;
-  color: DimGray;
+  color: black;
   letter-spacing: 0.02em;
 }
 
 
 .Article>h6 {
   font-size: 1.2em;
-  color: DimGray;
+  color: black;
   letter-spacing: 0.02em;
 }
 
@@ -310,7 +310,7 @@
 .Article>h3,h4 {
   font-weight: bold;
   font-size: 1.5em;
-  color: DimGray;
+  color: black;
   letter-spacing: 0.06em;
 }
 
@@ -321,7 +321,7 @@
 .Article>h5,h6 {
   font-weight: bold;
   font-size: 1.2em;
-  color: DimGray;
+  color: black;
   letter-spacing: 0.06em;
 }
 

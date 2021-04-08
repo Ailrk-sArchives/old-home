@@ -62,7 +62,7 @@ export function Article(props: {
       <hr />
       <h3 style={
         {
-          color: "DimGray",
+          color: "black",
           fontWeight: "bolder"
         }}>Source</h3>
       <SourceList sources={markdown?.header.source} />
@@ -85,7 +85,7 @@ function SourceList(props: {sources?: Array<string>}) {
       <Row key={idx}>
         <HoverLink text={source}
           link={source}
-          ogColor={"DimGray"}
+          ogColor={"black"}
           onHoverColor={"LightCoral"}
           element={(s: string) => (
             <span className="source-list" >

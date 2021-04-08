@@ -25,24 +25,24 @@ export function About() {
 
       <HoverLink text={"Resume"}
         link={"https://github.com/ailrk/resume/blob/master/resume.pdf"}
-        ogColor={"DimGray"}
+        ogColor={"black"}
         onHoverColor={"LightCoral"}
         element={e => (<h5 className="about-info"> <FaPaperPlane /> {e}</h5>)} />
       <HoverLink text={" Github"}
         link={"https://github.com/ailrk/"}
-        ogColor={"DimGray"}
+        ogColor={"black"}
         onHoverColor={"LightCoral"}
         element={e => (<h5 className="about-info"> <FaGithub />{e}</h5>)} />
       <HoverLink text={" Twitter"}
         link={"https://twitter.com/ailrk123"}
-        ogColor={"DimGray"}
+        ogColor={"black"}
         onHoverColor={"LightCoral"}
         element={e => (<h5 className="about-info"> <FaTwitter />{e}</h5>)} />
 
       <Link to={"/friends"}>
         <HoverLink text={" Friends"}
           link={"/friends"}
-          ogColor={"DimGray"}
+          ogColor={"black"}
           onHoverColor={"LightCoral"}
           element={e => (<h5 className="about-info"> <FaUserFriends />{e}</h5>)} />
       </Link>

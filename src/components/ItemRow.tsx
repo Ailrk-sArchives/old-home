@@ -27,7 +27,7 @@ const title = (header: MarkdownHeader) => (
       style={{fontSize: "1em"}}>
     <HoverLink text={`${header.title}`}
       link={`${process.env.PUBLIC_URL}/#/article/${header.id}`}
-      ogColor={"DimGrey"}
+      ogColor={"black"}
       onHoverColor={"LightCoral"}
       element={toBoldH2} />
   </h3>

@@ -7,12 +7,12 @@ import Ghead from '../assets/ghead.png';
 
 function TopbarNavTab(props: {name: string, link: string}) {
 
-  const [color, setColor] = useState<string>("SlateGray");
+  const [color, setColor] = useState<string>("black");
   return (
     <div className="header-simple-info">
       <Link style={{...linkStyle, color}} to={props.link}
         onMouseEnter={() => setColor("lightCoral")}
-        onMouseLeave={() => setColor("SlateGray")}>
+        onMouseLeave={() => setColor("black")}>
         <span>{props.name}</span>
       </Link>
     </div>);
