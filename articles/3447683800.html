@@ -68,11 +68,11 @@ declare(x); declare(y); declare(z);
 <h6>Varadic template</h6>
 <p>Template allows us to parameterize over type definiton, partial specialization allows us to select what to specialize based on different cases. These two features along are alreay enough to make a full lambda calculus. To make things better, we now have varadic template, which allows us to pattern match on arbitrary long type list. For example, if we have a type level list, we can mimic a <code>head</code> function easily with varadic template:</p>
 <pre><code class="language-c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">nil</span> {</span>};
-tempalte &lt;typenmae...&gt; <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">head</span> ;</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span>...&gt; <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">head</span> ;</span>
 <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span>... Ts&gt; <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">head</span>&lt;T, Ts...&gt;  {</span>
   <span class="hljs-keyword">using</span> type = T;
 };
-tempalte &lt;&gt; <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">head</span>&lt;&gt; {</span> <span class="hljs-keyword">using</span> type = nil; };
+<span class="hljs-keyword">template</span> &lt;&gt; <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">head</span>&lt;&gt; {</span> <span class="hljs-keyword">using</span> type = nil; };
 </code></pre>
 <h6>Template template paramter</h6>
 <p>As we already known, templates can be thought as type level function that takes a type and yields a new type. When we are doing partial specialization, how do we match on a template that suppose to work like a function? For that C++ template provides <code>template template parameter</code>, or it's better known as higher kinded type.</p>
