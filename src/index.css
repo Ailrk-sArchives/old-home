@@ -1,23 +1,23 @@
 @font-face {
-  font-family: 'Lato';
-  src: local('Lato'), url(./assets/fonts/Lato-Regular.ttf) format('ttf');
-}
-
-@font-face {
-  font-family: '';
+  font-family: 'APL386';
+  src: url('./assets/fonts/APL386.ttf');
 }
 
 html {
   zoom: 100%;
 }
 
+* {
+  font-family: 'APL386';
+}
 
 body {
   margin: 0;
 
-  font-family: 'Serif', 'RobotoSlab', 'Lato', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  /* font-family: 'Serif', 'RobotoSlab', 'Lato', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; */
 
-  font-family: 'georgia', 'Times New Roman', Serif, 'DejaVu Serif', 'RobotoSlab', 'Fira Sans'  !important;
+  /* font-family: 'georgia', 'Times New Roman', Serif, 'DejaVu Serif', 'RobotoSlab', 'Fira Sans'  !important; */
+
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -28,7 +28,7 @@ html {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Lato', 'Courier New',
+  font-family: 'APL386', source-code-pro, Menlo, Monaco, Consolas, 'Lato', 'Courier New',
     monospace;
 }
 

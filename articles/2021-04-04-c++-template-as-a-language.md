@@ -57,7 +57,10 @@ This example shows some basic features like let binding, lambda, and currying. L
 
 
 ### Mechanisms
-Before we jump into the details, let's refresh mechanisms that makes C++ templates turing complete. First we know template is completely a compile time concept, they parameterize a body of declaration with a template variable, much like how functions parameterize a body of code. The difference is function takes values as parameters, but templates take types. We are particularly interested in class temlate, because one can think a class template as a mapping from a type to another type, which resembles the behavior of a function at term level:
+Before we jump into the details, let's refresh mechanisms that makes C++ templates turing complete.
+
+###### Templates
+First we know template is completely a compile time concept, they parameterize a body of definiion with a template variable, much like how functions parameterize a body of code. The difference is function takes values as parameters, but templates take types. We are particularly interested in class temlate, because one can think a class template as a mapping from a type to another type, which resembles the behavior of a function at term level:
 ```C++
 template <typename A>
 struct add_const_reference{
@@ -66,12 +69,45 @@ struct add_const_reference{
 ```
 If we substitute A with `int`, the example above will generate a full specialization of type `add_const_reference<A>` when it's applied with a concrete type. To get the output of this specialization, we access it's `type` member alias as `add_const_reference<int>::type`. One thing to note is, if there is recursion going on, a full specilization without accessing the `::type` will not further specialize the recursive step (aka right hand side of the type alias), which makes it behaves much like lazy evaluation. This is important. Because we can choose to defer the specialization, it's easy to implement control flow syntax like `if` an short circuit operators like `or` without assistence outside of the language.
 
+###### Partial specialization
 Another empowering feature is template partial specilization. Partial specialization works like pattern matching in many functional programming languages, it invokes a specific specialization when a certin types are passed as arguments. Take an example:
 
-```
+```c++
+template <typename T, typename U>
+struct Klass {
+  using type = int;
+};
+
 template <typename T>
-struct
+struct Klass<T, T> {
+  using type = double;
+};
+
+template <typename T, typename U>
+struct Klass<T, U*> {
+  using type = char;
+};
 ```
+We defined the same template `Klass` and three different specialization when it it's applied with different type paramters. If we have `Klass<int, double *>`, the template deduction rule will deduce `T` as `int` and `U` as `double`, and the second template parameter is in the form `U*`, which match the third specialization perfectly. So if we access `Klass<int, double*>::type`, it will give us a `char` type.
+
+
+###### Varadic template
+
+Template allows us to parameterize over type definiton, partial specialization allows us to select what to specialize based on different cases. These two features along are alreay enough to make a full lambda calculus. To make things better, we now have varadic template, which allows us to pattern match on arbitrary long type list. For example, if we have a type level list, we can mimic a `head` function easily with varadic template:
+
+```c++
+struct nil {};
+tempalte <typenmae...> struct head ;
+template <typename T, typename... Ts> struct head<T, Ts...>  {
+  using type = T;
+};
+tempalte <> struct head<> { using type = nil; };
+```
+
+###### Template template paramter
+
+As we already known, templates can be thought as type level function that takes a type and yields a new type. When we are doing partial specialization, how do we match on a template that suppose to work like a function? For that C++ template provides `template template parameter`, or it's better known as higher kinded type.
+
 
 ### Metafunction
 

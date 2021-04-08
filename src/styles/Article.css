@@ -113,9 +113,9 @@
 }
 
 .Article>p {
-  font-size: 1.5rem;
-  line-height: 2.3rem;
-  letter-spacing: 0.02em;
+  font-size: 1.4rem;
+  line-height: 2.0rem;
+  letter-spacing: 0em;
   display: block;
   margin-block-start: 1em;
   margin-block-end: 1em;
@@ -142,7 +142,7 @@
   font-weight: bolder;
   font-size: 2.4em;
   line-height: 1em;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.0em;
 }
 
 .Article>h2 {
@@ -150,7 +150,7 @@
   font-weight: bolder;
   font-size: 2.4em;
   line-height: 1em;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.0em;
   text-align: center;
 }
 
@@ -161,14 +161,14 @@
   font-size: 2.1em;
   font-weight: bolder;
   line-height: 1em;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.0em;
 }
 
 .Article>h4 {
   color: DimGray;
   font-size: 2.1em;
   font-weight: bolder;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.0em;
 }
 
 
@@ -176,19 +176,19 @@
   font-weight: bolder;
   font-size: 1.8em;
   color: DimGray;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.0em;
 }
 
 
 .Article>h6 {
   font-size: 1.5em;
   color: DimGray;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.0em;
 }
 
 .Article a {
   color: LightCoral;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.0em;
 }
 
 .Article>col {
@@ -205,7 +205,7 @@
 .Article>p {
   font-size: 1rem;
   line-height: 1.8rem;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.0em;
   display: block;
   margin-block-start: 1em;
   margin-block-end: 1em;
@@ -238,7 +238,7 @@
   font-weight: bold;
   font-size: 2.4em;
   line-height: 1em;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.0em;
 }
 
 .Article>h2 {
@@ -246,7 +246,7 @@
   font-weight: bold;
   font-size: 2.4em;
   line-height: 1em;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.0em;
 }
 
 
@@ -257,7 +257,7 @@
   font-weight: bold;
   line-height: 1em;
   text-align: center;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.0em;
 }
 
 .Article>h4 {
@@ -265,7 +265,7 @@
   font-weight: bold;
   font-size: 2.1em;
   font-size: 2em;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
 }
 
 
@@ -273,19 +273,19 @@
   font-weight: bold;
   font-size: 1.8em;
   color: DimGray;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
 }
 
 
 .Article>h6 {
   font-size: 1.2em;
   color: DimGray;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
 }
 
 .Article a {
   color: LightCoral;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
 }
 }
 
