@@ -44,8 +44,11 @@ declare(x); declare(y); declare(z);
   <span class="hljs-keyword">using</span> type = <span class="hljs-keyword">const</span> A&amp;;
 };
 </code></pre>
-<p>If we substitute A with <code>int</code>, the example above will generate a full specialization of type <code>add_const_reference&lt;A&gt;</code> when it's applied with a concrete type. To get the output of this specialization, we access it's <code>type</code> member alias as <code>add_const_reference&lt;int&gt;::type</code>. One thing to note is, if there is recursion going on, a full specilization without accessing the <code>::type</code> will not further specialize the recursive step (aka right hand side of the type alias), which makes it behaves much like lazy evaluation. This is important, because we can choose to defer the specialization, to implement control flow syntax like <code>if</code> an short circuit operators like <code>or</code> without assistence outside of the language.</p>
-<p>Another empowering feature is template partial specilization.</p>
+<p>If we substitute A with <code>int</code>, the example above will generate a full specialization of type <code>add_const_reference&lt;A&gt;</code> when it's applied with a concrete type. To get the output of this specialization, we access it's <code>type</code> member alias as <code>add_const_reference&lt;int&gt;::type</code>. One thing to note is, if there is recursion going on, a full specilization without accessing the <code>::type</code> will not further specialize the recursive step (aka right hand side of the type alias), which makes it behaves much like lazy evaluation. This is important. Because we can choose to defer the specialization, it's easy to implement control flow syntax like <code>if</code> an short circuit operators like <code>or</code> without assistence outside of the language.</p>
+<p>Another empowering feature is template partial specilization. Partial specialization works like pattern matching in many functional programming languages, it invokes a specific specialization when a certin types are passed as arguments. Take an example:</p>
+<pre><code>template <typename T>
+struct
+</code></pre>
 <h3>Metafunction</h3>
 <h3>Values</h3>
 <h3>Evaluation Strategy</h3>
