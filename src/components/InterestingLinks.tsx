@@ -38,6 +38,8 @@ const links: Array<[Genre, string, string]> = [
 
   ["paper", "No-Brainer CPS Conversion", "https://www.ccs.neu.edu/home/shivers/papers/nobrainer-cps.pdf"],
 
+  ["game", "The Witch's House", "https://store.steampowered.com/app/885810/The_Witchs_House_MV/?l=schinese"],
+
   ["library", "parsec: Monadic parser combinators", "https://hackage.haskell.org/package/parsec-3.1.14.0"],
 
   ["book", "Functional programming in OCaml", "https://www.cs.cornell.edu/courses/cs3110/2019sp/textbook/"],
@@ -90,6 +92,8 @@ const links: Array<[Genre, string, string]> = [
   ["paper", "A Fast and Elistist Multiobjective Genetic Algorihtm: NSGA-II", "https://www.iitk.ac.in/kangal/Deb_NSGA-II.pdf"],
 
   ["book", "sicp", "https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book.html"],
+
+  ["music", "Bill Evans Live '64 '75", "https://mitpress.mit.edu/books/little-schemer-fourth-edition"],
 
   ["paper", "Essence of generalized partial computation", "https://pdf.sciencedirectassets.com/271538/1-s2.0-S0304397500X02575/1-s2.0-030439759190299H/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEP7%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJHMEUCIQD9FytqkZbu2Jn5tZ98Yu28bcwwFhE6%2FZF5Gv0sWmb2nAIgcqOUDishkj%2Fbr84DS5E9CKo6XrsoGp%2B6ZcS4Hee2XzsqtAMIVxADGgwwNTkwMDM1NDY4NjUiDDSX5dsh5vkGyxvIJCqRA7XI6BBVsOC6Y5rHOqjHYO7%2Fk9zwYC73drCCpeOxM3phl5kqeWdjyHH8BEbeC7RMk3XgE2%2Fpqs9UxS7uLuAPM7TK%2BCpDa05SDK1qndo%2F6h%2FaK%2B1%2FxXIaLyc73tjk%2FpxA%2F%2B2GnGttdiaAVzn3QbcliJdocAQwOltVtWf2X5Oq8D99LwOrWXm9qdjZ4zKOp9GSrHxIbg0EIbis7VHyzorplQydzNp9ug6CyZmMJAUZ8Nxe1KkpXiSfpp9wvDU5W%2BPfE7etzukaicq%2FKAhirYm%2F0URFtMJlm8vqDTjre0h98xX3rLUxr12rGF%2FUxdd2qYmoPi6ojd93vWzie%2B4KGNyMuQgjIU0Nxhu6S4GnZgILoW1YlPTuESQiFY3EOEREuM8%2Bdwj4RTgkcMJP%2F5O%2FaTrIbb8VLJGSioHiVNwe20iCGF%2FD0Rq1RVChXhbJ9S1jzODAeXHzwySRRzSwoNpfCzbPtVKXk6jBexnwHboqRGMN%2BJBtarX2mJw8IjSOLz%2FKKTUwbAtzyj5U%2FfqeBHYe9GLu0Xy0MMWyuoMGOusBp41iCTQTA%2FuRn0xGIEUpDkJTaOljoZXlJYKV51Unn28OhzG604zTvsUWo9nIt5dq6BPAwZbuXr9MiqfRETkTyDcXC5vz9aJUzNfJZGSfTQqWsYJmWKMOB%2B%2B8TFd0cP2n6w6AhCyc%2FZkIhkpg0Tkz1KqY%2BzeBNZOu1bKX47ZAjhZFfttbYGCogmDl%2BjUBT5LOB1uKUgb4xWh4EbZpX87di3eqHncQjziTT99aH1TREeY5iFlfIXa%2FM1xcdfdoRV8JPv6jVPTyw3X4jVD20Ob5twexNB5uEA8BqHHVdx0gWTp0QBoAttGgKnBJtA%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20210408T063226Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAQ3PHCVTYVZK2BRHP%2F20210408%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=81efa56669cb4a28e820a6040523747aa9dd0cab1c5037aa6cbc6fd5fd4b5ee1&hash=d514dfab03de10b0a217eaad58961c53919207c155d42da488eac39918520dc0&host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&pii=030439759190299H&tid=spdf-e90560a1-8f81-49f2-bebc-2baf73f1aa81&sid=45a92b6e7b1b204adf8bfd55155715e7c4d0gxrqa&type=client"],
 
