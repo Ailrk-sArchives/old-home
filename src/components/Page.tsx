@@ -4,6 +4,7 @@ import {
 } from './List';
 import {About} from './About';
 import {Friends} from './Friends';
+import {InterestingLinks} from './InterestingLinks';
 import {AddPageTitle} from './Misc';
 import "./Page.css";
 import {allDB} from '../state/markdowns';
@@ -21,6 +22,7 @@ export const TagListPage: React.FC<{}> = () => {
 // export const PaperPage = Paper;
 export const AboutMePage = About;
 export const FriendsPage = Friends;
+export const InterestingLinksPage = InterestingLinks;
 
 
 export function Tags() {

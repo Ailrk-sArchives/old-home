@@ -38,7 +38,13 @@ export function About() {
         ogColor={"black"}
         onHoverColor={"LightCoral"}
         element={e => (<h5 className="about-info"> <FaTwitter />{e}</h5>)} />
-
+      <Link to={"/links"}>
+        <HoverLink text={" Links"}
+          link={"/links"}
+          ogColor={"black"}
+          onHoverColor={"LightCoral"}
+          element={e => (<h5 className="about-info"> <FaUserFriends />{e}</h5>)} />
+      </Link>
       <Link to={"/friends"}>
         <HoverLink text={" Friends"}
           link={"/friends"}

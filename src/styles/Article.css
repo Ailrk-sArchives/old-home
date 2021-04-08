@@ -115,7 +115,7 @@
 .Article>p {
   font-size: 1.4rem;
   line-height: 2.0rem;
-  letter-spacing: 0em;
+  letter-spacing: -0.04em;
   display: block;
   margin-block-start: 1em;
   margin-block-end: 1em;
@@ -183,6 +183,7 @@
 .Article>h6 {
   font-size: 1.5em;
   color: black;
+  font-weight: bold;
   letter-spacing: 0.0em;
 }
 
@@ -205,7 +206,7 @@
 .Article>p {
   font-size: 1rem;
   line-height: 1.8rem;
-  letter-spacing: 0.0em;
+  letter-spacing: 0.015em;
   display: block;
   margin-block-start: 1em;
   margin-block-end: 1em;

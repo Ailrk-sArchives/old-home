@@ -8,6 +8,7 @@ import {
   TagListPage,
   TagPage,
   FriendsPage,
+  InterestingLinksPage
 } from './Page';
 
 import 'highlightjs/styles/github.css';
@@ -37,6 +38,7 @@ function App() {
           <Route exact path="/tag/:tag" component={TagListPage} />
           <Route exact path="/tags" component={TagPage} />
           <Route exact path="/friends" component={FriendsPage} />
+          <Route exact path="/links" component={InterestingLinksPage} />
         </Suspense>
         <Route exact path="/about" component={AboutMePage} />
       </Switch>

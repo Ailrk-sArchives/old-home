@@ -6,7 +6,7 @@ import "./About.css"; // reuse about's style
 import {useWindowSize} from '../state/hooks';
 
 const friendLinks = [
-  ["  Lucas Pozza", "https://stillwwater.github.io/#/"]
+  ["Lucas Pozza", "https://stillwwater.github.io/#/"]
 ];
 
 export function Friends() {
@@ -21,7 +21,7 @@ export function Friends() {
           const [name, link] = pair;
 
           return (
-            <HoverLink text={name}
+            <HoverLink text={"  " + name}
               link={link}
               ogColor={"black"}
               onHoverColor={"LightCoral"}

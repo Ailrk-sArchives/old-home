@@ -97,11 +97,11 @@ Template allows us to parameterize over type definiton, partial specialization a
 
 ```c++
 struct nil {};
-tempalte <typenmae...> struct head ;
+template <typename...> struct head ;
 template <typename T, typename... Ts> struct head<T, Ts...>  {
   using type = T;
 };
-tempalte <> struct head<> { using type = nil; };
+template <> struct head<> { using type = nil; };
 ```
 
 ###### Template template paramter
