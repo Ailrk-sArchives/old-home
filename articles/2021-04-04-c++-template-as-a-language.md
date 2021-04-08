@@ -61,7 +61,7 @@ Before we jump into the details, let's refresh mechanisms that makes C++ templat
 
 ###### Templates
 First we know template is completely a compile time concept, they parameterize a body of definiion with a template variable, much like how functions parameterize a body of code. The difference is function takes values as parameters, but templates take types. We are particularly interested in class temlate, because one can think a class template as a mapping from a type to another type, which resembles the behavior of a function at term level:
-```C++
+```c++
 template <typename A>
 struct add_const_reference{
   using type = const A&;
