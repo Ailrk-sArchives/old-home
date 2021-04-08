@@ -41,7 +41,7 @@ declare(x); declare(y); declare(z);
 <p>Before we jump into the details, let's refresh mechanisms that makes C++ templates turing complete.</p>
 <h6>Templates</h6>
 <p>First we know template is completely a compile time concept, they parameterize a body of definiion with a template variable, much like how functions parameterize a body of code. The difference is function takes values as parameters, but templates take types. We are particularly interested in class temlate, because one can think a class template as a mapping from a type to another type, which resembles the behavior of a function at term level:</p>
-<pre><code class="language-C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> A&gt;
+<pre><code class="language-c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> A&gt;
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">add_const_reference</span>{</span>
   <span class="hljs-keyword">using</span> type = <span class="hljs-keyword">const</span> A&amp;;
 };
