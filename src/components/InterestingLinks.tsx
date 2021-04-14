@@ -130,7 +130,9 @@ const links: Array<[Genre, string, string]> = [
 
   ["paper", "Control Flow Analysis", "https://www.cs.columbia.edu/~suman/secure_sw_devel/p1-allen.pdf"],
 
-  ["book", "Advanced Compiler Design and Implementation", "https://www.amazon.ca/Advanced-Compiler-Design-Implementation-Muchnick/dp/1558603204"]
+  ["book", "Advanced Compiler Design and Implementation", "https://www.amazon.ca/Advanced-Compiler-Design-Implementation-Muchnick/dp/1558603204"],
+
+  ["paper", "Network flow: The Max Flow/Min Cut Theorem", "http://www.cs.toronto.edu/~lalla/373s16/notes/MFMC.pdf"]
 ];
 
 export function InterestingLinks() {
