@@ -132,7 +132,13 @@ const links: Array<[Genre, string, string]> = [
 
   ["book", "Advanced Compiler Design and Implementation", "https://www.amazon.ca/Advanced-Compiler-Design-Implementation-Muchnick/dp/1558603204"],
 
-  ["paper", "Network flow: The Max Flow/Min Cut Theorem", "http://www.cs.toronto.edu/~lalla/373s16/notes/MFMC.pdf"]
+  ["paper", "Network flow: The Max Flow/Min Cut Theorem", "http://www.cs.toronto.edu/~lalla/373s16/notes/MFMC.pdf"],
+
+  ["paper", "Playing by the Rules: Rewriting as a practical optimization technique in GHC", "https://www.microsoft.com/en-us/research/wp-content/uploads/2001/09/rules.pdf"],
+
+  ["paper", "Secrets of the Glasgow Haskell Compiler Inliner", "https://www.microsoft.com/en-us/research/wp-content/uploads/2002/07/inline.pdf"],
+
+  ["paper", "A Simplification of Girarad's Paradox", "https://www.cs.cmu.edu/~kw/scans/hurkens95tlca.pdf"]
 ];
 
 export function InterestingLinks() {

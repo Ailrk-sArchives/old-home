@@ -109,6 +109,9 @@ template <> struct head<> { using type = nil; };
 As we already known, templates can be thought as type level function that takes a type and yields a new type. When we are doing partial specialization, how do we match on a template that suppose to work like a function? For that C++ template provides `template template parameter`, or it's better known as higher kinded type.
 
 
+```c++
+```
+
 ### Metafunction
 
 ### Values

@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom';
 
 
 let descrption = `
-  I work on some haskell, c++, python and typescript.
+  I work with Haskell, C++, Common Lisp, Python, and Typescript.
 `;
 
 export function About() {
