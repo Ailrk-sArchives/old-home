@@ -1,5 +1,5 @@
 /* @deprecated */
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1025px) {
   .sidebar-main {
     top: 0;
     right: -20%;
@@ -20,7 +20,7 @@
   }
 }
 
-@media screen and (max-width: 999px) {
+@media screen and (max-width: 1025px) {
   .sidebar-main  {
     margin-left: -60px;
     visibility: hidden;

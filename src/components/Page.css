@@ -1,11 +1,11 @@
 
-@media screen and (max-width: 999px) {
+@media screen and (max-width: 1600px) {
 .page-body {
   width: 100%;
 }
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1600px) {
 .page-body {
   width: 50%;
 }

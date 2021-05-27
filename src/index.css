@@ -3,12 +3,22 @@
   src: url('./assets/fonts/APL386.ttf');
 }
 
+@font-face {
+  font-family: 'Lato';
+  src: url('./assets/fonts/Lato-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'RobotoSlab';
+  src: url('./assets/fonts/RobotoSlab-VariableFont_wght.ttf');
+}
+
 html {
   zoom: 100%;
 }
 
 * {
-  font-family: 'APL386';
+  font-family: 'RobotoSlab';
 }
 
 body {
@@ -27,7 +37,7 @@ html {
   overflow-y: scroll;
 }
 
-code {
+code * {
   font-family: 'APL386', source-code-pro, Menlo, Monaco, Consolas, 'Lato', 'Courier New';
 }
 

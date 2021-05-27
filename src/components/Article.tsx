@@ -7,6 +7,9 @@ import {HoverLink, toNormalP} from './Misc';
 import {useWindowSize, useDelayRender} from '../state/hooks';
 import '../styles/Article.css';
 
+// switch to mobile layout
+const breakpoint = 1025;
+
 // article compoenent. It insert parsed markown JSX element
 // into card container.
 // the style can be controlled by style parameter.
@@ -20,9 +23,9 @@ export function Article(props: {
   const {width} = useWindowSize();
   const delay = useDelayRender(100);
   const defaultArticleStyle = css(textTheme, {
-    paddingLeft: width > 1000 ? "60px" : "20px",
-    paddingTop: width > 1000 ? "30px" : "0px",
-    fontSize: width > 1000 ? "1em" : "0.7em",
+    paddingLeft: width > breakpoint ? "60px" : "20px",
+    paddingTop: width > breakpoint ? "30px" : "0px",
+    fontSize: width > breakpoint ? "1em" : "0.7em",
     marginBottom: "100px",
     overflow: "hidden",
   });

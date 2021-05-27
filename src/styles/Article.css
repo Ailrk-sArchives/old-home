@@ -2,46 +2,28 @@
 /*     user-select: none; */
 /* } */
 
-.Article>pre {
-  background: White;
+.Article {
+  width: 111%;
 }
 
-.Article>pre {
-  font-size: 1.1em;
-  color: black;
-  line-height: 1.4rem;
-  padding-left: 2em;
-  padding-right: 2em;
-  padding-top: 3em;
-  padding-bottom: 3em;
-}
-
-
-
-.Article>p {
-  color: black;
-}
 .Article figcaption {
   font-size: 1.5em;
 }
 
-.Article {
-  width: 111%;
-}
-.Article p code {
-  color: inherit;
-  font-weight: bold;
-  font-family: "APL386";
-}
+/* .Article p code { */
+/*   color: inherit; */
+/*   font-weight: bold; */
+/*   font-family: "APL386"; */
+/* } */
 
-.Article code{
-  font-family: "APL386";
-}
+/* .Article code{ */
+/*   font-family: "APL386"; */
+/* } */
+
 .Articel>caption {
     display: table-caption;
     text-align: -webkit-center
 }
-
 
 .Article>thead {
     display: table-header-group;
@@ -105,25 +87,46 @@
     /* border-spacing: 20px; */
     /* border-color: black; */
 }
-/* laptop */
-@media screen and (min-width: 1000px) {
+
+
+.Article>pre {
+  border-left-color: LightCoral;
+  border-left-width: 4px;
+  border-left-style: solid;
+}
+
+/* ------------ responsive ------------------- */
+
+/* ----------- laptop ----------- */
+@media screen and (min-width: 1025px) {
 .source-list {
   fontSize: 1.5em;
   wordBreak: "break-all";
 }
 
 .Article>p {
-  font-size: 1.4rem;
-  line-height: 2.0rem;
-  letter-spacing: -0.04em;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  letter-spacing: -0.00em;
   display: block;
   margin-block-start: 1em;
   margin-block-end: 1em;
   text-align: justify;
 }
 
+.Article>pre {
+  background: White;
+  font-size: 1.1em;
+  color: black;
+  line-height: 1.5rem;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
 .Article>ul {
-  font-size: 1.2em;
+  font-size: 1.4em;
   color: black;
 }
 
@@ -137,53 +140,27 @@
  * h1, h2 are too big for articles.
  * here they are adjusted to the same size as h3.
  * */
-.Article>h1 {
-  color: black;
-  font-weight: bolder;
-  font-size: 2.4em;
-  line-height: 1em;
-  letter-spacing: 0.0em;
-}
-
-.Article>h2 {
-  color: black;
-  font-weight: bolder;
-  font-size: 2.4em;
-  line-height: 1em;
-  letter-spacing: 0.0em;
-  text-align: center;
-}
-
-
-/* Article title should use h3 */
-.Article>h3 {
-  color: black;
-  font-size: 2.1em;
-  font-weight: bolder;
-  line-height: 1em;
-  letter-spacing: 0.0em;
-}
-
-.Article>h4 {
-  color: black;
-  font-size: 2.1em;
-  font-weight: bolder;
-  letter-spacing: 0.0em;
-}
-
-
-.Article>h5 {
-  font-weight: bolder;
-  font-size: 1.8em;
-  color: black;
-  letter-spacing: 0.0em;
-}
-
-
-.Article>h6 {
-  font-size: 1.5em;
+.Article>h1,h2 {
   color: black;
   font-weight: bold;
+  font-size: 2.1em;
+  line-height: 1em;
+  letter-spacing: 0.0em;
+}
+
+/* Article title should use h3 */
+.Article>h3,h4 {
+  color: black;
+  font-size: 1.6em;
+  font-weight: bold;
+  line-height: 1em;
+  letter-spacing: 0.0em;
+}
+
+.Article>h5,h6 {
+  font-weight: bold;
+  font-size: 1.3em;
+  color: black;
   letter-spacing: 0.0em;
 }
 
@@ -201,12 +178,12 @@
 }
 }
 
-/* mobile */
-@media screen and (max-width: 999px) {
+/* ----------- mobile ----------- */
+@media screen and (max-width: 1024px) {
 .Article>p {
-  font-size: 1rem;
+  font-size: 1.3rem;
   line-height: 1.8rem;
-  letter-spacing: 0.015em;
+  letter-spacing: 0.00em;
   display: block;
   margin-block-start: 1em;
   margin-block-end: 1em;
@@ -215,16 +192,27 @@
   hyphens: auto;
 }
 
+.Article>pre {
+  background: White;
+  font-size: 1.5em;
+  color: black;
+  line-height: 1.0rem;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
 .Article img {
   width: 100%;
 }
 
 .Article>ul {
-  font-size: 1.2em;
+  font-size: 1.6em;
   color: black;
 }
 .Article>ol {
-  font-size: 1.4em;
+  font-size: 1.6em;
   color: black;
 }
 
@@ -234,15 +222,7 @@
  * h1, h2 are too big for articles.
  * here they are adjusted to the same size as h3.
  * */
-.Article>h1 {
-  color: black;
-  font-weight: bold;
-  font-size: 2.4em;
-  line-height: 1em;
-  letter-spacing: 0.0em;
-}
-
-.Article>h2 {
+.Article>h1,h2 {
   color: black;
   font-weight: bold;
   font-size: 2.4em;
@@ -252,56 +232,45 @@
 
 
 /* Article title should use h3 */
-.Article>h3 {
+.Article>h3,h4 {
   color: black;
   font-size: 2.1em;
   font-weight: bold;
   line-height: 1em;
-  text-align: center;
   letter-spacing: 0.0em;
 }
 
-.Article>h4 {
-  color: black;
-  font-weight: bold;
-  font-size: 2.1em;
-  font-size: 2em;
-  letter-spacing: 0.02em;
-}
-
-
-.Article>h5 {
-  font-weight: bold;
-  font-size: 1.8em;
-  color: black;
-  letter-spacing: 0.02em;
-}
-
-
-.Article>h6 {
+.Article>h5,h6 {
   font-size: 1.2em;
   color: black;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.0em;
 }
 
 .Article a {
   color: LightCoral;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.0em;
 }
 }
 
-/* @media screen and (max-width: 999px) { */
-/* .Article>p { */
-/*   font-size: 1.2rem; */
-/*   line-height: 1.3em; */
-/* } */
-/* } */
 
+/* ----------- mobile small ----------- */
 @media screen and (max-width: 570px) {
 .Article>p {
   font-size: 0.8rem;
   line-height: 1.3em;
 }
+
+.Article>pre {
+  background: White;
+  font-size: 1.0em;
+  color: black;
+  line-height: 1.0rem;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 3em;
+  padding-bottom: 3em;
+}
+
 
 .source-list {
   fontSize: 0.7em;
@@ -312,7 +281,7 @@
   font-weight: bold;
   font-size: 1.5em;
   color: black;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.0em;
 }
 
 .Article table {
@@ -324,6 +293,15 @@
   font-size: 1.2em;
   color: black;
   letter-spacing: 0.06em;
+}
+
+.Article>ul {
+  font-size: 1em;
+  color: black;
+}
+.Article>ol {
+  font-size: 1em;
+  color: black;
 }
 
 

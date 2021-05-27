@@ -9,4 +9,22 @@
 
 <br/>
 
-Navigating in a persistent data structure can sometimes be awkward.
+### Functional update
+
+
+### Focus
+
+
+### On hole context
+
+
+### A list Zipper
+
+
+### Generalize to a tree zipper.
+
+
+### Other zippers?
+
+
+### Conclusion
