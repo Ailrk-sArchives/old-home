@@ -1,7 +1,7 @@
 <h2>C++ Template as A Langauge</h2>
 <br/>
-<p>Templates was added to C++ in it's third release (1991) to support parametric polymorphism, and it was soon be discovered to be much more powerful then it's original design goal. It was proven to be <a href="https://rtraba.files.wordpress.com/2015/05/cppturing.pdf">turning complete</a>, although you cannot directly perform IO with it, technically you can do any other computations with just templates and partial specializations. The earliest recorded template abuse I could find was <a href="http://www.erwin-unruh.de/primorig.html">this little program</a> written by Erwin Unruh in 1994 to calculate prime at compile time. Ever since then, C++ templates have became a powerful tool not only enpowering generic programming and meta programming techniques, but also being an ideal tool for recreational programming purpose :p.</p>
-<p>I find the description &quot;turning complete&quot; a bit unsatisfied. I mean sure you can encode some turing machines and watch the compiler move tapes, or you can implement a <a href="http://matt.might.net/articles/c++-template-meta-programming-with-lambda-calculus/">sicp style interpreter</a>, which itself is turning complete. But I want to use C++ templates to do some real programming. I was imagining a full lambda calculus based functional programming langauge augmented with useful libraries, maybe in monadic style or cps style to make it actually usable for relatively big projects. Apparently this idea has already been explored 7 years ago in <a href="http://www.tnkcs.inf.elte.hu/vedes/sinkovics_abel_ertekezes.pdf">this</a> dissertation. The paper has a comprehensive discussion about how to do functional style programming with C++ templates. Following it's lead, I implemented my own version. Here is a little snippet to demonstrate the effect:</p>
+<p><a href="Templates">Templates</a> was added to C++ in it's third release (1991) to support parametric polymorphism, and it was soon be discovered to be much more powerful then it's original design goal. It was proven to be <a href="https://rtraba.files.wordpress.com/2015/05/cppturing.pdf">turning complete</a>, although you cannot directly perform IO with it, technically you can do any other computations with just templates and partial specializations. The earliest recorded template abuse was <a href="http://www.erwin-unruh.de/primorig.html">this little program</a> written by Erwin Unruh in 1994 to calculate prime at compile time. Ever since then, C++ templates have became a powerful tool not only enpowering generic programming and meta programming techniques, but also being an ideal tool for recreational programming purpose :p.</p>
+<p>I always feel just knowing template is &quot;turning complete&quot; is a bit unsatisfying. I mean sure you can encode some turing machines and watch the compiler move tapes, or you can implement a <a href="http://matt.might.net/articles/c++-template-meta-programming-with-lambda-calculus/">sicp style interpreter</a>, which itself is turning complete. But I want to use C++ templates to do some real programming. I was imagining a full lambda calculus based functional programming langauge augmented with useful libraries, maybe in monadic style or cps style to make it actually usable for relatively big projects. Apparently this idea has already been explored 7 years ago in <a href="http://www.tnkcs.inf.elte.hu/vedes/sinkovics_abel_ertekezes.pdf">this</a> dissertation. The paper has a comprehensive discussion about how to do functional style programming with C++ templates. Following it's lead, I implemented my own version. Here is a little snippet to demonstrate the effect:</p>
 <pre><code class="language-c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"tml.h"</span></span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
 declare(x); declare(y); declare(z);
@@ -36,19 +36,13 @@ declare(x); declare(y); declare(z);
 
 <span class="hljs-comment">// $ print it: 3628800</span>
 </code></pre>
-<p>This example shows some basic features like let binding, lambda, and currying. Later we will add data types with monadic interfaces like maybe type and list type. When I was implementing it I found a lot of topics for implementing a programming language applies here as well. For example, you need to specify what is considered as a value, what comprises an expression, and what does it mean to evaluate something, all in a C++ template setting.</p>
-<h3>Mechanisms</h3>
-<p>Before we jump into the details, let's refresh mechanisms that makes C++ templates turing complete.</p>
+<p>This example shows some basic features like let binding, lambda, and currying. Later we will add data types with monadic interfaces like maybe type and list type. When I was implementing it I found a lot of topics for implementing a programming language applies here as well. You need to specify what is considered as a value, what comprises an expression, and what does it mean to evaluate something, all in a C++ template setting.</p>
+<h3>C++ Template Mechanisms</h3>
+<p>Before we jump into the details, let's first refresh on what we can do with C++ templates.</p>
 <h6>Templates</h6>
-<p>First we know template is completely a compile time concept, they parameterize a body of definiion with a template variable, much like how functions parameterize a body of code. The difference is function takes values as parameters, but templates take types. We are particularly interested in class temlate, because one can think a class template as a mapping from a type to another type, which resembles the behavior of a function at term level:</p>
-<pre><code class="language-c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> A&gt;
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">add_const_reference</span>{</span>
-  <span class="hljs-keyword">using</span> type = <span class="hljs-keyword">const</span> A&amp;;
-};
-</code></pre>
-<p>If we substitute A with <code>int</code>, the example above will generate a full specialization of type <code>add_const_reference&lt;A&gt;</code> when it's applied with a concrete type. To get the output of this specialization, we access it's <code>type</code> member alias as <code>add_const_reference&lt;int&gt;::type</code>. One thing to note is, if there is recursion going on, a full specilization without accessing the <code>::type</code> will not further specialize the recursive step (aka right hand side of the type alias), which makes it behaves much like lazy evaluation. This is important. Because we can choose to defer the specialization, it's easy to implement control flow syntax like <code>if</code> an short circuit operators like <code>or</code> without assistence outside of the language.</p>
+<p>First of all, C++ template is completely a compile time concept. A template by itself is not a type or a function or anything else, it's just a receipe to tell the compiler how to generate certain code. To actually make the code appear, one need to explicitly instantiate the template with all template paramters known at the compile time. This mechanism is sometimes referred as monomorphization, and it's the strategy C++ uses to acheive parametric polymorphism with zero runtime overhead. For our concern, we only need to know that the compiler instantiation process can involve arbitrary computation, and we can have a lot of control over it.</p>
 <h6>Partial specialization</h6>
-<p>Another empowering feature is template partial specilization. Partial specialization works like pattern matching in many functional programming languages, it invokes a specific specialization when a certin types are passed as arguments. Take an example:</p>
+<p>The most important feature for meta programming is <code>template partial specilization</code>. Partial specialization works like pattern matching in many functional programming languages, it invokes a specific specialization when certain types are passed as arguments. Take an example:</p>
 <pre><code class="language-c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span> U&gt;
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Klass</span> {</span>
   <span class="hljs-keyword">using</span> type = <span class="hljs-keyword">int</span>;
@@ -75,11 +69,42 @@ declare(x); declare(y); declare(z);
 <span class="hljs-keyword">template</span> &lt;&gt; <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">head</span>&lt;&gt; {</span> <span class="hljs-keyword">using</span> type = nil; };
 </code></pre>
 <h6>Template template paramter</h6>
-<p>As we already known, templates can be thought as type level function that takes a type and yields a new type. When we are doing partial specialization, how do we match on a template that suppose to work like a function? For that C++ template provides <code>template template parameter</code>, or it's better known as higher kinded type.</p>
-<pre><code class="language-c++"></code></pre>
-<h3>Metafunction</h3>
+<p>As we already known, templates can be thought as type level function that takes a type and yields a new type. To push the analogy further, we can have higher order functions at the type level by using <code>template template parameter</code>. This feature allows us to pass a class template as parameter of another template, just like how you can pass a function to another function.</p>
+<pre><code class="language-c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;type_traits&gt;</span></span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> ...&gt; <span class="hljs-keyword">typename</span> F, <span class="hljs-keyword">typename</span> ...Ts&gt;
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">apply</span> {</span>
+  <span class="hljs-keyword">using</span> type = F&lt;Ts...&gt;::type;
+};
+
+<span class="hljs-keyword">using</span> out_type = apply&lt;head, <span class="hljs-keyword">int</span>, <span class="hljs-keyword">double</span>, <span class="hljs-keyword">char</span>&gt;::type
+
+<span class="hljs-keyword">static_assert</span>(<span class="hljs-built_in">std</span>::is_same_v&lt;our_type, <span class="hljs-keyword">int</span>&gt;);
+</code></pre>
+<h3>Meta function</h3>
+<p>Templates can be thought as type level functions, they parameterize a body of definion with a template variable, much like how functions parameterize a body of code. The difference is function takes values as parameters, but templates take types. We are particularly interested in class template, because one can think a class template as a mapping from a type to another type, which resembles the behavior of a function at term level. In C++ lingo, these templates are called <code>meta functions</code>, and they are the basic building blocks of template meta programming.</p>
+<p>Take a look at the following example:</p>
+<pre><code class="language-c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> A&gt;
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">add_const_reference</span>{</span>
+  <span class="hljs-keyword">using</span> type = <span class="hljs-keyword">const</span> A&amp;;
+};
+</code></pre>
+<p>If we substitute A with <code>int</code>, the example above will generate a full specialization of type <code>add_const_reference&lt;A&gt;</code> when it's applied with a concrete type. To get the output of this specialization, we access it's <code>type</code> member alias as <code>add_const_reference&lt;int&gt;::type</code>.</p>
+<p>It's a very good intution to treating templates as meta functoins that takes a type and return another type, but C++ templates was not designed for this use cases any way, so we have some problems to apply the</p>
+<p>TODO</p>
+<p>, but C++ template can take more than types as parameter, you can also pass any integral values. For example, take a look at the famous factorial example that every template meta programming tutorials demonstrate:</p>
+<pre><code class="language-c++">tempalte&lt;<span class="hljs-keyword">int</span> N&gt;
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">fact</span> {</span>
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> value = N * fact&lt;N - <span class="hljs-number">1</span>&gt;::value;
+}
+
+tempalte&lt;&gt;
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">fact</span>&lt;0&gt; {</span>
+  <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> value = <span class="hljs-number">1</span>;
+};
+</code></pre>
 <h3>Values</h3>
 <h3>Evaluation Strategy</h3>
+<p>One thing to note is, if there is recursion going on, a full specilization without accessing the <code>::type</code> will not further specialize the recursive step (aka right hand side of the type alias), which makes it behaves much like lazy evaluation. This is important. Because we can choose to defer the specialization, it's easy to implement control flow syntax like <code>if</code> an short circuit operators like <code>or</code> without assistence outside of the language.</p>
 <h3>Let Binding</h3>
 <h3>Calling conventions.</h3>
 <h3>Lambda!</h3>
