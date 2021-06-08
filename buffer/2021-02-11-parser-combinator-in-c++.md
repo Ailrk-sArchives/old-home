@@ -9,13 +9,13 @@
           https://github.com/ailrk/cppparsec
 
 ;;
-##  A Parser Combinator in C++
+##  Parser combinators
 
 <br/>
 
-Parsing text is probably one of the most commonly task in daily life.
 
 ### Formal Grammar
+
 
 ### Kleene Algebra
 
@@ -31,9 +31,5 @@ The idea of a regular language can be captured by `kleene algebra`.
 ### Monadic interface
 
 ### CPS transformation
-
-### Improve template inference
-
-### Improve performance
 
 ### Conclusion

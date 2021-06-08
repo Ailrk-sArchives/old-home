@@ -23,6 +23,10 @@ const links: Array<[Genre, string, string]> = [
 
   ["noice", "vibin'", "https://www.youtube.com/watch?v=qMQ-y9dHE2k"],
 
+  ["music", "Cafe de touhou", "https://www.youtube.com/watch?v=RY7FpB9BZH4&t=4102s"],
+
+  ["music", "Sunny", "https://www.youtube.com/watch?v=JBPPnjCipyE&list=RDEMiPH9j8Vz8f--x4LSi1fegw&index=9"],
+
   ["paper", "The connection between c++ template metaprogramming and functional programming",
     "http://www.tnkcs.inf.elte.hu/vedes/sinkovics_abel_ertekezes.pdf"],
 
@@ -138,7 +142,45 @@ const links: Array<[Genre, string, string]> = [
 
   ["paper", "Secrets of the Glasgow Haskell Compiler Inliner", "https://www.microsoft.com/en-us/research/wp-content/uploads/2002/07/inline.pdf"],
 
-  ["paper", "A Simplification of Girarad's Paradox", "https://www.cs.cmu.edu/~kw/scans/hurkens95tlca.pdf"]
+  ["paper", "A Simplification of Girarad's Paradox", "https://www.cs.cmu.edu/~kw/scans/hurkens95tlca.pdf"],
+
+  ["website", "INFORMATICS 2A (Automaton theory, Formal langauge and Natural languages ", "http://www.inf.ed.ac.uk/teaching/courses/inf2a/schedule.html"],
+
+  ["blog", "What Have We learned from the PDP-11?", "https://dave.cheney.net/2017/12/04/what-have-we-learned-from-the-pdp-11"],
+
+  ["paper", "The Next 700 Programming Languages", "http://www.math.bas.bg/bantchev/place/iswim/next700.pdf"],
+
+  ["paper", "The essence of functional programming", "https://docuri.com/download/the-essence-of-functional-programming_59c1df39f581710b286958c4_pdf"],
+
+  ["website", "Subtyping (Dynamic Polymorphism)", "http://staff.ustc.edu.cn/~yuzhang/fopl/2018s/notes/subtyping.pdf"],
+
+  ["paper", "History of programming langauges", "http://m.unhas.ac.id/rhiza/arsip/kuliah/Komputasi-dan-Pemrograman/history-prog-lang.pdf"],
+
+  ["blog", "The strengths of the academic enterprise (Dijkstra)", "https://www.cs.utexas.edu/users/EWD/transcriptions/EWD11xx/EWD1175.html"],
+
+  ["website", "CPSC 509 Programming Language Principles", "https://www.cs.ubc.ca/~rxg/cpsc509/"],
+
+  ["website", "CPSC 411 Introduction to Compiler Construction", "https://www.students.cs.ubc.ca/~cs-411/2019w2/"],
+
+  ["paper", "Summary of Proof Techniques", "https://www.cs.ubc.ca/~rxg/cpsc509/proof_technique.pdf"],
+
+  ["blog", "Final tagless encodings have little to do with typeclasses", "https://www.foxhound.systems/blog/final-tagless/"],
+
+  ["blog", "Typefamilies in Haskell: The Definitive Guide", "https://serokell.io/blog/type-families-haskell"],
+
+  ["paper", "Domain-specific Languages and Code Synthesis Using Haskell", "https://queue.acm.org/detail.cfm?id=2617811"],
+
+  ["paper", "Notions of computation and monad", "http://www.cs.cmu.edu/~crary/819-f09/Moggi91.pdf"],
+
+  ["paper", "The mechanical evalutaion of expressions", "https://www.cs.cmu.edu/afs/cs/user/crary/www/819-f09/Landin64.pdf"],
+
+  ["blog", "Lens over tea", "https://artyom.me/lens-over-tea-1"],
+
+  ["blog", "Lenses: compositional data access and manipulation", "https://skillsmatter.com/skillscasts/4251-lenses-compositional-data-access-and-manipulation"],
+
+  ["blog", "reading list for GHC internals and WebAssembly", "https://github.com/tweag/asterius/blob/master/docs/readings.md"]
+
+
 ];
 
 export function InterestingLinks() {

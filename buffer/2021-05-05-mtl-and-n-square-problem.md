@@ -7,7 +7,7 @@
 ## Monad transformers, mtl and n² problem
 
 
-### Monad transformer is inductive
+### Monad transformer
 
 ### Stack Monad transformers
 
