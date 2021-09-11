@@ -42,6 +42,7 @@ export function HeaderSimple() {
         <Row className={"header-simple-navbar"}>
           <TopbarNavTab name="articles" link={"/"} />
           <TopbarNavTab name="tags" link={"/tags"} />
+          <TopbarNavTab name="diary" link={"/diary"} />
           <TopbarNavTab name="about" link={"/about"} />
         </Row>
       </Row>
