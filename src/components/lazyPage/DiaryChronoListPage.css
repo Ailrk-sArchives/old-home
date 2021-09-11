@@ -1,0 +1,7 @@
+.diary-page {
+  /* writing-mode: vertical-rl; */
+  /* overflow: auto; */
+
+  float: right;
+  letter-spacing: 2px;
+}

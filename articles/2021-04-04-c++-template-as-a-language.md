@@ -1,4 +1,4 @@
--- tag C++ template
+-- tag C++
 -- title C++ Template as a Langauge
 -- time 2021-04-04
 -- source https://docs.microsoft.com/en-us/cpp/cpp/templates-cpp?view=msvc-160

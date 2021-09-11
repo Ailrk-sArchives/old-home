@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
-import {Row, Col, Container} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
-import {linkStyle} from '../styles/styleElements';
+import React, { useState } from 'react';
+import { Row, Col, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { linkStyle } from '../styles/styleElements';
 import "./HeaderSimple.css";
 import Ghead from '../assets/ghead.png';
 
-function TopbarNavTab(props: {name: string, link: string}) {
+function TopbarNavTab(props: { name: string, link: string }) {
 
   const [color, setColor] = useState<string>("black");
   return (
     <div className="header-simple-info">
-      <Link style={{...linkStyle, color}} to={props.link}
+      <Link style={{ ...linkStyle, color }} to={props.link}
         onMouseEnter={() => setColor("lightCoral")}
         onMouseLeave={() => setColor("black")}>
         <span>{props.name}</span>
@@ -25,7 +25,7 @@ export function HeaderSimple() {
     <Container className="header-simple-main">
       <Row className="header-simple-text">
         <Col sm={8}>
-          <Link style={{...linkStyle}} to="/">
+          <Link style={{ ...linkStyle }} to="/">
             <span id="header-simple-title" >
               <span>
                 <img src={Ghead}
@@ -34,7 +34,7 @@ export function HeaderSimple() {
                   width={60}
                   className="header-simple-avatar" />
               </span>
-              <span id="header-simple-title-text"> 4 letters prose </span>
+              <span id="header-simple-title-text"> Easy living </span>
             </span>
           </Link>
         </Col>

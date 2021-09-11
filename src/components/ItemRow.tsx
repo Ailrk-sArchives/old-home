@@ -23,8 +23,7 @@ function ItemRowSkeleton(props: {titleElement: JSX.Element, dateElement: JSX.Ele
 }
 
 const title = (header: MarkdownHeader) => (
-  <h3
-      style={{fontSize: "1em"}}>
+  <h3 style={{fontSize: "1em"}}>
     <HoverLink text={`${header.title}`}
       link={`${process.env.PUBLIC_URL}/#/article/${header.id}`}
       ogColor={"black"}

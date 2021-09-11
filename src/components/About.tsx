@@ -1,20 +1,22 @@
 import React from 'react';
-import {Container} from 'react-bootstrap';
-import {HoverLink} from './Misc';
-import {useWindowSize} from '../state/hooks';
-import {FaGithub, FaPaperPlane, FaTwitter, FaUserFriends} from "react-icons/fa/index";
+import { Container } from 'react-bootstrap';
+import { HoverLink } from './Misc';
+import { useWindowSize } from '../state/hooks';
+import { FaGithub, FaPaperPlane, FaTwitter, FaUserFriends, FaLink } from "react-icons/fa/index";
 import "./About.css";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useDelayRender } from '../state/hooks';
 
 
 let descrption = `
-  I work with Haskell, C++, Common Lisp, Python, and Typescript.
+  I like everything about programming languages.
 `;
 
 export function About() {
-  const {width} = useWindowSize();
-  return (
-    <Container style={width > 600 ? {} : {marginLeft: 30}}>
+  const { width } = useWindowSize();
+  let delay = useDelayRender();
+  const Content = () => (
+    <>
       <div>
         <h5 className="about-title"> About me </h5>
       </div>
@@ -38,13 +40,6 @@ export function About() {
         ogColor={"black"}
         onHoverColor={"LightCoral"}
         element={e => (<h5 className="about-info"> <FaPaperPlane /> {e}</h5>)} />
-      <Link to={"/links"}>
-        <HoverLink text={" Links"}
-          link={"/links"}
-          ogColor={"black"}
-          onHoverColor={"LightCoral"}
-          element={e => (<h5 className="about-info"> <FaUserFriends />{e}</h5>)} />
-      </Link>
       <Link to={"/friends"}>
         <HoverLink text={" Friends"}
           link={"/friends"}
@@ -52,14 +47,30 @@ export function About() {
           onHoverColor={"LightCoral"}
           element={e => (<h5 className="about-info"> <FaUserFriends />{e}</h5>)} />
       </Link>
-      <Link to={"/iter1"}>
-        <HoverLink text={" What's this?"}
-          link={"/iter1"}
+
+      <Link to={"/diary"}>
+        <HoverLink text={" Diary"}
+          link={"/diary"}
           ogColor={"black"}
           onHoverColor={"LightCoral"}
           element={e => (<h5 className="about-info"> <FaUserFriends />{e}</h5>)} />
       </Link>
+    </>
+  );
 
+  // <Link to={"/links"}>
+  //   <HoverLink text={" Links"}
+  //     link={"/links"}
+  //     ogColor={"black"}
+  //     onHoverColor={"LightCoral"}
+  //     element={e => (<h5 className="about-info"> <FaUserFriends />{e}</h5>)} />
+  // </Link>
+
+  return (
+    <Container style={width > 600 ? {} : { marginLeft: 30 }}>
+      {
+        delay ? <Content /> : <div />
+      }
     </Container>
   );
 }

@@ -1,9 +1,10 @@
-import {Container} from 'react-bootstrap';
-import {HoverLink} from './Misc';
-import {FaLink} from "react-icons/fa/index";
+import { Container } from 'react-bootstrap';
+import { HoverLink } from './Misc';
+import { FaLink } from "react-icons/fa/index";
 import React from 'react';
 import "./About.css"; // reuse about's style
-import {useWindowSize} from '../state/hooks';
+import { useWindowSize } from '../state/hooks';
+import { useDelayRender } from '../state/hooks';
 
 type Genre =
   | "website"
@@ -180,13 +181,13 @@ const links: Array<[Genre, string, string]> = [
 
   ["blog", "reading list for GHC internals and WebAssembly", "https://github.com/tweag/asterius/blob/master/docs/readings.md"]
 
-
 ];
 
 export function InterestingLinks() {
-  const {width} = useWindowSize();
-  return (
-    <Container style={width > 600 ? {} : {marginLeft: 30}}>
+  const { width } = useWindowSize();
+  let delay = useDelayRender();
+  let Content = () => (
+    <>
       <div>
         <h5>Interesting Links</h5>
       </div>
@@ -202,5 +203,13 @@ export function InterestingLinks() {
               element={e => (<h5 className="about-info"> <FaLink />{e}</h5>)} />);
         })
       }
-    </Container>);
+    </>);
+
+  return (
+    <Container style={width > 600 ? {} : { marginLeft: 30 }}>
+      {
+        delay ? <Content /> : <div />
+      }
+    </Container>
+  );
 }

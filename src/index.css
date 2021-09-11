@@ -18,7 +18,7 @@ html {
 }
 
 * {
-  font-family: 'RobotoSlab';
+  font-family: 'RobotoSlab', 'Simsun';
 }
 
 body {
@@ -38,7 +38,5 @@ html {
 }
 
 code * {
-  font-family: 'APL386', source-code-pro, Menlo, Monaco, Consolas, 'Lato', 'Courier New';
+  font-family: 'APL386', source-code-pro, Menlo, Monaco, Consolas;
 }
-
-

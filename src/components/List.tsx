@@ -1,15 +1,18 @@
-import {Markdown, allDB, chronoLists} from '../state/markdowns';
-import {Container} from 'react-bootstrap';
-import React, {useState, useEffect} from 'react';
-import {useParams} from 'react-router-dom';
-import {ItemRow} from './ItemRow';
-import {useDelayRender} from '../state/hooks';
+import { Markdown, allDB, chronoLists } from '../state/markdowns';
+import { Container } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { ItemRow } from './ItemRow';
+import { useDelayRender, useWindowSize } from '../state/hooks';
 import "./List.css";
+import { HoverLink } from './Misc';
+import { FaLink } from 'react-icons/fa';
 
+// full list
 export function List(props: {
   markdowns: Array<Markdown>,
 }) {
-  const {markdowns} = props;
+  const { markdowns } = props;
   const delay = useDelayRender(0.1);
   const lists =
     markdowns.map(m =>
@@ -17,13 +20,14 @@ export function List(props: {
   return (
     <Container>
       <div className={"list-main"}
-        style={{visibility: delay ? "hidden" : "visible", }} />
+        style={{ visibility: delay ? "hidden" : "visible", }} />
       {
         lists
       }
     </Container>
   );
 }
+
 
 // Monomophization of list.
 export function ArticleChronoList() {
@@ -43,6 +47,6 @@ export function ArticleChronoList() {
 // }
 
 export function TagList() {
-  const {tag} = useParams();
+  const { tag } = useParams();
   return <List markdowns={allDB.get(tag as string) ?? []} />
 }
