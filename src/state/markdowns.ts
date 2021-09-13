@@ -56,8 +56,9 @@ export function chronoList(md: MarkdownDB): Array<Markdown> {
   const times = Array.from(md.keys("time")!).sort().reverse();
   const flatten = flat(
     times
-      .map(k => md.get(new Date(k)))
-      .filter(ml => ml !== undefined) as Array<Array<Markdown>>);
+      .map(k => md.get(new Date(k))
+      )
+      .filter(ml => ml !== undefined) as Array<Array<Markdown>>)
   return unique(flatten, (m) => m.header.id);
 }
 

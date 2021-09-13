@@ -1,6 +1,6 @@
 -- tag C++
 -- title Destructive Move
--- time 2021-08-02
+-- time 2021-08-08
 -- source https://en.cppreference.com/w/cpp/language/move_constructor
           https://www.foonathan.net/2017/09/destructive-move/#content
           https://radekvit.medium.com/move-semantics-in-c-and-rust-the-case-for-destructive-moves-d816891c354b
