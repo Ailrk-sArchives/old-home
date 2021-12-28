@@ -18,23 +18,27 @@ function TopbarNavTab(props: { name: string, link: string }) {
     </div>);
 }
 
-
+function Avatar() {
+  return (
+    <span>
+      <img src={Ghead}
+        alt="."
+        height={60}
+        width={60}
+        className="header-simple-avatar" />
+    </span>
+  );
+}
 export function HeaderSimple() {
+
 
   return (
     <Container className="header-simple-main">
       <Row className="header-simple-text">
-        <Col sm={8}>
+        <Col>
           <Link style={{ ...linkStyle }} to="/">
             <span id="header-simple-title" >
-              <span>
-                <img src={Ghead}
-                  alt="."
-                  height={60}
-                  width={60}
-                  className="header-simple-avatar" />
-              </span>
-              <span id="header-simple-title-text"> Easy living </span>
+              <h1 id="header-simple-title-text"> Ailrk </h1>
             </span>
           </Link>
         </Col>
@@ -42,7 +46,6 @@ export function HeaderSimple() {
         <Row className={"header-simple-navbar"}>
           <TopbarNavTab name="articles" link={"/"} />
           <TopbarNavTab name="tags" link={"/tags"} />
-          <TopbarNavTab name="diary" link={"/diary"} />
           <TopbarNavTab name="about" link={"/about"} />
         </Row>
       </Row>
