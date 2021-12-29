@@ -1,1 +1,0 @@
-{"version":3,"sources":["DiaryChronoListPage.css"],"names":[],"mappings":"AAAA,YAIE,WAAY,CACZ,kBACF","file":"5.b3cad7c8.chunk.css","sourcesContent":[".diary-page {\n  /* writing-mode: vertical-rl; */\n  /* overflow: auto; */\n\n  float: right;\n  letter-spacing: 2px;\n}\n"]}
