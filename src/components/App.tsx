@@ -21,8 +21,8 @@ import QRIter2 from '../assets/iter2.png';
 
 const ArticlePage: any = lazy(() => import("./lazyPage/ArticlePage"));
 const ArticleChronoListPage: any = lazy(() => import("./lazyPage/ArticleChronoListPage"));
-const DiaryChronoListPage: any = lazy(() => import("./lazyPage/DiaryChronoListPage"));
-const DiaryPage : any = lazy(() => import("./lazyPage/DiaryPage"));
+const WikiChronoListPage: any = lazy(() => import("./lazyPage/WikiChronoListPage"));
+const WikiPage : any = lazy(() => import("./lazyPage/WikiPage"));
 // const NoteChronoListPage: any = lazy(() => import("./lazyPage/NoteChronoListPage"));
 // const OthersChronoListPage: any = lazy(() => import("./lazyPage/OthersChronoListPage"));
 
@@ -55,8 +55,8 @@ function App() {
           <Route exact path="/tags" component={TagPage} />
           <Route exact path="/friends" component={FriendsPage} />
           <Route exact path="/links" component={InterestingLinksPage} />
-          <Route exact path="/diary" component={DiaryChronoListPage} />
-          <Route exact path="/diary/:id" component={DiaryPage} />
+          <Route exact path="/wiki" component={WikiChronoListPage} />
+          <Route exact path="/wiki/:id" component={WikiPage} />
           <Route exact path="/iter2" component={Iter1} />
           <Route exact path="/iter1" component={Iter2} />
         </Suspense>

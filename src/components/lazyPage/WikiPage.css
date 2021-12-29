@@ -1,11 +1,11 @@
-.diary-page {
+.wiki-page {
   /* writing-mode: vertical-rl; */
   /* overflow: auto; */
 
   height: 90%;
 }
 
-.diary-page>p {
+.wiki-page>p {
   text-align: left;
   font-size: 1.3em;
   letter-spacing: 0.3em;

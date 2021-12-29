@@ -34,6 +34,10 @@ export function ArticleChronoList() {
   return <List markdowns={chronoLists.articleChronoList} />
 }
 
+export function WikiChronoList() {
+  return <List markdowns={chronoLists.wikiChronoLists} />
+}
+
 // export function NotesChronoList() {
 //   return <List markdowns={chronoLists.noteChronoList} />
 // }

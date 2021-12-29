@@ -31,7 +31,6 @@ export function Article(props: {
     overflow: "hidden",
   });
 
-
   // avoid asyc complete after component is unmounted.
   useEffect(() => {
     return () => {

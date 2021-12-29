@@ -16,13 +16,12 @@ export const articlesDB: MarkdownDB = markdowndb({
   logLevel: "silence",
 });
 
-export const diaryDB: MarkdownDB = markdowndb({
-  markdownDir: 'diary',
+export const wikiDB: MarkdownDB = markdowndb({
+  markdownDir: 'wiki',
   mode: 'static',
   publicURL: "/home",
   logLevel: "silence",
 });
-
 
 // export const notesDB: MarkdownDB = markdowndb({
 //   markdownDir: "notes",
@@ -47,6 +46,7 @@ export const diaryDB: MarkdownDB = markdowndb({
 
 export const allDB: MarkdownDB = new AllDB([
   articlesDB,
+  wikiDB,
   // notesDB,
   // othersDB,
   // papersDB
@@ -65,7 +65,7 @@ export function chronoList(md: MarkdownDB): Array<Markdown> {
 export const chronoLists = {
   // otherChronoList: chronoList(othersDB),
   // noteChronoList: chronoList(notesDB),
-  diaryChronoLists: chronoList(diaryDB),
+  wikiChronoLists: chronoList(wikiDB),
   articleChronoList: chronoList(articlesDB),
 };
 

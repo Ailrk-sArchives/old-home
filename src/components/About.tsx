@@ -48,8 +48,8 @@ export function About() {
           element={e => (<h5 className="about-info"> <FaUserFriends />{e}</h5>)} />
       </Link>
 
-      <Link to={"/diary"}>
-        <HoverLink text={" Diary"}
+      <Link to={"/wiki"}>
+        <HoverLink text={"Wiki"}
           link={"/diary"}
           ogColor={"black"}
           onHoverColor={"LightCoral"}
@@ -58,16 +58,8 @@ export function About() {
     </>
   );
 
-  // <Link to={"/links"}>
-  //   <HoverLink text={" Links"}
-  //     link={"/links"}
-  //     ogColor={"black"}
-  //     onHoverColor={"LightCoral"}
-  //     element={e => (<h5 className="about-info"> <FaUserFriends />{e}</h5>)} />
-  // </Link>
-
   return (
-    <Container style={width > 600 ? {} : { marginLeft: 30 }}>
+    <Container className="about-body" style={width > 600 ? {} : { marginLeft: 30 }}>
       {
         delay ? <Content /> : <div />
       }
